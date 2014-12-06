@@ -30,7 +30,7 @@ package
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
 			addEventListener(KeyboardEvent.KEY_UP, Input.onKeyUp);
 			addEventListener(KeyboardEvent.KEY_DOWN, Input.onKeyDown);
-			this.touchable = false;
+			//this.touchable = false;
 		}
 		
 		private function onAddedToStage():void {
@@ -40,7 +40,7 @@ package
 			//States.push(new Cargando(this));
 			//States.push(new Game_Over(this));
 			//changeState(MENU);
-			addChild(new Menu(this));
+			addChild(new Level(this));
 		}
 		
 		private function onEnterFrame():void {
