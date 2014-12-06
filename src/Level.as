@@ -294,7 +294,7 @@ package
 			
 			//UpdateCapa0(e.passedTime);
 			
-			//updateCapa1(e.passedTime);
+			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 			
@@ -335,8 +335,14 @@ package
 			if (fairy_displacement.y > 5) fairy_displacement.y = 5;
 			if (fairy_displacement.y < 5) fairy_displacement.y = -5;*/
 			
-			fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
-			fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
+			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
+			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
+			
+			if (mouseCatched) {
+				fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+				fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+			}
+			
 			
 			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
 			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
