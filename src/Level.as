@@ -64,6 +64,10 @@ package
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
+		private var lifes:Number;
+		private var lifesArray:Array;
+		private var lifeUp:Sprite;
+		private var lifeUpDt:Number;
 		private var character:Sprite;
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
@@ -132,7 +136,7 @@ package
 		private function onAddedToStage():void {
 			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
-			ch1 = SoundMenu.play(0, 9999);
+			//ch1 = SoundMenu.play(0, 9999);
 			
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
@@ -161,6 +165,11 @@ package
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
 			heightCapa1 = capa1.height;
+			
+			lifes = 3;
+			lifesArray = new Array();
+			drawLifes();
+			lifeUpDt = 0;
 			
 			character = new Sprite();
 			i = new Image(Assets.getTexture("character"));
@@ -301,7 +310,10 @@ package
 			if (Input.isDown(Input.RIGHT)) GLOBAL_BOTON_D = true;
 			else GLOBAL_BOTON_D = false;
 			
-			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
+			if (GLOBAL_MOUSE_CLICKED) {
+				trace ("CLICKED");
+				checkEnemyClick();
+			}
 			
 			//UpdateCapa0(e.passedTime);
 			
@@ -322,7 +334,11 @@ package
 			GLOBAL_MOUSE_CLICKED = false;
 		}
 		
-		// ****************** CAPA 1 ******************
+
+		
+		
+		
+		
 		private function updateCapa1(dt:Number):void {
 			
 			// Movimiento Personaje
@@ -349,6 +365,9 @@ package
 			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
 			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
 			
+			//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
+			//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
+
 			if (mouseCatched) {
 				fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
 				fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
@@ -360,7 +379,7 @@ package
 			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
 			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
 			
-			// Añadir Enemigos
+			// Spawnear Enemigos
 			enemySpawner += dt;
 			if (enemySpawner >= 3) {
 				addEnemy();
@@ -382,6 +401,10 @@ package
 				if (enemyArray[i].y > character.y) enemyArray[i].y -= 60*dt;
 			}
 			
+			enemyCollision();
+			
+			updateLifeUp(dt);
+			
 		}
 		
 		private function addEnemy():void {
@@ -396,9 +419,102 @@ package
 			
 			if (Math.round(Math.random()) == 0) newEnemy.x = 0;
 			else newEnemy.x = widthCapa1;
-			newEnemy.y = heightCapa1 / 2;
+			newEnemy.y = heightCapa1 / 2 + 75;
 			
 			enemyArray.push(newEnemy);
+		}
+		
+		
+		
+		private function enemyCollision():void {
+			var i:Number;
+			for (i = 0; i < enemyArray.length; i++) {
+				if ( Math.sqrt(Math.pow((enemyArray[i].x - character.x), 2) + Math.pow((enemyArray[i].y - character.y), 2)) < 25) {
+					capa1.removeChild(enemyArray[i]);
+					enemyArray.splice(i, 1);
+					loseLife();
+				}
+			}
+		}
+		
+		private function checkEnemyClick():void {
+			var i:Number;
+			for (i = 0; i < enemyArray.length; i++) {
+				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x/*GLOBAL_MOUSE_X-capa1.x*/)), 2) + Math.pow((enemyArray[i].y - (fairy.y/*GLOBAL_MOUSE_Y-capa1.y*/)), 2)) < 25)  {
+					if (lifeUp == null && Math.round(Math.random() * 1) == 0) spawnLife(enemyArray[i].x, enemyArray[i].y);
+					capa1.removeChild(enemyArray[i]);
+					enemyArray.splice(i, 1);
+				}
+			}
+		}
+		
+		private function spawnLife(x:Number, y:Number):void {
+			lifeUp = new Sprite();
+			var i:Image = new Image(Assets.getTexture("heart"));
+			lifeUp.addChild(i);
+			capa1.addChild(lifeUp);
+			lifeUp.x = x;
+			lifeUp.y = y;
+			lifeUp.pivotX = lifeUp.width / 2;
+			lifeUp.pivotY = lifeUp.height / 2;
+			lifeUp.scaleX = 0.03;
+			lifeUp.scaleY = 0.03;
+		}
+		
+		private function updateLifeUp(dt:Number):void {
+			if (lifeUp != null) {
+				lifeUpDt += dt;
+				lifeUp.y += Math.sin(lifeUpDt*Math.PI);
+				
+				if (lifeUpDt >= 4) {
+					if (lifeUp.visible == false) lifeUp.visible = true;
+					else lifeUp.visible = false;
+				}
+					
+				if (lifeUpDt >= 5) {
+					capa1.removeChild(lifeUp);
+					lifeUp = null;
+					lifeUpDt = 0;
+				}
+				else if ( Math.sqrt(Math.pow((lifeUp.x - character.x), 2) + Math.pow((lifeUp.y - character.y), 2)) < 25) {
+					capa1.removeChild(lifeUp);
+					lifeUp = null;
+					lifeUpDt = 0;
+					gainLife();
+				}
+			}
+		}
+			
+		private function loseLife():void {
+			lifes -= 1;
+			drawLifes();
+			//if (lifes <= 0){has perdido joputa}
+		}
+		
+		private function gainLife():void {
+			if(lifes < 3){
+				lifes += 1;
+				drawLifes();
+			}
+		}
+		
+		private function drawLifes():void {
+			var i:Number;
+			
+			for  (i = 0; i < lifesArray.length; i++) capa1.removeChild(lifesArray[i]);
+			lifesArray = new Array();
+			
+			for (i = 0; i < lifes; i++) {
+				var life:Sprite = new Sprite();
+				var img:Image = new Image(Assets.getTexture("heart"));
+				life.addChild(img);
+				capa1.addChild(life);
+				life.scaleX = 0.05;
+				life.scaleY = 0.05;
+				life.x = life.width * i + 8;
+				life.y = 0;
+				lifesArray.push(life);
+			}
 		}
 		
 		private function UpdateCapa0(dt:Number):void
