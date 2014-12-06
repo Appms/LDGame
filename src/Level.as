@@ -58,10 +58,8 @@ package
 		private var CAPA_2_BOTON_FLECHA_ABA:Boolean = false;
 		private var CAPA_2_MOUSE_CLICKED:Boolean = false;
 		
-		private var CAPA_2_LEFTHAND_X:Number = 0;
-		private var CAPA_2_LEFTHAND_Y:Number = 0;
-		private var CAPA_2_RIGHTHAND_X:Number = 0;
-		private var CAPA_2_RIGHTHAND_Y:Number = 0;
+		private var leftHand:Sprite;
+		private var rightHand:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -113,7 +111,7 @@ package
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
-			capa1.y = 38;
+			capa1.y = 40;
 			
 			capa2 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa2"));
@@ -121,6 +119,13 @@ package
 			addChild(capa2);
 			capa2.x = 0;
 			capa2.y = 0;
+			
+			leftHand = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			leftHand.addChild(i);
+			capa2.addChild(leftHand);
+			
+			
 			
 			
 			/*
@@ -160,7 +165,8 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
 			
-
+			leftHand.x = GLOBAL_MOUSE_X;
+			leftHand.y = GLOBAL_MOUSE_Y;
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
