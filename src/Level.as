@@ -49,14 +49,19 @@ package
 		private var matrixText:TextField;
 		private var test:String;
 		private var secsPassed:Number = 0;
-		private var currentLevel:int = 0;
 		private var currentTrack:int = 0;
 		private var currentPos:int;
-		private var genSecs:Number=0;
+		private var genSecs:Number = 0;
+		private var deathSecs:Number = 0;
+		private var highScore:Number = 0;
 		private var generated:Boolean;
 		private var initiated:Boolean;
 		private var dead:Boolean;
 		private var frogPoints:Number = 0;
+		private var customDt:Number = 0;
+		private var increasement:Number = 0;
+		private var character:Image;
+		private var bombsAway:Array;
 
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
@@ -146,14 +151,13 @@ package
 			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
 			leftHand.y = 500;
 			
-
-			
 			//**************** CAPA 0 ******************
+			drawCapa0();
 			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
 			test = new String();
-			
 			initiated = true;
 			dead = false;
+			bombsAway = new Array();
 			
 			for (var t:int = 0; t < LEVELS_0; t++)
 			{	
@@ -164,7 +168,6 @@ package
 				}
 			}
 			
-
 			gameMatrix[3][1] = 2;
 			currentPos = 1;
 			
@@ -183,7 +186,7 @@ package
 			GLOBAL_MOUSE_Y = 500;	
 
 			
-			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
+			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
 			matrixText.x = 0;
 			matrixText.y = 0;
 			matrixText.border = true;
@@ -209,8 +212,8 @@ package
 			
 			//**************** CAPA 0 ******************
 			
-			UpdateCapa0(e.passedTime);
 			
+			updateCapa0(e.passedTime);
 			
 
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
@@ -229,30 +232,11 @@ package
 			else GLOBAL_BOTON_D = false;
 			
 			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
-			
 
-			//leftHand.x = GLOBAL_MOUSE_X;
-			//leftHand.y = GLOBAL_MOUSE_Y;
 
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			
-			/*
-			if (leftHand.x < GAME.true_width / 2) leftHand.x = GAME.true_width / 2;
-			
-			if (leftHand.x < capa1.x + capa1.width && leftHand.y < capa1.y + capa1.height) { 
-				var aux_desfase_x:int = leftHand.x -(capa1.x +capa1.width);
-				var aux_desfase_y:int = leftHand.y -(capa1.y +capa1.height);
-				//leftHand.x = capa1.x + capa1.width; 
-				if (aux_desfase_x < aux_desfase_y) {
-					leftHand.y = capa1.y + capa1.height;
-				}
-				else {
-					leftHand.x = capa1.x + capa1.width;
-				}
-				trace ("LOL");
-			}
-			*/
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -263,8 +247,9 @@ package
 		}
 		
 
-		private function UpdateCapa0(dt:Number):void
+		private function updateCapa0(dt:Number):void
 		{	
+			
 			if (initiated)
 			{
 				secsPassed+= dt;
@@ -278,8 +263,15 @@ package
 			
 			else if(!dead)
 			{
+				updateSprites0();
+				customDt = dt + increasement;
+				frogPoints += customDt;
 				
-				frogPoints += dt;
+				if (int(frogPoints) == 15) increasement = 0.012;
+				if (int(frogPoints) == 25) increasement = 0.016;
+				if (int(frogPoints) == 40) increasement = 0.024;
+				if (int(frogPoints) == 60) increasement = 0.035;
+				
 				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
@@ -302,41 +294,46 @@ package
 				}
 				
 				
-				
 				if (generated)
 				{
-					secsPassed += dt;
-					if (secsPassed >= 1)
-					{
-						gameMatrix[currentLevel][currentTrack] = 0;
-						if (currentLevel + 1 <4)
+					secsPassed += customDt;
+
+					if (secsPassed >= 1.2)
+					{	
+						for (var i:int = LEVELS_0-1; i >= 0; i--)
 						{
-							currentLevel++;
-							if (gameMatrix[currentLevel][currentTrack] == 2) dead = true;
-							gameMatrix[currentLevel][currentTrack] = 1;
-						}
-						else
-						{
-							generated = false;
-							gameMatrix[currentLevel][currentTrack] = 0;
+							for (var j:int = TRACKS_0-1; j >=0 ; j--)
+							{
+								if (gameMatrix[i][j] == 1) 
+								{
+									trace("found");
+									gameMatrix[i][j] = 0;
+									if (i + 1 <4)
+									{
+										if (gameMatrix[i+1][j] == 2) dead = true;
+										gameMatrix[i+1][j] = 1;
+									}
+								}
+							}
 						}
 						
 						secsPassed = 0;
 					}
 				}
 				
-				genSecs += dt;
-				trace(genSecs);
-				if (genSecs >= 2 &&!generated)
+				genSecs += customDt;
+				
+				if (genSecs >= 4&& secsPassed==0)
 				{
-					currentLevel = 0;
-					currentTrack = Math.random() * 2;
-					gameMatrix[currentLevel][currentTrack] = 1;
+					generateEnemy();
+					var probabilidad:Number = Math.random() * 10;
+					if (probabilidad <= 2 && frogPoints>25 && frogPoints<40) generateEnemy();
+					if (probabilidad <= 4 && frogPoints>40) generateEnemy();
 					genSecs = 0;
 					generated = true;
 				}
 				
-								test = "";
+				test = "";
 				for (var t:int = 0; t < LEVELS_0; t++)
 				{	
 					for (var u:int = 0; u < TRACKS_0; u++)
@@ -346,23 +343,98 @@ package
 					}
 					test += "\n";
 				}
-				
+				matrixText.fontSize = 28;
 				matrixText.text = test;
 			}	
 			
 			if (dead)
 			{
+				if (frogPoints > highScore) highScore = frogPoints;
+				matrixText.fontSize = 12;
+				deathSecs += dt;
 				genSecs = 0;
 				secsPassed = 0;
 				generated = false;
 				test = "Score: " + int(frogPoints);
 				test += "\n";
-				test += "Soon";
+				test += "High Score: " + int(highScore);
+				
+				for (t = 0; t < LEVELS_0; t++)
+				{	
+					for (u = 0; u < TRACKS_0; u++)
+					{
+						gameMatrix[t][u] = 0;
+					}
+				}
+				gameMatrix[3][1] = 2;
 				
 				matrixText.text = test;
-					
 				
+				if (deathSecs >= 3)
+				{
+					dead = false;
+					deathSecs = 0;
+					frogPoints = 0;
+					increasement = 0;
+				}
 			}
+		}
+		
+		private function generateEnemy():void
+		{
+			currentTrack = Math.random() * 3;
+			while(gameMatrix[0][currentTrack] ==1) currentTrack = Math.random() * 3;
+			gameMatrix[0][currentTrack] = 1;
+		}
+		
+		private function drawCapa0():void
+		{
+			var screen:Image = new Image(Assets.getTexture("Screen"));
+			capa0.addChild(screen);
+			
+			character = new Image(Assets.getTexture("Character"));
+			capa0.addChild(character);
+			//character.x = capa0.width / 2 - character.width / 2;
+			character.y = capa0.height - character.height;
+			character.visible = false;
+		}
+		
+		private function updateSprites0():void
+		{
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{
+					if (gameMatrix[t][u] == 2)
+					{
+						character.visible = true; 
+						trace(u * 50);
+						character.x = u*50;
+					}
+				}
+			}
+			
+			for (var i:int = 0; i < bombsAway.length; i++)
+			{
+				capa0.removeChild(bombsAway[i]);
+				bombsAway.splice(i, 1);
+			}
+			
+			for (t = 0; t < LEVELS_0; t++)
+			{	
+				for (u= 0; u < TRACKS_0; u++)
+				{
+					if (gameMatrix[t][u] == 1)
+					{
+						var bomb:Image = new Image(Assets.getTexture("Bomb"));
+						capa0.addChild(bomb);
+						bomb.x = 50 * u;
+						bomb.y = 45 * t;
+						bombsAway.push(bomb);
+					}
+				}
+			}
+					
 		}
 				
 		private function moveLeftHand(dt:Number):void {
