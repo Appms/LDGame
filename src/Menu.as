@@ -74,19 +74,15 @@ package
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			ch1 = SoundMenu.play(0, 9999);
 			
-			/*
+			
 			select_menu = new Sprite();
 			addChild(select_menu);
 			select_menu.x = 200;
 			select_menu.y = 100;
 			var i:Image = new Image(Assets.getAtlas().getTexture("select_menu"));
 			select_menu.addChild(i);
-			*/
 			
-			var i:Image = new Image(Assets.getAtlas().getTexture("3dglasses"));
-			i.x = 200;
-			i.y = 100;
-			this.addChild(i);
+
 			
 			/*
 			var text_field:TextField = new TextField(400, 200, "LOL", "Verdana", 30, 0x000000, true);
