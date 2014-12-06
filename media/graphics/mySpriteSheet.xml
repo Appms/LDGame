@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:d77d2a81beaa52474acba5a3d9b89cf9:1447a6d1dca7156538a4aed30b26d722:a61cba8975c307742327789f7fed8c88$ -->
+<!-- $TexturePacker:SmartUpdate:c8be05573fbe74618002148239125147:29a8a035867698b578ae8b111dfd45f5:a61cba8975c307742327789f7fed8c88$ -->
 <TextureAtlas imagePath="mySpriteSheet.png">
-    <SubTexture name="select_menu" x="2" y="2" width="23" height="21" frameX="-1" frameY="0" frameWidth="25" frameHeight="21"/>
+    <SubTexture name="capa0" x="804" y="2" width="200" height="150"/>
+    <SubTexture name="capa1" x="2" y="604" width="400" height="300"/>
+    <SubTexture name="capa2" x="2" y="2" width="800" height="600"/>
 </TextureAtlas>

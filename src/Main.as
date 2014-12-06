@@ -10,6 +10,7 @@ package
 	 * ...
 	 * @author Andrés Valencia
 	 */
+	[SWF(backgroundColor="0x5A5A5A")]
 	public class Main extends Sprite 
 	{
 		
