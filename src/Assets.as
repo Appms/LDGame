@@ -23,8 +23,26 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
+<<<<<<< HEAD
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
+=======
+		// ****************** CAPA 1 ******************
+		[Embed(source = "../media/graphics/crusader.png")]
+		public static const character:Class;
+		
+		[Embed(source = "../media/graphics/Fairy.png")]
+		public static const fairy:Class;
+		
+		[Embed(source = "../media/graphics/beetle.png")]
+		public static const enemy:Class;
+		
+		[Embed(source = "../media/graphics/heart.png")]
+		public static const heart:Class;
+		
+		//[Embed(source = "../media/graphics/mosaic_ground.png")]
+		//public static const AtlasTextureGame2:Class;
+>>>>>>> origin/master
 		
 		[Embed(source = "../media/graphics/character.png")]
 		public static const Character:Class;
