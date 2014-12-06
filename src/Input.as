@@ -7,7 +7,6 @@ package
 	 */
 	public class Input
 	{
-		
 		private static const NUM_KEYS:int = 12;
 		
 		public static const UP:int = 0;

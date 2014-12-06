@@ -25,7 +25,6 @@ package
 	 */
 	public class Level extends State
 	{
-		
 		public var GAME:Game;
 		
 		private var key_down:int = 83;
@@ -43,7 +42,22 @@ package
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 0
 		
-		/* NO HAY NINGUNO, SÓLO REACCIONA A OTROS ATRIBUTOS ESTA CAPA */
+		public const LEVELS_0:int = 4;
+		public const TRACKS_0:int  = 3;
+		
+		private var gameMatrix:Array;
+		private var matrixText:TextField;
+		private var test:String;
+		private var secsPassed:Number = 0;
+		private var currentLevel:int = 0;
+		private var currentTrack:int = 0;
+		private var currentPos:int;
+		private var genSecs:Number=0;
+		private var generated:Boolean;
+		private var initiated:Boolean;
+		private var dead:Boolean;
+		private var frogPoints:Number = 0;
+
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
 		
@@ -88,6 +102,9 @@ package
 		
 		private var colorin:uint = 0xFFFFFF;
 		
+		
+
+		
 		public function Level(game_origen:Game) 
 		{
 			GAME = game_origen;
@@ -106,6 +123,7 @@ package
 		}
 		
 		private function onAddedToStage():void {
+			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			ch1 = SoundMenu.play(0, 9999);
 			
@@ -160,23 +178,64 @@ package
 			
 			// *********************** CAPA 2 ***********************
 			leftHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			i = new Image(Assets.getAtlas().getTexture("lefthand"));
 			leftHand.addChild(i);
 			capa2.addChild(leftHand);
+			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
+			leftHand.y = 500;
 			
+
 			
-			/*
-			var text_field:TextField = new TextField(400, 200, "LOL", "Verdana", 30, 0x000000, true);
-			addChild(text_field);
-			*/
+			//**************** CAPA 0 ******************
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			
+			initiated = true;
+			dead = false;
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+
+			gameMatrix[3][1] = 2;
+			currentPos = 1;
+			
+			test = "Da Frog";
+			test += "\n";
+			test += "with TUPÉ";
+
+			
+			//trace(test);
+
+			rightHand = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			rightHand.addChild(i);
+			capa2.addChild(rightHand);
+			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
+			GLOBAL_MOUSE_Y = 500;	
+
+			
+			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = true;
+			capa0.addChild(matrixText);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
 			var touch:Touch = e.getTouch(this);
 			if (touch && touch.phase == TouchPhase.HOVER) {
+				
 				GLOBAL_MOUSE_X = touch.globalX;
 				GLOBAL_MOUSE_Y = touch.globalY;
-				trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
+
+				//trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
 			}
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
@@ -184,6 +243,11 @@ package
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
+			
+			
+			//**************** CAPA 0 ******************
+			
+			UpdateCapa0(e.passedTime);
 			
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
@@ -205,8 +269,10 @@ package
 			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
-			leftHand.x = GLOBAL_MOUSE_X;
-			leftHand.y = GLOBAL_MOUSE_Y;
+			
+			moveLeftHand(e.passedTime);
+			moveRightHand(e.passedTime);
+			
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -215,7 +281,6 @@ package
 			GLOBAL_BOTON_D = false;
 			GLOBAL_MOUSE_CLICKED = false;
 		}
-		
 		
 		// ****************** CAPA 1 ******************
 		private function updateCapa1(dt:Number):void {
@@ -290,6 +355,201 @@ package
 			enemyArray.push(newEnemy);
 		}
 		
-	}
+		private function UpdateCapa0(dt:Number):void
+		{	
+			if (initiated)
+			{
+				secsPassed+= dt;
+				if (secsPassed >= 3)
+				{
+					secsPassed = 0;
+					initiated = false;
+				}
+				
+			}
+			
+			else if(!dead)
+			{
+				
+				frogPoints += dt;
+				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				else CAPA_1_BOTON_DER = false;
+				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
+				else CAPA_1_BOTON_IZQ = false;
+				
+				if (CAPA_1_BOTON_DER && currentPos < 2)
+				{	
+					gameMatrix[3][currentPos] = 0;
+					currentPos++;
+					if (gameMatrix[3][currentPos] == 1) dead = true;
+					gameMatrix[3][currentPos] = 2;
+				}
+				
+				if (CAPA_1_BOTON_IZQ && currentPos > 0)
+				{	
+					gameMatrix[3][currentPos] = 0;
+					currentPos--;
+					if (gameMatrix[3][currentPos] == 1) dead = true;
+					gameMatrix[3][currentPos] = 2;
+				}
+				
+				
+				
+				if (generated)
+				{
+					secsPassed += dt;
+					if (secsPassed >= 1)
+					{
+						gameMatrix[currentLevel][currentTrack] = 0;
+						if (currentLevel + 1 <4)
+						{
+							currentLevel++;
+							if (gameMatrix[currentLevel][currentTrack] == 2) dead = true;
+							gameMatrix[currentLevel][currentTrack] = 1;
+						}
+						else
+						{
+							generated = false;
+							gameMatrix[currentLevel][currentTrack] = 0;
+						}
+						
+						secsPassed = 0;
+					}
+				}
+				
+				genSecs += dt;
+				trace(genSecs);
+				if (genSecs >= 2 &&!generated)
+				{
+					currentLevel = 0;
+					currentTrack = Math.random() * 2;
+					gameMatrix[currentLevel][currentTrack] = 1;
+					genSecs = 0;
+					generated = true;
+				}
+				
+								test = "";
+				for (var t:int = 0; t < LEVELS_0; t++)
+				{	
+					for (var u:int = 0; u < TRACKS_0; u++)
+					{	
+						test += gameMatrix[t][u];
+						test += " ";
+					}
+					test += "\n";
+				}
+				
+				matrixText.text = test;
+			}	
+			
+			if (dead)
+			{
+				genSecs = 0;
+				secsPassed = 0;
+				generated = false;
+				test = "Score: " + int(frogPoints);
+				test += "\n";
+				test += "Soon";
+				
+				matrixText.text = test;
+					
+				
+			}
+		}
+				
+		private function moveLeftHand(dt:Number):void {
+			
+			// MOVE LEFT HAND
+			var new_x:Number = leftHand.x;
+			var new_y:Number = leftHand.y;
+			var speed_leftHand:Number = 500;
+			
+			if (GLOBAL_BOTON_W) {
+				new_y -= dt * speed_leftHand;
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_y = capa1.y + capa1.height; }
+			}
+			if (GLOBAL_BOTON_S) {
+				new_y += dt * speed_leftHand;
+			}
+			if (GLOBAL_BOTON_A) {
+				new_x -= dt * speed_leftHand;
+			}
+			if (GLOBAL_BOTON_D) {
+				new_x += dt * speed_leftHand;
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_x = capa1.x - leftHand.width; }
+			}
+			
+			if ((new_x + leftHand.width) > GAME.true_width / 2) {
+				new_x = GAME.true_width / 2 - leftHand.width;
+			}
+			if (new_x < 0) {
+				new_x = 0;
+			}
+			if (new_y > GAME.true_height - leftHand.height) {
+				new_y = GAME.true_height - leftHand.height;
+			}
+			if (new_y < 0) {
+				new_y = 0;
+			}
+			
+			leftHand.x = new_x;
+			leftHand.y = new_y;
 
+			// END MOVE LEFT HAND
+			
+		}
+		
+		private function moveRightHand(dt:Number):void {
+			
+			// MOVE RIGHT HAND
+			var new_x:Number = rightHand.x;
+			var new_y:Number = rightHand.y;
+			var speed_rightHand:Number = 1000;
+			
+			if (GLOBAL_MOUSE_X != rightHand.x) {
+				if (GLOBAL_MOUSE_X > rightHand.x) {
+					new_x += dt * speed_rightHand;
+					if (GLOBAL_MOUSE_X < new_x) new_x = GLOBAL_MOUSE_X;
+				}
+				else if (GLOBAL_MOUSE_X < rightHand.x) {
+						new_x -= dt * speed_rightHand;
+					if (GLOBAL_MOUSE_X > new_x) new_x = GLOBAL_MOUSE_X;
+				}
+			}
+			
+			if (GLOBAL_MOUSE_Y != rightHand.y) {
+				if (GLOBAL_MOUSE_Y > rightHand.y) {
+					new_y += dt * speed_rightHand;
+					if (GLOBAL_MOUSE_Y < new_y) new_y = GLOBAL_MOUSE_Y;
+				}
+				else if (GLOBAL_MOUSE_Y < rightHand.y) {
+					new_y -= dt * speed_rightHand;
+					if (GLOBAL_MOUSE_Y > new_y) new_y = GLOBAL_MOUSE_Y;
+				}
+			}
+			
+			if (new_x < GAME.true_width / 2) {
+				new_x = GAME.true_width / 2;
+			}
+			
+			if (new_x < capa1.x + capa1.width && new_y < capa1.y + capa1.height) { 
+				var aux_desfase_x:int = new_x -(capa1.x +capa1.width);
+				var aux_desfase_y:int = new_y -(capa1.y +capa1.height);
+				if (aux_desfase_x < aux_desfase_y) {
+					new_y = capa1.y + capa1.height;
+				}
+				else {
+					new_x = capa1.x + capa1.width;
+				}
+			}	
+			
+			rightHand.x = new_x;
+			rightHand.y = new_y;
+			
+			// END MOVE RIGHT HAND
+			
+		}
+		
+	}
+	
 }
