@@ -33,6 +33,9 @@ package
 		[Embed(source = "../media/graphics/beetle.png")]
 		public static const enemy:Class;
 		
+		[Embed(source = "../media/graphics/heart.png")]
+		public static const heart:Class;
+		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
 		
