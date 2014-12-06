@@ -21,7 +21,6 @@ package
 	 */
 	public class Level extends State
 	{
-		
 		public var GAME:Game;
 		
 		private var key_down:int = 83;
@@ -39,7 +38,16 @@ package
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 0
 		
-		/* NO HAY NINGUNO, SÓLO REACCIONA A OTROS ATRIBUTOS ESTA CAPA */
+		public const LEVELS_0:int = 4;
+		public const TRACKS_0:int  = 3;
+		
+		private var gameMatrix:Array;
+		private var matrixText:TextField;
+		private var test:String;
+		private var secsPassed:Number;
+		private var currentLevel:int = 0;
+		private var currentTrack:int = 0;
+
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
 		
@@ -77,6 +85,9 @@ package
 		
 		private var colorin:uint = 0xFFFFFF;
 		
+		
+
+		
 		public function Level(game_origen:Game) 
 		{
 			GAME = game_origen;
@@ -95,6 +106,7 @@ package
 		}
 		
 		private function onAddedToStage():void {
+			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			ch1 = SoundMenu.play(0, 9999);
 			
@@ -106,24 +118,56 @@ package
 			capa0.y = 58;
 			
 			capa1 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa1"));
+			i = new Image(Assets.getAtlas().getTexture("capa1"));
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
 			capa1.y = 38;
 			
 			capa2 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa2"));
+			i = new Image(Assets.getAtlas().getTexture("capa2"));
 			capa2.addChild(i);
 			addChild(capa2);
 			capa2.x = 0;
 			capa2.y = 0;
 			
 			
-			/*
-			var text_field:TextField = new TextField(400, 200, "LOL", "Verdana", 30, 0x000000, true);
-			addChild(text_field);
-			*/
+			//**************** CAPA 0 ******************
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+			currentTrack = Math.random() * 2;
+			currentLevel = 0;
+			
+			gameMatrix[currentLevel][currentTrack] = 1;
+			gameMatrix[3][1] = 2;
+			
+			for (t = 0; t < LEVELS_0; t++)
+			{	
+				for (u = 0; u < TRACKS_0; u++)
+				{	
+					test += gameMatrix[t][u];
+					test += " ";
+				}
+				test += "\n";
+			}
+			
+			trace(test);
+			
+			matrixText = new TextField(100, 100 , test, "Arial", 18, 0xffffff);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = true;
+			capa0.addChild(matrixText);
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
@@ -151,8 +195,21 @@ package
 				select_menu.y = 300;
 			}
 			*/
+			
+			//**************** CAPA 0 ******************
+			/*
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					test += gameMatrix[t][u];
+					test += " ";
+				}
+				test += "\n";
+			}
+			
+			matrixText.text = test;
+			*/
 		}
-		
 	}
-
 }
