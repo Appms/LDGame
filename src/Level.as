@@ -46,6 +46,9 @@ package
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
+		private var character:Sprite;
+		private var fairy:Sprite;
+		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
 		private var CAPA_2_BOTON_ESPACIO:Boolean = false;
@@ -106,19 +109,41 @@ package
 			capa0.y = 58;
 			
 			capa1 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa1"));
+			i = new Image(Assets.getAtlas().getTexture("capa1"));
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
 			capa1.y = 38;
 			
 			capa2 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa2"));
+			i = new Image(Assets.getAtlas().getTexture("capa2"));
 			capa2.addChild(i);
 			addChild(capa2);
 			capa2.x = 0;
 			capa2.y = 0;
 			
+			// ****************** CAPA 1 ******************
+			character = new Sprite();
+			i = new Image(Assets.getTexture("character"));
+			character.addChild(i);
+			capa1.addChild(character);
+			character.x = capa1.width/2;
+			character.y = capa1.height/2;
+			character.pivotX = character.width / 2; // 132
+			character.pivotY = character.height / 2; // 224
+			character.scaleX = 0.15;
+			character.scaleY = 0.15;
+			
+			fairy = new Sprite();
+			i = new Image(Assets.getTexture("fairy"));
+			fairy.addChild(i);
+			capa1.addChild(fairy);
+			fairy.x = capa1.width/2;
+			fairy.y = capa1.height/2 - 100;
+			fairy.pivotX = fairy.width / 2;
+			fairy.pivotY = fairy.height / 2;
+			fairy.scaleX = 0.05;
+			fairy.scaleY = 0.05;
 			
 			/*
 			var text_field:TextField = new TextField(400, 200, "LOL", "Verdana", 30, 0x000000, true);
@@ -151,6 +176,10 @@ package
 				select_menu.y = 300;
 			}
 			*/
+			
+			// ****************** CAPA 1 ******************
+			fairy.x = GLOBAL_MOUSE_X;
+			fairy.y = GLOBAL_MOUSE_Y;
 		}
 		
 	}

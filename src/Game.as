@@ -40,7 +40,7 @@ package
 			//States.push(new Cargando(this));
 			//States.push(new Game_Over(this));
 			//changeState(MENU);
-			addChild(new Menu(this));
+			addChild(new Level(this));
 		}
 		
 		private function onEnterFrame():void {
