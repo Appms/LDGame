@@ -140,10 +140,13 @@ package
 			capa2.y = 0;
 			
 			leftHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			i = new Image(Assets.getAtlas().getTexture("lefthand"));
 			leftHand.addChild(i);
 			capa2.addChild(leftHand);
+			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
+			leftHand.y = 500;
 			
+<<<<<<< HEAD
 			
 			//**************** CAPA 0 ******************
 			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
@@ -171,6 +174,14 @@ package
 
 			
 			//trace(test);
+=======
+			rightHand = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			rightHand.addChild(i);
+			capa2.addChild(rightHand);
+			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
+			GLOBAL_MOUSE_Y = 500;	
+>>>>>>> origin/master
 			
 			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
 			matrixText.x = 0;
@@ -182,9 +193,11 @@ package
 		private function onTouch(e:TouchEvent):void {		
 			var touch:Touch = e.getTouch(this);
 			if (touch && touch.phase == TouchPhase.HOVER) {
+				
 				GLOBAL_MOUSE_X = touch.globalX;
 				GLOBAL_MOUSE_Y = touch.globalY;
-				trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
+
+				//trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
 			}
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
@@ -192,6 +205,7 @@ package
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
+<<<<<<< HEAD
 			
 			
 			//**************** CAPA 0 ******************
@@ -199,6 +213,9 @@ package
 			UpdateCapa0(e.passedTime);
 			
 			
+=======
+
+>>>>>>> origin/master
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
 			
@@ -216,8 +233,30 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
 			
+<<<<<<< HEAD
 			//leftHand.x = GLOBAL_MOUSE_X;
 			//leftHand.y = GLOBAL_MOUSE_Y;
+=======
+			moveLeftHand(e.passedTime);
+			moveRightHand(e.passedTime);
+			
+			/*
+			if (leftHand.x < GAME.true_width / 2) leftHand.x = GAME.true_width / 2;
+			
+			if (leftHand.x < capa1.x + capa1.width && leftHand.y < capa1.y + capa1.height) { 
+				var aux_desfase_x:int = leftHand.x -(capa1.x +capa1.width);
+				var aux_desfase_y:int = leftHand.y -(capa1.y +capa1.height);
+				//leftHand.x = capa1.x + capa1.width; 
+				if (aux_desfase_x < aux_desfase_y) {
+					leftHand.y = capa1.y + capa1.height;
+				}
+				else {
+					leftHand.x = capa1.x + capa1.width;
+				}
+				trace ("LOL");
+			}
+			*/
+>>>>>>> origin/master
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -227,6 +266,7 @@ package
 			GLOBAL_MOUSE_CLICKED = false;
 		}
 		
+<<<<<<< HEAD
 		private function UpdateCapa0(dt:Number):void
 		{	
 			if (initiated)
@@ -300,6 +340,102 @@ package
 					generated = true;
 				}
 				
+=======
+		private function moveLeftHand(dt:Number):void {
+			
+			// MOVE LEFT HAND
+			var new_x:Number = leftHand.x;
+			var new_y:Number = leftHand.y;
+			var speed_leftHand:Number = 500;
+			
+			if (GLOBAL_BOTON_W) {
+				new_y -= dt * speed_leftHand;
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_y = capa1.y + capa1.height; }
+			}
+			if (GLOBAL_BOTON_S) {
+				new_y += dt * speed_leftHand;
+			}
+			if (GLOBAL_BOTON_A) {
+				new_x -= dt * speed_leftHand;
+			}
+			if (GLOBAL_BOTON_D) {
+				new_x += dt * speed_leftHand;
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_x = capa1.x - leftHand.width; }
+			}
+			
+			if ((new_x + leftHand.width) > GAME.true_width / 2) {
+				new_x = GAME.true_width / 2 - leftHand.width;
+			}
+			if (new_x < 0) {
+				new_x = 0;
+			}
+			if (new_y > GAME.true_height - leftHand.height) {
+				new_y = GAME.true_height - leftHand.height;
+			}
+			if (new_y < 0) {
+				new_y = 0;
+			}
+			
+			leftHand.x = new_x;
+			leftHand.y = new_y;
+
+			// END MOVE LEFT HAND
+			
+		}
+		
+		private function moveRightHand(dt:Number):void {
+			
+			// MOVE RIGHT HAND
+			var new_x:Number = rightHand.x;
+			var new_y:Number = rightHand.y;
+			var speed_rightHand:Number = 1000;
+			
+			if (GLOBAL_MOUSE_X != rightHand.x) {
+				if (GLOBAL_MOUSE_X > rightHand.x) {
+					new_x += dt * speed_rightHand;
+					if (GLOBAL_MOUSE_X < new_x) new_x = GLOBAL_MOUSE_X;
+				}
+				else if (GLOBAL_MOUSE_X < rightHand.x) {
+						new_x -= dt * speed_rightHand;
+					if (GLOBAL_MOUSE_X > new_x) new_x = GLOBAL_MOUSE_X;
+				}
+			}
+			
+			if (GLOBAL_MOUSE_Y != rightHand.y) {
+				if (GLOBAL_MOUSE_Y > rightHand.y) {
+					new_y += dt * speed_rightHand;
+					if (GLOBAL_MOUSE_Y < new_y) new_y = GLOBAL_MOUSE_Y;
+				}
+				else if (GLOBAL_MOUSE_Y < rightHand.y) {
+					new_y -= dt * speed_rightHand;
+					if (GLOBAL_MOUSE_Y > new_y) new_y = GLOBAL_MOUSE_Y;
+				}
+			}
+			
+			if (new_x < GAME.true_width / 2) {
+				new_x = GAME.true_width / 2;
+			}
+			
+			if (new_x < capa1.x + capa1.width && new_y < capa1.y + capa1.height) { 
+				var aux_desfase_x:int = new_x -(capa1.x +capa1.width);
+				var aux_desfase_y:int = new_y -(capa1.y +capa1.height);
+				if (aux_desfase_x < aux_desfase_y) {
+					new_y = capa1.y + capa1.height;
+				}
+				else {
+					new_x = capa1.x + capa1.width;
+				}
+			}	
+			
+			rightHand.x = new_x;
+			rightHand.y = new_y;
+			
+			// END MOVE RIGHT HAND
+			
+		}
+		
+	}
+>>>>>>> origin/master
 
 				test = "";
 				for (var t:int = 0; t < LEVELS_0; t++)
