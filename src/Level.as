@@ -6,6 +6,7 @@ package
 	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.events.ResizeEvent;
 	import starling.core.Starling;
@@ -15,6 +16,8 @@ package
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
+	import starling.events.Touch;
+	import starling.events.TouchPhase;
 	/**
 	 * ...
 	 * @author Ruvipls
@@ -82,8 +85,8 @@ package
 			GAME = game_origen;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
-			//addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			this.touchable = false;
+			addEventListener(TouchEvent.TOUCH, onTouch);
+			//this.touchable = false;
 
 		}
 		
@@ -106,14 +109,14 @@ package
 			capa0.y = 58;
 			
 			capa1 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa1"));
+			i = new Image(Assets.getAtlas().getTexture("capa1"));
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
 			capa1.y = 38;
 			
 			capa2 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa2"));
+			i = new Image(Assets.getAtlas().getTexture("capa2"));
 			capa2.addChild(i);
 			addChild(capa2);
 			capa2.x = 0;
@@ -126,31 +129,45 @@ package
 			*/
 		}
 		
+		private function onTouch(e:TouchEvent):void {		
+			var touch:Touch = e.getTouch(this);
+			if (touch && touch.phase == TouchPhase.HOVER) {
+				GLOBAL_MOUSE_X = touch.globalX;
+				GLOBAL_MOUSE_Y = touch.globalY;
+				trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
+			}
+			if (touch && touch.phase == TouchPhase.BEGAN) {
+				GLOBAL_MOUSE_CLICKED = true;
+			}
+		}
+		
 		private function onEnterFrame(e:EnterFrameEvent):void {
-			/*
-			if (Input.isPressed(Input.DOWN) || Input.isPressed(Input.DOWN2)) {
-				selected++;
-				if (selected > 1) {
-					selected = 0;
-				}
-			}
-			else if (Input.isPressed(Input.UP) || Input.isPressed(Input.UP2)) {
-				selected--;
-				if (selected < 0) {
-					selected = 1;
-				}
-			}
-			else if (Input.isPressed(Input.ENTER)) {
-				
-			}
 			
-			if (selected == 0) {
-				select_menu.y = 200;
-			}
-			else if (selected == 1) {
-				select_menu.y = 300;
-			}
-			*/
+			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
+			else GLOBAL_BOTON_ESPACIO = false;
+			
+			if (Input.isDown(Input.UP)) GLOBAL_BOTON_W = true;
+			else GLOBAL_BOTON_W = false;
+			
+			if (Input.isDown(Input.LEFT)) GLOBAL_BOTON_A = true;
+			else GLOBAL_BOTON_A = false;
+
+			if (Input.isDown(Input.DOWN)) GLOBAL_BOTON_S = true;
+			else GLOBAL_BOTON_S = false;
+			
+			if (Input.isDown(Input.RIGHT)) GLOBAL_BOTON_D = true;
+			else GLOBAL_BOTON_D = false;
+			
+			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
+			
+
+			
+			GLOBAL_BOTON_ESPACIO = false;
+			GLOBAL_BOTON_W = false;
+			GLOBAL_BOTON_A = false;
+			GLOBAL_BOTON_S = false;
+			GLOBAL_BOTON_D = false;
+			GLOBAL_MOUSE_CLICKED = false;
 		}
 		
 	}
