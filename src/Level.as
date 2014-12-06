@@ -245,9 +245,9 @@ package
 			fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
 			
 			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
-			if (fairy.x < 0) fairy.x = 0;
+			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
 			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
-			if (fairy.y < 0) fairy.y = 0;
+			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
 			
 			// Añadir Enemigos
 			enemySpawner += dt;
