@@ -30,7 +30,7 @@ package
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
 			addEventListener(KeyboardEvent.KEY_UP, Input.onKeyUp);
 			addEventListener(KeyboardEvent.KEY_DOWN, Input.onKeyDown);
-			this.touchable = false;
+			//this.touchable = false;
 		}
 		
 		private function onAddedToStage():void {
