@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:f1d595302bd104012253586ecacce3cd:9b4fda37eacb0e34467da5f98803a19f:a61cba8975c307742327789f7fed8c88$ -->
+<!-- $TexturePacker:SmartUpdate:8707d3d9a03efba3145e240912517f47:e51d0a288ff99f449c38cc71a70d0e1b:a61cba8975c307742327789f7fed8c88$ -->
 <TextureAtlas imagePath="mySpriteSheet.png">
-    <SubTexture name="capa0" x="804" y="2" width="150" height="180"/>
+    <SubTexture name="area_mouse" x="804" y="2" width="200" height="150"/>
+    <SubTexture name="area_neutral" x="404" y="604" width="280" height="210"/>
+    <SubTexture name="capa0" x="804" y="154" width="150" height="180"/>
     <SubTexture name="capa1" x="2" y="604" width="400" height="300"/>
     <SubTexture name="capa2" x="2" y="2" width="800" height="600"/>
-    <SubTexture name="lefthand" x="956" y="98" width="66" height="94"/>
-    <SubTexture name="righthand" x="956" y="2" width="66" height="94"/>
+    <SubTexture name="lefthand" x="900" y="436" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="mouse" x="804" y="336" width="128" height="98"/>
+    <SubTexture name="righthand" x="804" y="436" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
 </TextureAtlas>

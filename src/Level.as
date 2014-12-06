@@ -84,6 +84,11 @@ package
 		
 		private var leftHand:Sprite;
 		private var rightHand:Sprite;
+		private var mouseCatched:Boolean = false;
+		
+		private var areaMouse:Sprite;
+		private var areaNeutral:Sprite;
+		private var mouse:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -157,8 +162,8 @@ package
 			i = new Image(Assets.getTexture("character"));
 			character.addChild(i);
 			capa1.addChild(character);
-			character.x = capa1.width/2;
-			character.y = capa1.height/2;
+			character.x = widthCapa1/2;
+			character.y = heightCapa1/2;
 			character.pivotX = character.width / 2; // 132
 			character.pivotY = character.height / 2; // 224
 			character.scaleX = 0.15;
@@ -177,6 +182,29 @@ package
 			addEnemy();
 			
 			// *********************** CAPA 2 ***********************
+			
+			areaMouse = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaMouse.addChild(i);
+			areaMouse.x = 570;
+			areaMouse.y = 425;
+			
+			areaNeutral = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_neutral"));
+			areaNeutral.addChild(i);
+			areaNeutral.x = areaMouse.x + areaMouse.width/2 - areaNeutral.width/2;
+			areaNeutral.y = areaMouse.y + areaMouse.height/2 - areaNeutral.height/2;
+			
+			capa2.addChild(areaNeutral);
+			capa2.addChild(areaMouse);
+			
+			mouse = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			mouse.addChild(i);
+			capa2.addChild(mouse);
+			mouse.x = areaMouse.x + areaMouse.width/2 - mouse.width/2;
+			mouse.y = areaMouse.y + areaMouse.height/2 - mouse.height/2;
+			
 			leftHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("lefthand"));
 			leftHand.addChild(i);
@@ -184,7 +212,12 @@ package
 			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
 			leftHand.y = 500;
 			
-
+			rightHand = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			rightHand.addChild(i);
+			capa2.addChild(rightHand);
+			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
+			GLOBAL_MOUSE_Y = 500;	
 			
 			//**************** CAPA 0 ******************
 			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
@@ -213,12 +246,7 @@ package
 			
 			//trace(test);
 
-			rightHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("righthand"));
-			rightHand.addChild(i);
-			capa2.addChild(rightHand);
-			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
-			GLOBAL_MOUSE_Y = 500;	
+			
 
 			
 			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
@@ -247,8 +275,6 @@ package
 			
 			//**************** CAPA 0 ******************
 			
-			UpdateCapa0(e.passedTime);
-			
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
 			
@@ -266,12 +292,15 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
 			
-			updateCapa1(e.passedTime);
+			//UpdateCapa0(e.passedTime);
+			
+			//updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 			
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
+			checkMouse();
 			
 			
 			GLOBAL_BOTON_ESPACIO = false;
@@ -349,8 +378,8 @@ package
 			newEnemy.scaleY = 0.05;
 			
 			if (Math.round(Math.random()) == 0) newEnemy.x = 0;
-			else newEnemy.x = capa1.width;
-			newEnemy.y = capa1.height / 2;
+			else newEnemy.x = widthCapa1;
+			newEnemy.y = heightCapa1 / 2;
 			
 			enemyArray.push(newEnemy);
 		}
@@ -466,7 +495,7 @@ package
 			
 			if (GLOBAL_BOTON_W) {
 				new_y -= dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_y = capa1.y + capa1.height; }
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_y = capa1.y + heightCapa1; }
 			}
 			if (GLOBAL_BOTON_S) {
 				new_y += dt * speed_leftHand;
@@ -476,17 +505,17 @@ package
 			}
 			if (GLOBAL_BOTON_D) {
 				new_x += dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + capa1.height) { new_x = capa1.x - leftHand.width; }
+				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_x = capa1.x - leftHand.width; }
 			}
 			
 			if ((new_x + leftHand.width) > GAME.true_width / 2) {
 				new_x = GAME.true_width / 2 - leftHand.width;
 			}
-			if (new_x < 0) {
-				new_x = 0;
+			if (new_x < -leftHand.width/2) {
+				new_x = -leftHand.width/2;
 			}
-			if (new_y > GAME.true_height - leftHand.height) {
-				new_y = GAME.true_height - leftHand.height;
+			if (new_y > GAME.true_height - leftHand.height/2) {
+				new_y = GAME.true_height - leftHand.height/2;
 			}
 			if (new_y < 0) {
 				new_y = 0;
@@ -501,7 +530,14 @@ package
 		
 		private function moveRightHand(dt:Number):void {
 			
+			
 			// MOVE RIGHT HAND
+			if (rightHand.rotation != 0) {
+				rightHand.x += 30;
+				rightHand.y -= 10;
+				rightHand.rotation = 0;
+			}
+			
 			var new_x:Number = rightHand.x;
 			var new_y:Number = rightHand.y;
 			var speed_rightHand:Number = 1000;
@@ -528,25 +564,121 @@ package
 				}
 			}
 			
+			if (new_x < capa1.x + widthCapa1 && new_y < capa1.y + heightCapa1) { 
+				var aux_desfase_x:int = new_x -(capa1.x +widthCapa1);
+				var aux_desfase_y:int = new_y -(capa1.y +heightCapa1);
+				if (aux_desfase_x < aux_desfase_y) {
+					new_y = capa1.y + heightCapa1;
+				}
+				else {
+					new_x = capa1.x + widthCapa1;
+				}
+			}
+			
+			if (mouseCatched) {
+				
+				// ESTA EN LO ROJO PERO NO EN LO VERDE
+				if (GLOBAL_MOUSE_X > areaNeutral.x && GLOBAL_MOUSE_X < areaMouse.x) {
+					new_x = areaMouse.x;
+				}
+				if (GLOBAL_MOUSE_X < areaNeutral.x + areaNeutral.width && GLOBAL_MOUSE_X > areaMouse.x + areaMouse.width) {
+					new_x = areaMouse.x + areaMouse.width;
+				}
+				if (GLOBAL_MOUSE_Y > areaNeutral.y && GLOBAL_MOUSE_Y < areaMouse.y) {
+					new_y = areaMouse.y
+				}
+				if (GLOBAL_MOUSE_Y < areaNeutral.y + areaNeutral.height && GLOBAL_MOUSE_Y > areaMouse.y + areaMouse.height) {
+					new_y = areaMouse.y + areaMouse.height;
+				}
+				
+			}
+			
 			if (new_x < GAME.true_width / 2) {
 				new_x = GAME.true_width / 2;
 			}
-			
-			if (new_x < capa1.x + capa1.width && new_y < capa1.y + capa1.height) { 
-				var aux_desfase_x:int = new_x -(capa1.x +capa1.width);
-				var aux_desfase_y:int = new_y -(capa1.y +capa1.height);
-				if (aux_desfase_x < aux_desfase_y) {
-					new_y = capa1.y + capa1.height;
-				}
-				else {
-					new_x = capa1.x + capa1.width;
-				}
-			}	
+			if (new_x > GAME.true_width - rightHand.width / 2) {
+				new_x = GAME.true_width - rightHand.width / 2;
+			}
+			if (new_y > GAME.true_height - rightHand.height / 2) {
+				new_y = GAME.true_height - rightHand.height / 2;
+			}
 			
 			rightHand.x = new_x;
 			rightHand.y = new_y;
 			
 			// END MOVE RIGHT HAND
+			
+		}
+		
+		private function checkMouse():void {
+			
+			// Degrees to Radians
+			//radians = degrees * Math.PI / 180
+ 
+			// Radians to Degrees
+			//degree = radians * 180 / Math.PI
+			
+			if (mouseCatched) {
+				if (rightHand.rotation != 0) {
+					rightHand.x += 30;
+					rightHand.y -= 10;
+					rightHand.rotation = 0;
+				}
+				
+				/*
+				var point_hand_x:Number = rightHand.x + 25;
+				var point_hand_y:Number = rightHand.y - 0;
+				
+				//mouse.x = point_hand_x;
+				//mouse.y = point_hand_y;			
+				
+				var point_mouse_x:Number = point_hand_x + mouse.width/2;
+				var point_mouse_y:Number = point_hand_y + mouse.height/2;
+				*/
+				
+				if (GLOBAL_MOUSE_X < areaNeutral.x || GLOBAL_MOUSE_X > areaNeutral.x + areaNeutral.width ||
+				GLOBAL_MOUSE_Y < areaNeutral.y || GLOBAL_MOUSE_Y > areaNeutral.y + areaNeutral.height) {
+					mouseCatched = false;
+					if (rightHand.rotation != 0) {
+						rightHand.x += 30;
+						rightHand.y -= 10;
+						rightHand.rotation = 0;
+					}
+				}
+				else {
+					
+					if (rotation == 0) {
+						rightHand.rotation = ( -30) * Math.PI / 180;
+						rightHand.x -= 30;
+						rightHand.y += 10;
+					}
+					
+					var point_hand_x:Number = rightHand.x + 25;
+					var point_hand_y:Number = rightHand.y - 0;
+				
+					mouse.x = point_hand_x;
+					mouse.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				//var point_hand_x:Number = rightHand.x + rightHand.width/2;
+				//var point_hand_y:Number = rightHand.y + rightHand.height/2;
+				/*
+				if (point_hand_x >= areaMouse.x && point_hand_x <= areaMouse.x + areaMouse.width &&
+				point_hand_y >= areaMouse.y && point_hand_y <= areaMouse.y + areaMouse.height) {
+					mouseCatched = true;
+				}
+				*/
+				
+				if (GLOBAL_MOUSE_X >= areaMouse.x && GLOBAL_MOUSE_X <= areaMouse.x + areaMouse.width &&
+				GLOBAL_MOUSE_Y >= areaMouse.y && GLOBAL_MOUSE_Y <= areaMouse.y + areaMouse.height) {
+					mouseCatched = true;
+				}
+				
+			}
+
 			
 		}
 		
