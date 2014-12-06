@@ -90,6 +90,8 @@ package
 		private var areaNeutral:Sprite;
 		private var mouse:Sprite;
 		
+		private var areaSnowMan:Sprite;
+		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
@@ -135,9 +137,11 @@ package
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
 			capa0.addChild(i);
+			capa0.scaleX = 1.01;
+			capa0.scaleY = 1.01;
 			addChild(capa0);
 			capa0.x = GAME.true_width/2 - capa0.width/2;
-			capa0.y = 58;
+			capa0.y = 56;
 			
 			capa1 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa1"));
@@ -203,7 +207,14 @@ package
 			mouse.addChild(i);
 			capa2.addChild(mouse);
 			mouse.x = areaMouse.x + areaMouse.width/2 - mouse.width/2;
-			mouse.y = areaMouse.y + areaMouse.height/2 - mouse.height/2;
+			mouse.y = areaMouse.y + areaMouse.height / 2 - mouse.height / 2;
+			
+			areaSnowMan = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaSnowMan.addChild(i);
+			capa2.addChild(areaSnowMan);
+			areaSnowMan.x = 600;
+			areaSnowMan.y = 225;
 			
 			leftHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("lefthand"));
