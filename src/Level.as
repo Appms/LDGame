@@ -125,7 +125,7 @@ package
 			
 			capa2 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa2"));
-			//capa2.addChild(i);
+			capa2.addChild(i);
 			addChild(capa2);
 			capa2.x = 0;
 			capa2.y = 0;
