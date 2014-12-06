@@ -146,7 +146,7 @@ package
 			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
 			leftHand.y = 500;
 			
-<<<<<<< HEAD
+
 			
 			//**************** CAPA 0 ******************
 			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
@@ -174,14 +174,14 @@ package
 
 			
 			//trace(test);
-=======
+
 			rightHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("righthand"));
 			rightHand.addChild(i);
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
 			GLOBAL_MOUSE_Y = 500;	
->>>>>>> origin/master
+
 			
 			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
 			matrixText.x = 0;
@@ -205,7 +205,6 @@ package
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
-<<<<<<< HEAD
 			
 			
 			//**************** CAPA 0 ******************
@@ -213,9 +212,7 @@ package
 			UpdateCapa0(e.passedTime);
 			
 			
-=======
 
->>>>>>> origin/master
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
 			
@@ -233,10 +230,10 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
 			
-<<<<<<< HEAD
+
 			//leftHand.x = GLOBAL_MOUSE_X;
 			//leftHand.y = GLOBAL_MOUSE_Y;
-=======
+
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			
@@ -256,7 +253,6 @@ package
 				trace ("LOL");
 			}
 			*/
->>>>>>> origin/master
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -266,7 +262,7 @@ package
 			GLOBAL_MOUSE_CLICKED = false;
 		}
 		
-<<<<<<< HEAD
+
 		private function UpdateCapa0(dt:Number):void
 		{	
 			if (initiated)
@@ -340,7 +336,35 @@ package
 					generated = true;
 				}
 				
-=======
+								test = "";
+				for (var t:int = 0; t < LEVELS_0; t++)
+				{	
+					for (var u:int = 0; u < TRACKS_0; u++)
+					{	
+						test += gameMatrix[t][u];
+						test += " ";
+					}
+					test += "\n";
+				}
+				
+				matrixText.text = test;
+			}	
+			
+			if (dead)
+			{
+				genSecs = 0;
+				secsPassed = 0;
+				generated = false;
+				test = "Score: " + int(frogPoints);
+				test += "\n";
+				test += "Soon";
+				
+				matrixText.text = test;
+					
+				
+			}
+		}
+				
 		private function moveLeftHand(dt:Number):void {
 			
 			// MOVE LEFT HAND
@@ -434,37 +458,6 @@ package
 			
 		}
 		
-	}
->>>>>>> origin/master
-
-				test = "";
-				for (var t:int = 0; t < LEVELS_0; t++)
-				{	
-					for (var u:int = 0; u < TRACKS_0; u++)
-					{	
-						test += gameMatrix[t][u];
-						test += " ";
-					}
-					test += "\n";
-				}
-				
-				matrixText.text = test;
-			}	
-			
-			if (dead)
-			{
-				genSecs = 0;
-				secsPassed = 0;
-				generated = false;
-				test = "Score: " + int(frogPoints);
-				test += "\n";
-				test += "Soon";
-				
-				matrixText.text = test;
-				
-			}
-		
-		}
 	}
 	
 }
