@@ -10,7 +10,7 @@ package
 	 */
 	public class Game extends Sprite
 	{
-		/*
+		
 		public var true_width:int = 800;
 		public var true_height:int = 600;
 		public var true_x:int = 0;
@@ -35,11 +35,12 @@ package
 		
 		private function onAddedToStage():void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			States.push(new Menu(this));
+			//States.push(new Menu(this));
 			//States.push(new Level(this, PROFUNDIDAD + 1));
 			//States.push(new Cargando(this));
 			//States.push(new Game_Over(this));
-			changeState(MENU);
+			//changeState(MENU);
+			addChild(new Menu(this));
 		}
 		
 		private function onEnterFrame():void {
@@ -51,7 +52,7 @@ package
 			removeChildren();
 			addChild(currentState).name = "actual";
 		}
-		*/
+		
 
 		
 	}

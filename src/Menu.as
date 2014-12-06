@@ -29,9 +29,10 @@ package
 		private var key_right:int = 68;
 		private var key_left:int = 65;
 		private var key_enter:int = 13;
-		/*
+		
 		public var ch1:SoundChannel = new SoundChannel();
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
+		/*
 		public var SoundHoja1:Sound = new Assets.SoundHoja1() as Sound;
 		public var SoundHoja2:Sound = new Assets.SoundHoja2() as Sound;
 		public var SoundHojas:Sound = new Assets.SoundHojas() as Sound;
@@ -45,32 +46,12 @@ package
 		
 		private var buttons:Array = new Array();
 		
-		private var portada:Sprite;
-		private var portadaArt:MovieClip;
-		
-		private var pasarpag:Sprite;
-		private var pasarpagArt:MovieClip;
-		
-		private var contraportada:Image;
-		private var tocho_d:Sprite;
-		private var tocho_i:Sprite;
-		
-		private var pegatina_d:Sprite;
-		private var pegatina_i:Sprite;
-		
-		private var playboton:Image;
-		private var tesorosboton:Image;
-		private var expedicionboton:Image;
+		private var select_menu:Sprite;
+		private var selected:int = 0;
 		
 		private var spawn:PDParticleSystem;
 		
 		private var colorin:uint = 0xFFFFFF;
-		private var pags_i:int = 0;
-		private var pags_i_destino:int = 0;
-		private var selected:Image;
-		
-		private var ready:Boolean = false;
-		private var pagina_pasada:Boolean = false;
 		
 		public function Menu(game_origen:Game) 
 		{
@@ -91,11 +72,33 @@ package
 		
 		private function onAddedToStage():void {
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
-			//ch1 = SoundMenu.play(0, 9999);
+			ch1 = SoundMenu.play(0, 9999);
+			
+			/*
+			select_menu = new Sprite();
+			addChild(select_menu);
+			select_menu.x = 200;
+			select_menu.y = 100;
+			var i:Image = new Image(Assets.getAtlas().getTexture("select_menu"));
+			select_menu.addChild(i);
+			*/
+			
+			var i:Image = new Image(Assets.getAtlas().getTexture("3dglasses"));
+			i.x = 200;
+			i.y = 100;
+			this.addChild(i);
+			
+			/*
+			var text_field:TextField = new TextField(400, 200, "LOL", "Verdana", 30, 0x000000, true);
+			addChild(text_field);
+			*/
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
 
+			if (Input.isPressed(Input.DOWN) || Input.isPressed(Input.DOWN2)) {
+				
+			}
 			
 		}
 		

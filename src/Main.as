@@ -18,15 +18,11 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE; // Ni idea
 			stage.align = StageAlign.TOP_LEFT; // Ni idea
 			var strling:Starling = new Starling(Game, stage);
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			//strling.showStats = true; // Muestra las estadísticas
+			strling.antiAliasing = 3; // Ni idea
+			strling.start();
 		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
-		}
+
 		
 	}
 	
