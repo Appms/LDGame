@@ -306,15 +306,19 @@ package
 			if (fairy_displacement.y > 5) fairy_displacement.y = 5;
 			if (fairy_displacement.y < 5) fairy_displacement.y = -5;*/
 			
-			fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
-			fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
+			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
+			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
+			
+			fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
+			fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
+			
 			
 			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
 			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
 			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
 			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
 			
-			// Añadir Enemigos
+			// Spawnear Enemigos
 			enemySpawner += dt;
 			if (enemySpawner >= 3) {
 				addEnemy();
