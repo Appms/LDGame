@@ -39,6 +39,23 @@ package
 		public var SoundSqueak1:Sound = new Assets.SoundSqueak1() as Sound;
 		public var SoundSqueak2:Sound = new Assets.SoundSqueak2() as Sound;
 		public var SoundSqueak3:Sound = new Assets.SoundSqueak3() as Sound;
+		public var SoundSqueak4:Sound = new Assets.SoundSqueak4() as Sound;
+		public var SoundSqueak5:Sound = new Assets.SoundSqueak5() as Sound;
+		public var SoundSqueak6:Sound = new Assets.SoundSqueak6() as Sound;
+		public var SoundSqueak7:Sound = new Assets.SoundSqueak7() as Sound;
+		public var SoundSqueak8:Sound = new Assets.SoundSqueak8() as Sound;
+		public var SoundSqueak9:Sound = new Assets.SoundSqueak9() as Sound;
+		public var SoundSqueak10:Sound = new Assets.SoundSqueak10() as Sound;
+		public var SoundSqueak11:Sound = new Assets.SoundSqueak11() as Sound;
+		public var SoundSqueak12:Sound = new Assets.SoundSqueak12() as Sound;
+		public var SoundSqueak13:Sound = new Assets.SoundSqueak13() as Sound;
+		public var SoundSqueak14:Sound = new Assets.SoundSqueak14() as Sound;
+		public var SoundSqueak15:Sound = new Assets.SoundSqueak15() as Sound;
+		public var SoundSqueak16:Sound = new Assets.SoundSqueak16() as Sound;
+		public var SoundSqueak17:Sound = new Assets.SoundSqueak17() as Sound;
+		public var SoundSqueak18:Sound = new Assets.SoundSqueak18() as Sound;
+		public var SoundSqueak19:Sound = new Assets.SoundSqueak19() as Sound;
+		public var SoundSqueak20:Sound = new Assets.SoundSqueak20() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -410,15 +427,26 @@ package
 			if (GLOBAL_MOUSE_CLICKED) {
 				if (snowManCatched) {
 					var randi:Number = Math.random();
-					if (randi > 0.66) {
-						SoundSqueak1.play();
-					}
-					else if (randi > 0.33) {
-						SoundSqueak2.play();
-					}
-					else {
-						SoundSqueak3.play();
-					}
+					if (randi > 19/20) SoundSqueak1.play();
+					else if (randi > 18 / 20) SoundSqueak2.play();
+					else if (randi > 17 / 20) SoundSqueak3.play();
+					else if (randi > 16 / 20) SoundSqueak4.play();
+					else if (randi > 15 / 20) SoundSqueak5.play();
+					else if (randi > 14 / 20) SoundSqueak6.play();
+					else if (randi > 13 / 20) SoundSqueak7.play();
+					else if (randi > 12 / 20) SoundSqueak8.play();
+					else if (randi > 11 / 20) SoundSqueak9.play();
+					else if (randi > 10 / 20) SoundSqueak10.play();
+					else if (randi > 9 / 20) SoundSqueak11.play();
+					else if (randi > 8 / 20) SoundSqueak12.play();
+					else if (randi > 7 / 20) SoundSqueak13.play();
+					else if (randi > 6 / 20) SoundSqueak14.play();
+					else if (randi > 5 / 20) SoundSqueak15.play();
+					else if (randi > 4 / 20) SoundSqueak16.play();
+					else if (randi > 3 / 20) SoundSqueak17.play();
+					else if (randi > 2 / 20) SoundSqueak18.play();
+					else if (randi > 1 / 20) SoundSqueak19.play();
+					else SoundSqueak20.play();
 				}	
 
 			}

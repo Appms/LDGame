@@ -80,6 +80,57 @@ package
 		
 		[Embed(source="../media/sounds/squeak3.mp3")]
 		public static const SoundSqueak3:Class;
+		
+		[Embed(source="../media/sounds/squeak4.mp3")]
+		public static const SoundSqueak4:Class;
+		
+		[Embed(source="../media/sounds/squeak5.mp3")]
+		public static const SoundSqueak5:Class;
+		
+		[Embed(source="../media/sounds/squeak6.mp3")]
+		public static const SoundSqueak6:Class;
+		
+		[Embed(source="../media/sounds/squeak7.mp3")]
+		public static const SoundSqueak7:Class;
+		
+		[Embed(source="../media/sounds/squeak8.mp3")]
+		public static const SoundSqueak8:Class;
+		
+		[Embed(source="../media/sounds/squeak9.mp3")]
+		public static const SoundSqueak9:Class;
+		
+		[Embed(source="../media/sounds/squeak10.mp3")]
+		public static const SoundSqueak10:Class;
+		
+		[Embed(source="../media/sounds/squeak11.mp3")]
+		public static const SoundSqueak11:Class;
+		
+		[Embed(source="../media/sounds/squeak12.mp3")]
+		public static const SoundSqueak12:Class;
+		
+		[Embed(source="../media/sounds/squeak13.mp3")]
+		public static const SoundSqueak13:Class;
+		
+		[Embed(source="../media/sounds/squeak14.mp3")]
+		public static const SoundSqueak14:Class;
+		
+		[Embed(source="../media/sounds/squeak15.mp3")]
+		public static const SoundSqueak15:Class;
+		
+		[Embed(source="../media/sounds/squeak16.mp3")]
+		public static const SoundSqueak16:Class;
+		
+		[Embed(source="../media/sounds/squeak17.mp3")]
+		public static const SoundSqueak17:Class;
+		
+		[Embed(source="../media/sounds/squeak18.mp3")]
+		public static const SoundSqueak18:Class;
+		
+		[Embed(source="../media/sounds/squeak19.mp3")]
+		public static const SoundSqueak19:Class;
+		
+		[Embed(source="../media/sounds/squeak20.mp3")]
+		public static const SoundSqueak20:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
