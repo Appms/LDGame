@@ -23,10 +23,9 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
-<<<<<<< HEAD
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
-=======
+
 		// ****************** CAPA 1 ******************
 		[Embed(source = "../media/graphics/crusader.png")]
 		public static const character:Class;
@@ -42,10 +41,10 @@ package
 		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
->>>>>>> origin/master
+
 		
 		[Embed(source = "../media/graphics/character.png")]
-		public static const Character:Class;
+		public static const Character0:Class;
 		
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;

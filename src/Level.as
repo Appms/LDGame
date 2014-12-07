@@ -60,7 +60,7 @@ package
 		private var frogPoints:Number = 0;
 		private var customDt:Number = 0;
 		private var increasement:Number = 0;
-		private var character:Image;
+		private var character0:Image;
 		private var bombsAway:Array;
 
 		
@@ -119,8 +119,6 @@ package
 		private var colorin:uint = 0xFFFFFF;
 		
 		
-
-		
 		public function Level(game_origen:Game) 
 		{
 			GAME = game_origen;
@@ -166,6 +164,36 @@ package
 			capa2.x = 0;
 			capa2.y = 0;
 			
+			//**************** CAPA 0 ******************
+			drawCapa0();
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			initiated = true;
+			dead = false;
+			bombsAway = new Array();
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+			gameMatrix[3][1] = 2;
+			currentPos = 1;
+			
+			test = "Da Frog";
+			test += "\n";
+			test += "with TUPÉ";
+			
+			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = true;
+			capa0.addChild(matrixText);
+			
 			
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
@@ -181,7 +209,7 @@ package
 			character.addChild(i);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
-			character.y = heightCapa1/2;
+			character.y = heightCapa1/2+100;
 			character.pivotX = character.width / 2; // 132
 			character.pivotY = character.height / 2; // 224
 			character.scaleX = 0.15;
@@ -237,51 +265,13 @@ package
 			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
 			leftHand.y = 500;
 			
-<<<<<<< HEAD
-=======
+
 			rightHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("righthand"));
 			rightHand.addChild(i);
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
 			GLOBAL_MOUSE_Y = 500;	
-			
->>>>>>> origin/master
-			//**************** CAPA 0 ******************
-			drawCapa0();
-			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
-			test = new String();
-			initiated = true;
-			dead = false;
-			bombsAway = new Array();
-			
-			for (var t:int = 0; t < LEVELS_0; t++)
-			{	
-				gameMatrix[t] = new Array(TRACKS_0);
-				for (var u:int = 0; u < TRACKS_0; u++)
-				{	
-					gameMatrix[t][u] = 0;
-				}
-			}
-			
-			gameMatrix[3][1] = 2;
-			currentPos = 1;
-			
-			test = "Da Frog";
-			test += "\n";
-			test += "with TUPÉ";
-
-			
-			//trace(test);
-
-			
-
-			
-			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
-			matrixText.x = 0;
-			matrixText.y = 0;
-			matrixText.border = true;
-			capa0.addChild(matrixText);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -300,16 +290,6 @@ package
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
-			
-			//**************** CAPA 0 ******************
-			
-<<<<<<< HEAD
-			
-			updateCapa0(e.passedTime);
-			
-
-=======
->>>>>>> origin/master
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
 			
@@ -325,23 +305,17 @@ package
 			if (Input.isDown(Input.RIGHT)) GLOBAL_BOTON_D = true;
 			else GLOBAL_BOTON_D = false;
 			
-<<<<<<< HEAD
-			if (GLOBAL_MOUSE_CLICKED) trace ("CLICKED");
-
-
-=======
 			if (GLOBAL_MOUSE_CLICKED) {
 				trace ("CLICKED");
 				checkEnemyClick();
 			}
 			
-			//UpdateCapa0(e.passedTime);
-			
+			updateCapa0(e.passedTime);
 			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 			
->>>>>>> origin/master
+
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
@@ -355,12 +329,7 @@ package
 			GLOBAL_MOUSE_CLICKED = false;
 		}
 		
-
-<<<<<<< HEAD
-		private function updateCapa0(dt:Number):void
-=======
-		
-		
+	
 		
 		
 		private function updateCapa1(dt:Number):void {
@@ -541,8 +510,7 @@ package
 			}
 		}
 		
-		private function UpdateCapa0(dt:Number):void
->>>>>>> origin/master
+		private function updateCapa0(dt:Number):void
 		{	
 			
 			if (initiated)
@@ -552,6 +520,7 @@ package
 				{
 					secsPassed = 0;
 					initiated = false;
+					matrixText.visible = false;
 				}
 				
 			}
@@ -644,6 +613,15 @@ package
 			
 			if (dead)
 			{
+				matrixText.visible = true;
+				character0.visible = false;
+				
+				for (i = 0; i < bombsAway.length; i++)
+				{
+					capa0.removeChild(bombsAway[i]);
+					bombsAway.splice(i, 1);
+				}
+				
 				if (frogPoints > highScore) highScore = frogPoints;
 				matrixText.fontSize = 12;
 				deathSecs += dt;
@@ -653,6 +631,9 @@ package
 				test = "Score: " + int(frogPoints);
 				test += "\n";
 				test += "High Score: " + int(highScore);
+				test += "\n";
+				test += "Try again in: " + int(3 - int(deathSecs));
+				
 				
 				for (t = 0; t < LEVELS_0; t++)
 				{	
@@ -671,6 +652,7 @@ package
 					deathSecs = 0;
 					frogPoints = 0;
 					increasement = 0;
+					matrixText.visible = false;
 				}
 			}
 		}
@@ -687,11 +669,11 @@ package
 			var screen:Image = new Image(Assets.getTexture("Screen"));
 			capa0.addChild(screen);
 			
-			character = new Image(Assets.getTexture("Character"));
-			capa0.addChild(character);
+			character0 = new Image(Assets.getTexture("Character0"));
+			capa0.addChild(character0);
 			//character.x = capa0.width / 2 - character.width / 2;
-			character.y = capa0.height - character.height;
-			character.visible = false;
+			character0.y = capa0.height - character0.height;
+			character0.visible = false;
 		}
 		
 		private function updateSprites0():void
@@ -702,9 +684,9 @@ package
 				{
 					if (gameMatrix[t][u] == 2)
 					{
-						character.visible = true; 
+						character0.visible = true; 
 						trace(u * 50);
-						character.x = u*50;
+						character0.x = u*50;
 					}
 				}
 			}
