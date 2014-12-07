@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:f1d595302bd104012253586ecacce3cd:9b4fda37eacb0e34467da5f98803a19f:a61cba8975c307742327789f7fed8c88$ -->
+<!-- $TexturePacker:SmartUpdate:b243ced74410a7b77ed71576bce73902:5ae35dc22dbd0fe55e4558c8806d55e5:a61cba8975c307742327789f7fed8c88$ -->
 <TextureAtlas imagePath="mySpriteSheet.png">
-    <SubTexture name="capa0" x="804" y="2" width="150" height="180"/>
-    <SubTexture name="capa1" x="2" y="604" width="400" height="300"/>
+    <SubTexture name="DETB_BG - copia" x="804" y="518" width="152" height="180"/>
+    <SubTexture name="DETB_BG" x="804" y="518" width="152" height="180"/>
+    <SubTexture name="DETB_Bomb_01 - copia" x="247" y="658" width="32" height="32"/>
+    <SubTexture name="DETB_Bomb_01" x="247" y="658" width="32" height="32"/>
+    <SubTexture name="DETB_Bomb_02 - copia" x="282" y="604" width="24" height="28" frameX="0" frameY="-4" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="DETB_Bomb_02" x="282" y="604" width="24" height="28" frameX="0" frameY="-4" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="DETB_Explosion_01 - copia" x="281" y="658" width="28" height="28" frameX="-16" frameY="-32" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_01" x="281" y="658" width="28" height="28" frameX="-16" frameY="-32" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_02 - copia" x="170" y="662" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_02" x="170" y="662" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_03 - copia" x="132" y="662" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_03" x="132" y="662" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_04 - copia" x="1006" y="2" width="1" height="1" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Explosion_04" x="1006" y="2" width="1" height="1" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Closed" x="958" y="154" width="56" height="68"/>
+    <SubTexture name="DETB_Front_Idle_01" x="958" y="340" width="56" height="52" frameX="0" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Idle_02" x="958" y="282" width="56" height="56" frameX="0" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Open" x="958" y="224" width="56" height="56" frameX="0" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Intro_01" x="804" y="336" width="152" height="180"/>
+    <SubTexture name="DETB_Intro_02" x="804" y="154" width="152" height="180"/>
+    <SubTexture name="DETB_Left_Closed" x="958" y="464" width="52" height="68" frameX="-4" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Idle_01" x="232" y="604" width="48" height="52" frameX="-4" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Idle_02" x="132" y="604" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Open" x="958" y="650" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Closed" x="958" y="394" width="52" height="68" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Idle_02" x="958" y="592" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Open" x="958" y="534" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Rightt_Idle_01" x="182" y="604" width="48" height="52" frameX="-4" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="area_mouse" x="804" y="2" width="200" height="150"/>
+    <SubTexture name="area_neutral" x="404" y="708" width="280" height="210"/>
+    <SubTexture name="capa0" x="782" y="700" width="150" height="180"/>
+    <SubTexture name="capa1" x="2" y="708" width="400" height="300"/>
     <SubTexture name="capa2" x="2" y="2" width="800" height="600"/>
-    <SubTexture name="lefthand" x="956" y="98" width="66" height="94"/>
-    <SubTexture name="righthand" x="956" y="2" width="66" height="94"/>
+    <SubTexture name="lefthand - copia" x="686" y="752" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="lefthand" x="686" y="752" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="mouse" x="2" y="604" width="128" height="98"/>
+    <SubTexture name="righthand" x="686" y="604" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="test" x="208" y="658" width="37" height="33"/>
 </TextureAtlas>
