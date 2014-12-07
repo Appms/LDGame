@@ -57,6 +57,15 @@ package
 	
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;
+		
+		[Embed(source="../media/sounds/squeak1.mp3")]
+		public static const SoundSqueak1:Class;
+		
+		[Embed(source="../media/sounds/squeak2.mp3")]
+		public static const SoundSqueak2:Class;
+		
+		[Embed(source="../media/sounds/squeak3.mp3")]
+		public static const SoundSqueak3:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
