@@ -97,27 +97,49 @@ package
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
+		private var pcRunning:Boolean;
+		private var game1Running:Boolean;
+		
+		private var widthCapa1:Number;
+		private var heightCapa1:Number;
+		
 		private var lifes:Number;
 		private var lifesArray:Array;
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
-		private var character:Sprite;
+		
+		//private var character:Sprite;
+		private var character:MovieClip;
+		private var characterLeft:MovieClip;
+		private var characterRight:MovieClip;
+		private var characterJump:MovieClip;
 		private var jumptimer:Number;
+		private var pisotoneando:Boolean;
+		
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
+		
 		private var newEnemy:Sprite;
 		private var enemyArray:Array = new Array();
 		private var enemySpawner:Number = 0;
-		private var widthCapa1:Number;
-		private var heightCapa1:Number;
+		
 		private var gamepad:Sprite;
-		private var pisotoneando:Boolean;
 		private var LB:Sprite;
 		private var RB:Sprite;
 		private var LBPressed:Boolean;
 		private var RBPressed:Boolean;
 		private var LBdt:Number;
 		private var RBdt:Number;
+		
+		private var closeIcon:Sprite;
+		
+		// PC
+		private var wallpaper:Sprite;
+		private var txtIcon:Sprite;
+		private var txtInfo:Sprite;
+		private var txtClose:Sprite;
+		private var gameIcon:Sprite;
+		private var cursor:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -245,74 +267,10 @@ package
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
 			heightCapa1 = capa1.height;
+			pcRunning = false;
+			game1Running = false;
 			
-			lifes = 3;
-			lifesArray = new Array();
-			drawLifes();
-			lifeUpDt = 0;
-			
-			jumptimer = 0;
-			
-			gamepad = new Sprite();
-			i = new Image(Assets.getTexture("gamepad"));
-			gamepad.addChild(i);
-			capa1.addChild(gamepad);
-			gamepad.x = widthCapa1 / 2;
-			gamepad.y = heightCapa1 / 2 + 100;
-			gamepad.pivotX = gamepad.width / 2;
-			gamepad.pivotY = gamepad.height / 2;
-			gamepad.scaleX = 0.1;
-			gamepad.scaleY = 0.1;
-			gamepad.rotation = Math.PI / 4;
-			
-			RB = new Sprite();
-			i = new Image(Assets.getTexture("RB"));
-			RB.addChild(i);
-			capa1.addChild(RB);
-			RB.x = widthCapa1 / 2 + 25;
-			RB.y = heightCapa1 / 2 + 100 + 15;
-			RB.pivotX = RB.width / 2;
-			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.1;
-			RB.scaleY = 0.1;
-			
-			LB = new Sprite();
-			i = new Image(Assets.getTexture("LB"));
-			LB.addChild(i);
-			capa1.addChild(LB);
-			LB.x = widthCapa1 / 2 - 15;
-			LB.y = heightCapa1 / 2 + 100 - 25;
-			LB.pivotX = LB.width / 2;
-			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.1;
-			LB.scaleY = 0.1;
-			
-			RBdt = 0;
-			LBdt = 0;
-			
-			
-			character = new Sprite();
-			i = new Image(Assets.getTexture("character"));
-			character.addChild(i);
-			capa1.addChild(character);
-			character.x = widthCapa1/2;
-			character.y = heightCapa1/2 + 100;
-			character.pivotX = character.width / 2; // 132
-			character.pivotY = character.height / 2; // 224
-			character.scaleX = 0.15;
-			character.scaleY = 0.15;
-			
-			
-			fairy = new Sprite();
-			i = new Image(Assets.getTexture("fairy"));
-			fairy.addChild(i);
-			capa1.addChild(fairy);
-			fairy.pivotX = fairy.width / 2;
-			fairy.pivotY = fairy.height / 2;
-			fairy.scaleX = 0.025;
-			fairy.scaleY = 0.025;
-			fairy_displacement = new Point(0, 0);
-			
+			loadPC();
 			
 			
 			
@@ -483,21 +441,25 @@ package
 				}
 			}
 			
-			
+			// ****************** CAPA 0 ******************
 			
 			updateCapa0(e.passedTime);
-			updateCapa1(e.passedTime);
+			
+			// ****************** CAPA 1 ******************
+			
+			if (pcRunning) updatePC(e.passedTime);
+			if (game1Running) updateGame1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 			
-
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
 			checkSnowMan();
 			
 			if (CAPA_2_MOUSE_CLICKED) {
-				checkEnemyClick();
+				if (pcRunning) checkPCClick();
+				if (game1Running) checkGame1Click();
 			}
 			
 			
@@ -515,31 +477,285 @@ package
 			CAPA_2_MOUSE_CLICKED = false;
 		}
 		
-	
+		// PC
+		
+		private function loadPC():void {
+			// Cool animations
+			initPC();
+		}
+		
+		private function initPC():void {
+			var img: Image;
+			
+			wallpaper = new Sprite();
+			img = new Image(Assets.getTexture("wallpaper"));
+			wallpaper.addChild(img);
+			capa1.addChild(wallpaper);
+			wallpaper.scaleX = 0.21;
+			wallpaper.scaleY = 0.25;
+			
+			txtIcon = new Sprite();
+			img = new Image(Assets.getTexture("txtIcon"));
+			txtIcon.addChild(img);
+			capa1.addChild(txtIcon);
+			txtIcon.x = 25;
+			txtIcon.y = 25;
+			txtIcon.pivotX = txtIcon.width / 2;
+			txtIcon.pivotY = txtIcon.height / 2;
+			txtIcon.scaleX = 0.25;
+			txtIcon.scaleY = 0.25;
+			
+			
+			txtInfo = new Sprite();
+			img = new Image(Assets.getTexture("txtInfo"));
+			txtInfo.addChild(img);
+			capa1.addChild(txtInfo);
+			txtInfo.x = widthCapa1 / 4;
+			txtInfo.y = heightCapa1 / 4;
+			txtInfo.scaleX = 0.5;
+			txtInfo.scaleY = 0.5;
+			txtInfo.visible = false;
+			
+			txtClose = new Sprite();
+			img = new Image(Assets.getTexture("txtClose"));
+			txtClose.addChild(img);
+			capa1.addChild(txtClose);
+			txtClose.scaleX = txtInfo.scaleX;
+			txtClose.scaleY = txtInfo.scaleY;
+			txtClose.x = txtInfo.x + 504*txtClose.scaleX;
+			txtClose.y = txtInfo.y + 8*txtClose.scaleY;
+			txtClose.visible = false;
+			
+			gameIcon = new Sprite();
+			img = new Image(Assets.getTexture("gameIcon"));
+			gameIcon.addChild(img);
+			capa1.addChild(gameIcon);
+			gameIcon.x = 25;
+			gameIcon.y = 100;
+			gameIcon.pivotX = gameIcon.width / 2;
+			gameIcon.pivotY = gameIcon.height / 2;
+			gameIcon.scaleX = 0.65;
+			gameIcon.scaleY = 0.65;
+			
+			cursor = new Sprite();
+			img = new Image(Assets.getTexture("cursor"));
+			cursor.addChild(img);
+			capa1.addChild(cursor);
+			cursor.x = widthCapa1/2;
+			cursor.y = heightCapa1/2;
+			cursor.scaleX = 0.025;
+			cursor.scaleY = 0.025;
+			
+			pcRunning = true;
+		}
+		
+		private function updatePC(dt:Number):void {
+			
+			if (mouseCatched) {
+				cursor.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+				cursor.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+			}
+			
+			if (cursor.x+cursor.width > widthCapa1) cursor.x = widthCapa1-cursor.width;
+			if (cursor.x < 0) cursor.x = 0;
+			if (cursor.y+cursor.height > heightCapa1) cursor.y = heightCapa1-cursor.height;
+			if (cursor.y < 0) cursor.y = 0;
+		}
+		
+		private function checkPCClick():void {
+			if ( Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+				shutdownPC();
+				initGame1();
+			}
+			if ( txtInfo.visible == false && Math.abs(txtIcon.x - cursor.x) < txtIcon.width/2 && Math.abs(txtIcon.y - cursor.y) < txtIcon.height/2)  {
+				txtInfo.visible = true;
+				txtClose.visible = true;
+			}
+			
+			if ( txtInfo.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
+				txtInfo.visible = false;
+				txtClose.visible = false;
+			}
+		}
+		
+		private function shutdownPC():void {
+			capa1.removeChildren();
+			pcRunning = false;
+		}
+		
+		// GAME1
+		
+		private function initGame1():void {
+			
+			var img:Image;
+			
+			lifes = 3;
+			lifesArray = new Array();
+			drawLifes();
+			lifeUpDt = 0;
+			
+			jumptimer = 0;
+			
+			closeIcon = new Sprite();
+			img = new Image(Assets.getTexture("closeIcon"));
+			closeIcon.addChild(img);
+			capa1.addChild(closeIcon);
+			closeIcon.scaleX = 0.1;
+			closeIcon.scaleY = 0.1;
+			closeIcon.x = widthCapa1 - closeIcon.width;
+			closeIcon.y = 0;
+			closeIcon.pivotX = closeIcon.width / 2;
+			closeIcon.pivotY = closeIcon.height / 2;
+			
+			
+			gamepad = new Sprite();
+			img = new Image(Assets.getTexture("gamepad"));
+			gamepad.addChild(img);
+			capa1.addChild(gamepad);
+			gamepad.x = widthCapa1 / 2;
+			gamepad.y = heightCapa1 / 2 + 100;
+			gamepad.pivotX = gamepad.width / 2;
+			gamepad.pivotY = gamepad.height / 2;
+			gamepad.scaleX = 0.1;
+			gamepad.scaleY = 0.1;
+			gamepad.rotation = Math.PI / 4;
+			
+			RB = new Sprite();
+			img = new Image(Assets.getTexture("RB"));
+			RB.addChild(img);
+			capa1.addChild(RB);
+			RB.x = widthCapa1 / 2 + 25;
+			RB.y = heightCapa1 / 2 + 100 + 15;
+			RB.pivotX = RB.width / 2;
+			RB.pivotY = RB.height / 2;
+			RB.scaleX = 0.1;
+			RB.scaleY = 0.1;
+			
+			LB = new Sprite();
+			img = new Image(Assets.getTexture("LB"));
+			LB.addChild(img);
+			capa1.addChild(LB);
+			LB.x = widthCapa1 / 2 - 15;
+			LB.y = heightCapa1 / 2 + 100 - 25;
+			LB.pivotX = LB.width / 2;
+			LB.pivotY = LB.height / 2;
+			LB.scaleX = 0.1;
+			LB.scaleY = 0.1;
+			
+			RBdt = 0;
+			LBdt = 0;
+			
+			
+			/*character = new Sprite();
+			i = new Image(Assets.getTexture("character"));
+			character.addChild(i);
+			capa1.addChild(character);
+			character.x = widthCapa1/2;
+			character.y = heightCapa1/2 + 100;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.scaleX = 0.15;
+			character.scaleY = 0.15;*/
+			
+			character = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_I"), 3);
+			starling.core.Starling.juggler.add(character);
+			capa1.addChild(character);
+			character.x = widthCapa1/2;
+			character.y = heightCapa1/2 + 100;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2
+			character.visible = true;
+			
+			characterLeft = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
+			starling.core.Starling.juggler.add(characterLeft);
+			capa1.addChild(characterLeft);
+			characterLeft.x = character.x;
+			characterLeft.y = character.y;
+			characterLeft.pivotX = characterLeft.width / 2;
+			characterLeft.pivotY = characterLeft.height / 2
+			characterLeft.scaleX *= -1;
+			characterLeft.visible = false;
+			
+			characterRight = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
+			starling.core.Starling.juggler.add(characterRight);
+			capa1.addChild(characterRight);
+			characterRight.x = character.x;
+			characterRight.y = character.y;
+			characterRight.pivotX = characterRight.width / 2;
+			characterRight.pivotY = characterRight.height / 2
+			characterLeft.visible = false;
+			
+			characterJump = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 3);
+			starling.core.Starling.juggler.add(characterJump);
+			capa1.addChild(characterJump);
+			characterJump.x = character.x;
+			characterJump.y = character.y;
+			characterJump.pivotX = characterRight.width / 2;
+			characterJump.pivotY = characterRight.height / 2
+			characterJump.visible = false;
+			
+			
+			fairy = new Sprite();
+			img = new Image(Assets.getTexture("fairy"));
+			fairy.addChild(img);
+			capa1.addChild(fairy);
+			fairy.pivotX = fairy.width / 2;
+			fairy.pivotY = fairy.height / 2;
+			fairy.scaleX = 0.025;
+			fairy.scaleY = 0.025;
+			fairy_displacement = new Point(0, 0);
+			
+			game1Running = true;
+		}
 		
 		
-		private function updateCapa1(dt:Number):void {
+		private function updateGame1(dt:Number):void {
 			
 			// Movimiento Personaje
 			if (!pisotoneando) {
+				
+				character.visible = true;
+				characterLeft.visible = false;
+				characterRight.visible = false;
+				
 				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
 				else if (CAPA_2_BOTON_FLECHA_IZQ) {
 					character.x -= 80*dt;
-					if (character.scaleX > 0) character.scaleX *= -1;
+					if (characterLeft.visible == false) {
+						characterLeft.visible = true;
+						character.visible = false;
+					}
+					
+					
 				}
 				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
 				else if (CAPA_2_BOTON_FLECHA_DER) {
 					character.x += 80*dt;
-					if (character.scaleX < 0) character.scaleX *= -1;
+					if (characterRight.visible == false) {
+						characterRight.visible = true;
+						character.visible = false;
+					}
 				}
+				
+				characterLeft.x = character.x;
+				characterLeft.y = character.y;
+				characterRight.x = character.x;
+				characterRight.y = character.y;
 			}
 			
 			// Salto Personaje
 			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
 				pisotoneando = true;
-				character.removeChildren();
-				var img:Image = new Image(Assets.getTexture("character_jump"));
-				character.addChild(img);
+				var img:Image;
+				character.visible = false;
+				characterLeft.visible = false;
+				characterRight.visible = false;
+				characterJump.x = character.x;
+				characterJump.y = character.y;
+				characterJump.visible = true;
+				//characterJump.currentFrame = 0;
+				characterJump.stop();
+				characterJump.play();
 				
 				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
 				{
@@ -563,9 +779,8 @@ package
 				jumptimer += dt;
 				if (jumptimer >= 0.5) {
 					pisotoneando = false;
-					character.removeChildren();
-					img = new Image(Assets.getTexture("character"));
-					character.addChild(img);
+					characterJump.visible = false;
+					character.visible = true;
 					jumptimer = 0;
 				}
 			}
@@ -591,30 +806,9 @@ package
 					LBdt = 0;
 				}
 			}
-				
-			/*if (CAPA_2_BOTON_FLECHA_ARR) character.y -= 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_IZQ) {
-				character.x -= 80*dt;
-				if (character.scaleX > 0) character.scaleX *= -1;
-			}
-			else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_DER) {
-				character.x += 80*dt;
-				if (character.scaleX < 0) character.scaleX *= -1;
-			}*/
 			
 			
 			// Movimiento Hadita/Cursor
-			
-			/*fairy_displacement.x += Math.random() * 2.0 - 1.0;
-			fairy_displacement.y += Math.random() * 2.0 - 1.0;
-			if (fairy_displacement.x > 5) fairy_displacement.x = 5;
-			if (fairy_displacement.x < -5) fairy_displacement.x = -5;
-			if (fairy_displacement.y > 5) fairy_displacement.y = 5;
-			if (fairy_displacement.y < 5) fairy_displacement.y = -5;*/
-			
-			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
-			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
 			
 			//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
 			//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
@@ -688,7 +882,7 @@ package
 			}
 		}
 		
-		private function checkEnemyClick():void {
+		private function checkGame1Click():void {
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
@@ -696,6 +890,11 @@ package
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
 				}
+			}
+			
+			if ( Math.sqrt(Math.pow((closeIcon.x - fairy.x+20), 2) + Math.pow((closeIcon.y - fairy.y), 2)) < closeIcon.width)  {
+				shutdownGame1();
+				initPC();
 			}
 		}
 		
@@ -767,6 +966,14 @@ package
 				lifesArray.push(life);
 			}
 		}
+		
+		private function shutdownGame1():void {
+			capa1.removeChildren();
+			enemyArray = new Array();
+			game1Running = false;
+		}
+		
+		// GAME 0
 		
 		private function updateCapa0(dt:Number):void
 		{	

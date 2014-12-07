@@ -53,6 +53,27 @@ package
 		[Embed(source = "../media/graphics/RBP.png")]
 		public static const RBP:Class;
 		
+		[Embed(source = "../media/graphics/closeIcon.png")]
+		public static const closeIcon:Class;
+		
+		[Embed(source = "../media/graphics/wallpaper.jpg")]
+		public static const wallpaper:Class;
+		
+		[Embed(source = "../media/graphics/txtIcon.png")]
+		public static const txtIcon:Class;
+		
+		[Embed(source = "../media/graphics/txtInfo.png")]
+		public static const txtInfo:Class;
+		
+		[Embed(source = "../media/graphics/txtClose.png")]
+		public static const txtClose:Class;
+		
+		[Embed(source = "../media/graphics/gameIcon.png")]
+		public static const gameIcon:Class;
+		
+		[Embed(source = "../media/graphics/cursor.png")]
+		public static const cursor:Class;
+		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
 
