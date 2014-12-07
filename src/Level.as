@@ -1,6 +1,7 @@
 package  
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -35,6 +36,9 @@ package
 		
 		public var ch1:SoundChannel = new SoundChannel();
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
+		public var SoundSqueak1:Sound = new Assets.SoundSqueak1() as Sound;
+		public var SoundSqueak2:Sound = new Assets.SoundSqueak2() as Sound;
+		public var SoundSqueak3:Sound = new Assets.SoundSqueak3() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -49,14 +53,19 @@ package
 		private var matrixText:TextField;
 		private var test:String;
 		private var secsPassed:Number = 0;
-		private var currentLevel:int = 0;
 		private var currentTrack:int = 0;
 		private var currentPos:int;
-		private var genSecs:Number=0;
+		private var genSecs:Number = 0;
+		private var deathSecs:Number = 0;
+		private var highScore:Number = 0;
 		private var generated:Boolean;
 		private var initiated:Boolean;
 		private var dead:Boolean;
 		private var frogPoints:Number = 0;
+		private var customDt:Number = 0;
+		private var increasement:Number = 0;
+		private var character0:Image;
+		private var bombsAway:Array;
 
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
@@ -97,11 +106,20 @@ package
 		
 		private var leftHand:Sprite;
 		private var rightHand:Sprite;
-		private var mouseCatched:Boolean = false;
 		
 		private var areaMouse:Sprite;
 		private var areaNeutral:Sprite;
 		private var mouse:Sprite;
+		private var mouseCatched:Boolean = false;
+		
+		private var areaSnowMan:Sprite;
+		private var snowMan:Sprite;
+		private var snowManCatched:Boolean = false;
+		
+		private var test_F_IZQ:Sprite;
+		private var test_F_DER:Sprite;
+		private var test_F_ARR:Sprite;
+		private var test_F_ABA:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -111,6 +129,7 @@ package
 		private var GLOBAL_BOTON_S:Boolean = false;
 		private var GLOBAL_BOTON_D:Boolean = false;
 		private var GLOBAL_MOUSE_CLICKED:Boolean = false;
+		private var GLOBAL_MOUSE_MANTAINED:Boolean = false;
 		private var GLOBAL_MOUSE_X:Number = 0;
 		private var GLOBAL_MOUSE_Y:Number = 0;
 		
@@ -120,8 +139,6 @@ package
 		
 		private var colorin:uint = 0xFFFFFF;
 		
-		
-
 		
 		public function Level(game_origen:Game) 
 		{
@@ -148,16 +165,18 @@ package
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
 			capa0.addChild(i);
+			capa0.scaleX = 1.01;
+			capa0.scaleY = 1.01;
 			addChild(capa0);
 			capa0.x = GAME.true_width/2 - capa0.width/2;
-			capa0.y = 58;
+			capa0.y = 57;
 			
 			capa1 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa1"));
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
-			capa1.y = 40;
+			capa1.y = 41;
 			
 			capa2 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa2"));
@@ -165,6 +184,36 @@ package
 			addChild(capa2);
 			capa2.x = 0;
 			capa2.y = 0;
+			
+			//**************** CAPA 0 ******************
+			drawCapa0();
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			initiated = true;
+			dead = false;
+			bombsAway = new Array();
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+			gameMatrix[3][1] = 2;
+			currentPos = 1;
+			
+			test = "Da Frog";
+			test += "\n";
+			test += "with TUPÉ";
+			
+			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = true;
+			capa0.addChild(matrixText);
 			
 			
 			// ****************** CAPA 1 ******************
@@ -263,7 +312,49 @@ package
 			mouse.addChild(i);
 			capa2.addChild(mouse);
 			mouse.x = areaMouse.x + areaMouse.width/2 - mouse.width/2;
-			mouse.y = areaMouse.y + areaMouse.height/2 - mouse.height/2;
+			mouse.y = areaMouse.y + areaMouse.height / 2 - mouse.height / 2;
+			
+			areaSnowMan = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaSnowMan.addChild(i);
+			capa2.addChild(areaSnowMan);
+			areaSnowMan.x = 600;
+			areaSnowMan.y = 225;
+			
+			snowMan = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			snowMan.addChild(i);
+			capa2.addChild(snowMan);
+			snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
+			snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
+			
+			test_F_ARR = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_ARR.addChild(i);
+			capa2.addChild(test_F_ARR);
+			test_F_ARR.x = 436;
+			test_F_ARR.y = 432;
+			
+			test_F_ABA = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_ABA.addChild(i);
+			capa2.addChild(test_F_ABA);
+			test_F_ABA.x = 442;
+			test_F_ABA.y = 470;
+			
+			test_F_IZQ = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_IZQ.addChild(i);
+			capa2.addChild(test_F_IZQ);
+			test_F_IZQ.x = 400;
+			test_F_IZQ.y = 470;
+			
+			test_F_DER = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_DER.addChild(i);
+			capa2.addChild(test_F_DER);
+			test_F_DER.x = 484;
+			test_F_DER.y = 470;
 			
 			leftHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("lefthand"));
@@ -272,48 +363,13 @@ package
 			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
 			leftHand.y = 500;
 			
+
 			rightHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("righthand"));
 			rightHand.addChild(i);
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
 			GLOBAL_MOUSE_Y = 500;	
-			
-			//**************** CAPA 0 ******************
-			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
-			test = new String();
-			
-			initiated = true;
-			dead = false;
-			
-			for (var t:int = 0; t < LEVELS_0; t++)
-			{	
-				gameMatrix[t] = new Array(TRACKS_0);
-				for (var u:int = 0; u < TRACKS_0; u++)
-				{	
-					gameMatrix[t][u] = 0;
-				}
-			}
-			
-
-			gameMatrix[3][1] = 2;
-			currentPos = 1;
-			
-			test = "Da Frog";
-			test += "\n";
-			test += "with TUPÉ";
-
-			
-			//trace(test);
-
-			
-
-			
-			matrixText = new TextField(150, 180 ,test , "Arial", 36, 0xffffff);
-			matrixText.x = 0;
-			matrixText.y = 0;
-			matrixText.border = true;
-			capa0.addChild(matrixText);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -323,17 +379,18 @@ package
 				GLOBAL_MOUSE_X = touch.globalX;
 				GLOBAL_MOUSE_Y = touch.globalY;
 
-				//trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
 			}
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
+				GLOBAL_MOUSE_MANTAINED = true;
+				if (mouseCatched) { CAPA_2_MOUSE_CLICKED = true; }
+			}
+			if (touch && touch.phase == TouchPhase.ENDED) {
+				GLOBAL_MOUSE_MANTAINED = false;
 			}
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
-			
-			
-			//**************** CAPA 0 ******************
 			
 			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
 			else GLOBAL_BOTON_ESPACIO = false;
@@ -351,19 +408,60 @@ package
 			else GLOBAL_BOTON_D = false;
 			
 			if (GLOBAL_MOUSE_CLICKED) {
-				trace ("CLICKED");
-				checkEnemyClick();
+				if (snowManCatched) {
+					var randi:Number = Math.random();
+					if (randi > 0.66) {
+						SoundSqueak1.play();
+					}
+					else if (randi > 0.33) {
+						SoundSqueak2.play();
+					}
+					else {
+						SoundSqueak3.play();
+					}
+				}	
+
 			}
 			
-			UpdateCapa0(e.passedTime);
+			if (GLOBAL_MOUSE_MANTAINED) {
+				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
+				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
+					CAPA_2_BOTON_FLECHA_ARR = true;
+					trace("MANTAINED FLECHA ARRIBA");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_ABA.x && GLOBAL_MOUSE_X <= test_F_ABA.x + test_F_ABA.width &&
+				GLOBAL_MOUSE_Y >= test_F_ABA.y && GLOBAL_MOUSE_Y <= test_F_ABA.y + test_F_ABA.height) {
+					CAPA_2_BOTON_FLECHA_ABA = true;
+					trace("MANTAINED FLECHA ABAJO");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_IZQ.x && GLOBAL_MOUSE_X <= test_F_IZQ.x + test_F_IZQ.width &&
+				GLOBAL_MOUSE_Y >= test_F_IZQ.y && GLOBAL_MOUSE_Y <= test_F_IZQ.y + test_F_IZQ.height) {
+					CAPA_2_BOTON_FLECHA_IZQ = true;
+					trace("MANTAINED FLECHA IZQUIERDA");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_DER.x && GLOBAL_MOUSE_X <= test_F_DER.x + test_F_DER.width &&
+				GLOBAL_MOUSE_Y >= test_F_DER.y && GLOBAL_MOUSE_Y <= test_F_DER.y + test_F_DER.height) {
+					CAPA_2_BOTON_FLECHA_DER = true;
+					trace("MANTAINED FLECHA DERECHA");
+				}
+			}
 			
+			
+			
+			updateCapa0(e.passedTime);
 			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 			
+
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
+			checkSnowMan();
+			
+			if (CAPA_2_MOUSE_CLICKED) {
+				checkEnemyClick();
+			}
 			
 			
 			GLOBAL_BOTON_ESPACIO = false;
@@ -372,24 +470,28 @@ package
 			GLOBAL_BOTON_S = false;
 			GLOBAL_BOTON_D = false;
 			GLOBAL_MOUSE_CLICKED = false;
+			CAPA_2_BOTON_FLECHA_ARR = false;
+			CAPA_2_BOTON_FLECHA_ABA = false;
+			CAPA_2_BOTON_FLECHA_IZQ = false;
+			CAPA_2_BOTON_FLECHA_DER = false;
+			CAPA_2_BOTON_ESPACIO = false;
+			CAPA_2_MOUSE_CLICKED = false;
 		}
 		
-
-		
-		
+	
 		
 		
 		private function updateCapa1(dt:Number):void {
 			
 			// Movimiento Personaje
 			if (!pisotoneando) {
-				if (GLOBAL_BOTON_W && character.y > capa1.height/2 + 25) character.y -= 60*dt;
-				else if (GLOBAL_BOTON_A) {
+				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
+				else if (CAPA_2_BOTON_FLECHA_IZQ) {
 					character.x -= 80*dt;
 					if (character.scaleX > 0) character.scaleX *= -1;
 				}
-				else if (GLOBAL_BOTON_S) character.y += 60*dt;
-				else if (GLOBAL_BOTON_D) {
+				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
+				else if (CAPA_2_BOTON_FLECHA_DER) {
 					character.x += 80*dt;
 					if (character.scaleX < 0) character.scaleX *= -1;
 				}
@@ -452,6 +554,17 @@ package
 					LBdt = 0;
 				}
 			}
+				
+			/*if (CAPA_2_BOTON_FLECHA_ARR) character.y -= 60*dt;
+			else if (CAPA_2_BOTON_FLECHA_IZQ) {
+				character.x -= 80*dt;
+				if (character.scaleX > 0) character.scaleX *= -1;
+			}
+			else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
+			else if (CAPA_2_BOTON_FLECHA_DER) {
+				character.x += 80*dt;
+				if (character.scaleX < 0) character.scaleX *= -1;
+			}*/
 			
 			
 			// Movimiento Hadita/Cursor
@@ -618,8 +731,9 @@ package
 			}
 		}
 		
-		private function UpdateCapa0(dt:Number):void
+		private function updateCapa0(dt:Number):void
 		{	
+			
 			if (initiated)
 			{
 				secsPassed+= dt;
@@ -627,15 +741,26 @@ package
 				{
 					secsPassed = 0;
 					initiated = false;
+					matrixText.visible = false;
 				}
 				
 			}
 			
 			else if(!dead)
 			{
+				updateSprites0();
+				customDt = dt + increasement;
+				frogPoints += customDt;
 				
+				if (int(frogPoints) == 15) increasement = 0.012;
+				if (int(frogPoints) == 25) increasement = 0.016;
+				if (int(frogPoints) == 40) increasement = 0.024;
+				if (int(frogPoints) == 60) increasement = 0.035;
+				
+
 				frogPoints += dt;
 				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
 				else CAPA_1_BOTON_IZQ = false;*/
@@ -659,41 +784,45 @@ package
 				}
 				
 				
-				
 				if (generated)
 				{
-					secsPassed += dt;
-					if (secsPassed >= 1)
-					{
-						gameMatrix[currentLevel][currentTrack] = 0;
-						if (currentLevel + 1 <4)
+					secsPassed += customDt;
+
+					if (secsPassed >= 1.2)
+					{	
+						for (var i:int = LEVELS_0-1; i >= 0; i--)
 						{
-							currentLevel++;
-							if (gameMatrix[currentLevel][currentTrack] == 2) dead = true;
-							gameMatrix[currentLevel][currentTrack] = 1;
-						}
-						else
-						{
-							generated = false;
-							gameMatrix[currentLevel][currentTrack] = 0;
+							for (var j:int = TRACKS_0-1; j >=0 ; j--)
+							{
+								if (gameMatrix[i][j] == 1) 
+								{
+									gameMatrix[i][j] = 0;
+									if (i + 1 <4)
+									{
+										if (gameMatrix[i+1][j] == 2) dead = true;
+										gameMatrix[i+1][j] = 1;
+									}
+								}
+							}
 						}
 						
 						secsPassed = 0;
 					}
 				}
 				
-				genSecs += dt;
-				trace(genSecs);
-				if (genSecs >= 2 &&!generated)
+				genSecs += customDt;
+				
+				if (genSecs >= 4&& secsPassed==0)
 				{
-					currentLevel = 0;
-					currentTrack = Math.random() * 2;
-					gameMatrix[currentLevel][currentTrack] = 1;
+					generateEnemy();
+					var probabilidad:Number = Math.random() * 10;
+					if (probabilidad <= 2 && frogPoints>25 && frogPoints<40) generateEnemy();
+					if (probabilidad <= 4 && frogPoints>40) generateEnemy();
 					genSecs = 0;
 					generated = true;
 				}
 				
-								test = "";
+				test = "";
 				for (var t:int = 0; t < LEVELS_0; t++)
 				{	
 					for (var u:int = 0; u < TRACKS_0; u++)
@@ -703,23 +832,110 @@ package
 					}
 					test += "\n";
 				}
-				
+				matrixText.fontSize = 28;
 				matrixText.text = test;
 			}	
 			
 			if (dead)
 			{
+				matrixText.visible = true;
+				character0.visible = false;
+				
+				for (i = 0; i < bombsAway.length; i++)
+				{
+					capa0.removeChild(bombsAway[i]);
+					bombsAway.splice(i, 1);
+				}
+				
+				if (frogPoints > highScore) highScore = frogPoints;
+				matrixText.fontSize = 12;
+				deathSecs += dt;
 				genSecs = 0;
 				secsPassed = 0;
 				generated = false;
 				test = "Score: " + int(frogPoints);
 				test += "\n";
-				test += "Soon";
+				test += "High Score: " + int(highScore);
+				test += "\n";
+				test += "Try again in: " + int(3 - int(deathSecs));
+				
+				
+				for (t = 0; t < LEVELS_0; t++)
+				{	
+					for (u = 0; u < TRACKS_0; u++)
+					{
+						gameMatrix[t][u] = 0;
+					}
+				}
+				gameMatrix[3][1] = 2;
 				
 				matrixText.text = test;
-					
 				
+				if (deathSecs >= 3)
+				{
+					dead = false;
+					deathSecs = 0;
+					frogPoints = 0;
+					increasement = 0;
+					matrixText.visible = false;
+				}
 			}
+		}
+		
+		private function generateEnemy():void
+		{
+			currentTrack = Math.random() * 3;
+			while(gameMatrix[0][currentTrack] ==1) currentTrack = Math.random() * 3;
+			gameMatrix[0][currentTrack] = 1;
+		}
+		
+		private function drawCapa0():void
+		{
+			var screen:Image = new Image(Assets.getTexture("Screen"));
+			capa0.addChild(screen);
+			
+			character0 = new Image(Assets.getTexture("Character0"));
+			capa0.addChild(character0);
+			//character.x = capa0.width / 2 - character.width / 2;
+			character0.y = capa0.height - character0.height;
+			character0.visible = false;
+		}
+		
+		private function updateSprites0():void
+		{
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{
+					if (gameMatrix[t][u] == 2)
+					{
+						character0.visible = true; 
+						character0.x = u*50;
+					}
+				}
+			}
+			
+			for (var i:int = 0; i < bombsAway.length; i++)
+			{
+				capa0.removeChild(bombsAway[i]);
+				bombsAway.splice(i, 1);
+			}
+			
+			for (t = 0; t < LEVELS_0; t++)
+			{	
+				for (u= 0; u < TRACKS_0; u++)
+				{
+					if (gameMatrix[t][u] == 1)
+					{
+						var bomb:Image = new Image(Assets.getTexture("Bomb"));
+						capa0.addChild(bomb);
+						bomb.x = 50 * u;
+						bomb.y = 45 * t;
+						bombsAway.push(bomb);
+					}
+				}
+			}
+					
 		}
 				
 		private function moveLeftHand(dt:Number):void {
@@ -861,17 +1077,6 @@ package
 					rightHand.rotation = 0;
 				}
 				
-				/*
-				var point_hand_x:Number = rightHand.x + 25;
-				var point_hand_y:Number = rightHand.y - 0;
-				
-				//mouse.x = point_hand_x;
-				//mouse.y = point_hand_y;			
-				
-				var point_mouse_x:Number = point_hand_x + mouse.width/2;
-				var point_mouse_y:Number = point_hand_y + mouse.height/2;
-				*/
-				
 				if (GLOBAL_MOUSE_X < areaNeutral.x || GLOBAL_MOUSE_X > areaNeutral.x + areaNeutral.width ||
 				GLOBAL_MOUSE_Y < areaNeutral.y || GLOBAL_MOUSE_Y > areaNeutral.y + areaNeutral.height) {
 					mouseCatched = false;
@@ -899,21 +1104,44 @@ package
 			}
 			else {
 				
-				//var point_hand_x:Number = rightHand.x + rightHand.width/2;
-				//var point_hand_y:Number = rightHand.y + rightHand.height/2;
-				/*
-				if (point_hand_x >= areaMouse.x && point_hand_x <= areaMouse.x + areaMouse.width &&
-				point_hand_y >= areaMouse.y && point_hand_y <= areaMouse.y + areaMouse.height) {
-					mouseCatched = true;
-				}
-				*/
-				
 				if (GLOBAL_MOUSE_X >= areaMouse.x && GLOBAL_MOUSE_X <= areaMouse.x + areaMouse.width &&
 				GLOBAL_MOUSE_Y >= areaMouse.y && GLOBAL_MOUSE_Y <= areaMouse.y + areaMouse.height) {
 					mouseCatched = true;
 				}
 				
 			}
+			
+		}
+		
+		
+		private function checkSnowMan():void {
+			
+			if (snowManCatched) {
+
+				
+				if (GLOBAL_MOUSE_X < areaSnowMan.x || GLOBAL_MOUSE_X > areaSnowMan.x + areaSnowMan.width ||
+				GLOBAL_MOUSE_Y < areaSnowMan.y || GLOBAL_MOUSE_Y > areaSnowMan.y + areaSnowMan.height) {
+					snowManCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = rightHand.x + 25;
+					var point_hand_y:Number = rightHand.y - 0;
+				
+					snowMan.x = point_hand_x;
+					snowMan.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (GLOBAL_MOUSE_X >= areaSnowMan.x && GLOBAL_MOUSE_X <= areaSnowMan.x + areaSnowMan.width &&
+				GLOBAL_MOUSE_Y >= areaSnowMan.y && GLOBAL_MOUSE_Y <= areaSnowMan.y + areaSnowMan.height) {
+					snowManCatched = true;
+				}
+				
+			}
+
 			
 		}
 		
