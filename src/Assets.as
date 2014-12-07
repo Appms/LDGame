@@ -26,6 +26,8 @@ package
 		// ****************** CAPA 1 ******************
 		[Embed(source = "../media/graphics/crusader.png")]
 		public static const character:Class;
+		[Embed(source = "../media/graphics/crusader_jump.png")]
+		public static const character_jump:Class;
 		
 		[Embed(source = "../media/graphics/Fairy.png")]
 		public static const fairy:Class;
@@ -35,6 +37,18 @@ package
 		
 		[Embed(source = "../media/graphics/heart.png")]
 		public static const heart:Class;
+		
+		[Embed(source = "../media/graphics/gamepad.png")]
+		public static const gamepad:Class;
+		
+		[Embed(source = "../media/graphics/LB.png")]
+		public static const LB:Class;
+		[Embed(source = "../media/graphics/LBP.png")]
+		public static const LBP:Class;
+		[Embed(source = "../media/graphics/RB.png")]
+		public static const RB:Class;
+		[Embed(source = "../media/graphics/RBP.png")]
+		public static const RBP:Class;
 		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;

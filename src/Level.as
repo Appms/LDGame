@@ -69,6 +69,7 @@ package
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
 		private var character:Sprite;
+		private var jumptimer:Number;
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
 		private var newEnemy:Sprite;
@@ -76,6 +77,14 @@ package
 		private var enemySpawner:Number = 0;
 		private var widthCapa1:Number;
 		private var heightCapa1:Number;
+		private var gamepad:Sprite;
+		private var pisotoneando:Boolean;
+		private var LB:Sprite;
+		private var RB:Sprite;
+		private var LBPressed:Boolean;
+		private var RBPressed:Boolean;
+		private var LBdt:Number;
+		private var RBdt:Number;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -167,16 +176,57 @@ package
 			drawLifes();
 			lifeUpDt = 0;
 			
+			jumptimer = 0;
+			
+			gamepad = new Sprite();
+			i = new Image(Assets.getTexture("gamepad"));
+			gamepad.addChild(i);
+			capa1.addChild(gamepad);
+			gamepad.x = widthCapa1 / 2;
+			gamepad.y = heightCapa1 / 2 + 100;
+			gamepad.pivotX = gamepad.width / 2;
+			gamepad.pivotY = gamepad.height / 2;
+			gamepad.scaleX = 0.1;
+			gamepad.scaleY = 0.1;
+			gamepad.rotation = Math.PI / 4;
+			
+			RB = new Sprite();
+			i = new Image(Assets.getTexture("RB"));
+			RB.addChild(i);
+			capa1.addChild(RB);
+			RB.x = widthCapa1 / 2 + 25;
+			RB.y = heightCapa1 / 2 + 100 + 15;
+			RB.pivotX = RB.width / 2;
+			RB.pivotY = RB.height / 2;
+			RB.scaleX = 0.1;
+			RB.scaleY = 0.1;
+			
+			LB = new Sprite();
+			i = new Image(Assets.getTexture("LB"));
+			LB.addChild(i);
+			capa1.addChild(LB);
+			LB.x = widthCapa1 / 2 - 15;
+			LB.y = heightCapa1 / 2 + 100 - 25;
+			LB.pivotX = LB.width / 2;
+			LB.pivotY = LB.height / 2;
+			LB.scaleX = 0.1;
+			LB.scaleY = 0.1;
+			
+			RBdt = 0;
+			LBdt = 0;
+			
+			
 			character = new Sprite();
 			i = new Image(Assets.getTexture("character"));
 			character.addChild(i);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
-			character.y = heightCapa1/2;
+			character.y = heightCapa1/2 + 100;
 			character.pivotX = character.width / 2; // 132
 			character.pivotY = character.height / 2; // 224
 			character.scaleX = 0.15;
 			character.scaleY = 0.15;
+			
 			
 			fairy = new Sprite();
 			i = new Image(Assets.getTexture("fairy"));
@@ -188,7 +238,8 @@ package
 			fairy.scaleY = 0.025;
 			fairy_displacement = new Point(0, 0);
 			
-			addEnemy();
+			
+			
 			
 			// *********************** CAPA 2 ***********************
 			
@@ -304,7 +355,7 @@ package
 				checkEnemyClick();
 			}
 			
-			//UpdateCapa0(e.passedTime);
+			UpdateCapa0(e.passedTime);
 			
 			updateCapa1(e.passedTime);
 			
@@ -331,16 +382,77 @@ package
 		private function updateCapa1(dt:Number):void {
 			
 			// Movimiento Personaje
-			if (GLOBAL_BOTON_W) character.y -= 60*dt;
-			else if (GLOBAL_BOTON_A) {
-				character.x -= 80*dt;
-				if (character.scaleX > 0) character.scaleX *= -1;
+			if (!pisotoneando) {
+				if (GLOBAL_BOTON_W && character.y > capa1.height/2 + 25) character.y -= 60*dt;
+				else if (GLOBAL_BOTON_A) {
+					character.x -= 80*dt;
+					if (character.scaleX > 0) character.scaleX *= -1;
+				}
+				else if (GLOBAL_BOTON_S) character.y += 60*dt;
+				else if (GLOBAL_BOTON_D) {
+					character.x += 80*dt;
+					if (character.scaleX < 0) character.scaleX *= -1;
+				}
 			}
-			else if (GLOBAL_BOTON_S) character.y += 60*dt;
-			else if (GLOBAL_BOTON_D) {
-				character.x += 80*dt;
-				if (character.scaleX < 0) character.scaleX *= -1;
+			
+			// Salto Personaje
+			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
+				pisotoneando = true;
+				character.removeChildren();
+				var img:Image = new Image(Assets.getTexture("character_jump"));
+				character.addChild(img);
+				
+				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
+				{
+					RB.removeChildren();
+					img = new Image(Assets.getTexture("RBP"));
+					RB.addChild(img)
+					RBPressed = true;
+					CAPA_1_BOTON_DER = true;
+				}
+				else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
+				{
+					LB.removeChildren();
+					img = new Image(Assets.getTexture("LBP"));
+					LB.addChild(img);
+					LBPressed = true;
+					CAPA_1_BOTON_IZQ = true;
+				}
 			}
+			
+			if (pisotoneando) {
+				jumptimer += dt;
+				if (jumptimer >= 0.5) {
+					pisotoneando = false;
+					character.removeChildren();
+					img = new Image(Assets.getTexture("character"));
+					character.addChild(img);
+					jumptimer = 0;
+				}
+			}
+			
+			if (RBPressed) {
+				RBdt += dt;
+				if (RBdt >= 0.5) {
+					RBPressed = false;
+					RB.removeChildren();
+					img = new Image(Assets.getTexture("RB"));
+					RB.addChild(img);
+					RBdt = 0;
+				}
+			}
+			
+			if (LBPressed) {
+				LBdt += dt;
+				if (LBdt >= 0.5) {
+					LBPressed = false;
+					LB.removeChildren();
+					img = new Image(Assets.getTexture("LB"));
+					LB.addChild(img);
+					LBdt = 0;
+				}
+			}
+			
 			
 			// Movimiento Hadita/Cursor
 			
@@ -386,8 +498,8 @@ package
 					enemyArray[i].x -= 80*dt;
 					if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
 				}
-				if (enemyArray[i].y < character.y) enemyArray[i].y += 60*dt;
-				if (enemyArray[i].y > character.y) enemyArray[i].y -= 60*dt;
+				if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
+				if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
 			}
 			
 			enemyCollision();
@@ -429,7 +541,7 @@ package
 		private function checkEnemyClick():void {
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
-				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x/*GLOBAL_MOUSE_X-capa1.x*/)), 2) + Math.pow((enemyArray[i].y - (fairy.y/*GLOBAL_MOUSE_Y-capa1.y*/)), 2)) < 25)  {
+				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
 					if (lifeUp == null && Math.round(Math.random() * 1) == 0) spawnLife(enemyArray[i].x, enemyArray[i].y);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
@@ -523,13 +635,14 @@ package
 			{
 				
 				frogPoints += dt;
-				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
-				else CAPA_1_BOTON_IZQ = false;
+				else CAPA_1_BOTON_IZQ = false;*/
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
+					CAPA_1_BOTON_DER = false;
 					gameMatrix[3][currentPos] = 0;
 					currentPos++;
 					if (gameMatrix[3][currentPos] == 1) dead = true;
@@ -538,6 +651,7 @@ package
 				
 				if (CAPA_1_BOTON_IZQ && currentPos > 0)
 				{	
+					CAPA_1_BOTON_IZQ = false;
 					gameMatrix[3][currentPos] = 0;
 					currentPos--;
 					if (gameMatrix[3][currentPos] == 1) dead = true;
@@ -800,7 +914,6 @@ package
 				}
 				
 			}
-
 			
 		}
 		
