@@ -1,6 +1,7 @@
 package  
 {
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -35,6 +36,26 @@ package
 		
 		public var ch1:SoundChannel = new SoundChannel();
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
+		public var SoundSqueak1:Sound = new Assets.SoundSqueak1() as Sound;
+		public var SoundSqueak2:Sound = new Assets.SoundSqueak2() as Sound;
+		public var SoundSqueak3:Sound = new Assets.SoundSqueak3() as Sound;
+		public var SoundSqueak4:Sound = new Assets.SoundSqueak4() as Sound;
+		public var SoundSqueak5:Sound = new Assets.SoundSqueak5() as Sound;
+		public var SoundSqueak6:Sound = new Assets.SoundSqueak6() as Sound;
+		public var SoundSqueak7:Sound = new Assets.SoundSqueak7() as Sound;
+		public var SoundSqueak8:Sound = new Assets.SoundSqueak8() as Sound;
+		public var SoundSqueak9:Sound = new Assets.SoundSqueak9() as Sound;
+		public var SoundSqueak10:Sound = new Assets.SoundSqueak10() as Sound;
+		public var SoundSqueak11:Sound = new Assets.SoundSqueak11() as Sound;
+		public var SoundSqueak12:Sound = new Assets.SoundSqueak12() as Sound;
+		public var SoundSqueak13:Sound = new Assets.SoundSqueak13() as Sound;
+		public var SoundSqueak14:Sound = new Assets.SoundSqueak14() as Sound;
+		public var SoundSqueak15:Sound = new Assets.SoundSqueak15() as Sound;
+		public var SoundSqueak16:Sound = new Assets.SoundSqueak16() as Sound;
+		public var SoundSqueak17:Sound = new Assets.SoundSqueak17() as Sound;
+		public var SoundSqueak18:Sound = new Assets.SoundSqueak18() as Sound;
+		public var SoundSqueak19:Sound = new Assets.SoundSqueak19() as Sound;
+		public var SoundSqueak20:Sound = new Assets.SoundSqueak20() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -81,6 +102,7 @@ package
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
 		private var character:Sprite;
+		private var jumptimer:Number;
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
 		private var newEnemy:Sprite;
@@ -88,6 +110,14 @@ package
 		private var enemySpawner:Number = 0;
 		private var widthCapa1:Number;
 		private var heightCapa1:Number;
+		private var gamepad:Sprite;
+		private var pisotoneando:Boolean;
+		private var LB:Sprite;
+		private var RB:Sprite;
+		private var LBPressed:Boolean;
+		private var RBPressed:Boolean;
+		private var LBdt:Number;
+		private var RBdt:Number;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -100,13 +130,20 @@ package
 		
 		private var leftHand:Sprite;
 		private var rightHand:Sprite;
-		private var mouseCatched:Boolean = false;
 		
 		private var areaMouse:Sprite;
 		private var areaNeutral:Sprite;
 		private var mouse:Sprite;
+		private var mouseCatched:Boolean = false;
 		
 		private var areaSnowMan:Sprite;
+		private var snowMan:Sprite;
+		private var snowManCatched:Boolean = false;
+		
+		private var test_F_IZQ:Sprite;
+		private var test_F_DER:Sprite;
+		private var test_F_ARR:Sprite;
+		private var test_F_ABA:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -116,6 +153,7 @@ package
 		private var GLOBAL_BOTON_S:Boolean = false;
 		private var GLOBAL_BOTON_D:Boolean = false;
 		private var GLOBAL_MOUSE_CLICKED:Boolean = false;
+		private var GLOBAL_MOUSE_MANTAINED:Boolean = false;
 		private var GLOBAL_MOUSE_X:Number = 0;
 		private var GLOBAL_MOUSE_Y:Number = 0;
 		
@@ -155,14 +193,14 @@ package
 			capa0.scaleY = 1.01;
 			addChild(capa0);
 			capa0.x = GAME.true_width/2 - capa0.width/2;
-			capa0.y = 56;
+			capa0.y = 57;
 			
 			capa1 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa1"));
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
-			capa1.y = 40;
+			capa1.y = 41;
 			
 			capa2 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa2"));
@@ -213,16 +251,57 @@ package
 			drawLifes();
 			lifeUpDt = 0;
 			
+			jumptimer = 0;
+			
+			gamepad = new Sprite();
+			i = new Image(Assets.getTexture("gamepad"));
+			gamepad.addChild(i);
+			capa1.addChild(gamepad);
+			gamepad.x = widthCapa1 / 2;
+			gamepad.y = heightCapa1 / 2 + 100;
+			gamepad.pivotX = gamepad.width / 2;
+			gamepad.pivotY = gamepad.height / 2;
+			gamepad.scaleX = 0.1;
+			gamepad.scaleY = 0.1;
+			gamepad.rotation = Math.PI / 4;
+			
+			RB = new Sprite();
+			i = new Image(Assets.getTexture("RB"));
+			RB.addChild(i);
+			capa1.addChild(RB);
+			RB.x = widthCapa1 / 2 + 25;
+			RB.y = heightCapa1 / 2 + 100 + 15;
+			RB.pivotX = RB.width / 2;
+			RB.pivotY = RB.height / 2;
+			RB.scaleX = 0.1;
+			RB.scaleY = 0.1;
+			
+			LB = new Sprite();
+			i = new Image(Assets.getTexture("LB"));
+			LB.addChild(i);
+			capa1.addChild(LB);
+			LB.x = widthCapa1 / 2 - 15;
+			LB.y = heightCapa1 / 2 + 100 - 25;
+			LB.pivotX = LB.width / 2;
+			LB.pivotY = LB.height / 2;
+			LB.scaleX = 0.1;
+			LB.scaleY = 0.1;
+			
+			RBdt = 0;
+			LBdt = 0;
+			
+			
 			character = new Sprite();
 			i = new Image(Assets.getTexture("character"));
 			character.addChild(i);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
-			character.y = heightCapa1/2+100;
+			character.y = heightCapa1/2 + 100;
 			character.pivotX = character.width / 2; // 132
 			character.pivotY = character.height / 2; // 224
 			character.scaleX = 0.15;
 			character.scaleY = 0.15;
+			
 			
 			fairy = new Sprite();
 			i = new Image(Assets.getTexture("fairy"));
@@ -234,7 +313,8 @@ package
 			fairy.scaleY = 0.025;
 			fairy_displacement = new Point(0, 0);
 			
-			addEnemy();
+			
+			
 			
 			// *********************** CAPA 2 ***********************
 			
@@ -267,6 +347,41 @@ package
 			areaSnowMan.x = 600;
 			areaSnowMan.y = 225;
 			
+			snowMan = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			snowMan.addChild(i);
+			capa2.addChild(snowMan);
+			snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
+			snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
+			
+			test_F_ARR = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_ARR.addChild(i);
+			capa2.addChild(test_F_ARR);
+			test_F_ARR.x = 436;
+			test_F_ARR.y = 432;
+			
+			test_F_ABA = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_ABA.addChild(i);
+			capa2.addChild(test_F_ABA);
+			test_F_ABA.x = 442;
+			test_F_ABA.y = 470;
+			
+			test_F_IZQ = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_IZQ.addChild(i);
+			capa2.addChild(test_F_IZQ);
+			test_F_IZQ.x = 400;
+			test_F_IZQ.y = 470;
+			
+			test_F_DER = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_F_DER.addChild(i);
+			capa2.addChild(test_F_DER);
+			test_F_DER.x = 484;
+			test_F_DER.y = 470;
+			
 			leftHand = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("lefthand"));
 			leftHand.addChild(i);
@@ -290,10 +405,14 @@ package
 				GLOBAL_MOUSE_X = touch.globalX;
 				GLOBAL_MOUSE_Y = touch.globalY;
 
-				//trace("X: " + GLOBAL_MOUSE_X + "// Y: " + GLOBAL_MOUSE_Y);
 			}
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
+				GLOBAL_MOUSE_MANTAINED = true;
+				if (mouseCatched) { CAPA_2_MOUSE_CLICKED = true; }
+			}
+			if (touch && touch.phase == TouchPhase.ENDED) {
+				GLOBAL_MOUSE_MANTAINED = false;
 			}
 		}
 		
@@ -315,9 +434,56 @@ package
 			else GLOBAL_BOTON_D = false;
 			
 			if (GLOBAL_MOUSE_CLICKED) {
-				trace ("CLICKED");
-				checkEnemyClick();
+				if (snowManCatched) {
+					var randi:Number = Math.random();
+					if (randi > 19/20) SoundSqueak1.play();
+					else if (randi > 18 / 20) SoundSqueak2.play();
+					else if (randi > 17 / 20) SoundSqueak3.play();
+					else if (randi > 16 / 20) SoundSqueak4.play();
+					else if (randi > 15 / 20) SoundSqueak5.play();
+					else if (randi > 14 / 20) SoundSqueak6.play();
+					else if (randi > 13 / 20) SoundSqueak7.play();
+					else if (randi > 12 / 20) SoundSqueak8.play();
+					else if (randi > 11 / 20) SoundSqueak9.play();
+					else if (randi > 10 / 20) SoundSqueak10.play();
+					else if (randi > 9 / 20) SoundSqueak11.play();
+					else if (randi > 8 / 20) SoundSqueak12.play();
+					else if (randi > 7 / 20) SoundSqueak13.play();
+					else if (randi > 6 / 20) SoundSqueak14.play();
+					else if (randi > 5 / 20) SoundSqueak15.play();
+					else if (randi > 4 / 20) SoundSqueak16.play();
+					else if (randi > 3 / 20) SoundSqueak17.play();
+					else if (randi > 2 / 20) SoundSqueak18.play();
+					else if (randi > 1 / 20) SoundSqueak19.play();
+					else SoundSqueak20.play();
+				}	
+
 			}
+			
+			if (GLOBAL_MOUSE_MANTAINED) {
+				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
+				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
+					CAPA_2_BOTON_FLECHA_ARR = true;
+					trace("MANTAINED FLECHA ARRIBA");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_ABA.x && GLOBAL_MOUSE_X <= test_F_ABA.x + test_F_ABA.width &&
+				GLOBAL_MOUSE_Y >= test_F_ABA.y && GLOBAL_MOUSE_Y <= test_F_ABA.y + test_F_ABA.height) {
+					CAPA_2_BOTON_FLECHA_ABA = true;
+					trace("MANTAINED FLECHA ABAJO");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_IZQ.x && GLOBAL_MOUSE_X <= test_F_IZQ.x + test_F_IZQ.width &&
+				GLOBAL_MOUSE_Y >= test_F_IZQ.y && GLOBAL_MOUSE_Y <= test_F_IZQ.y + test_F_IZQ.height) {
+					CAPA_2_BOTON_FLECHA_IZQ = true;
+					trace("MANTAINED FLECHA IZQUIERDA");
+				}
+				else if (GLOBAL_MOUSE_X >= test_F_DER.x && GLOBAL_MOUSE_X <= test_F_DER.x + test_F_DER.width &&
+				GLOBAL_MOUSE_Y >= test_F_DER.y && GLOBAL_MOUSE_Y <= test_F_DER.y + test_F_DER.height) {
+					CAPA_2_BOTON_FLECHA_DER = true;
+					trace("MANTAINED FLECHA DERECHA");
+				}
+			}
+			
+			
 			
 			updateCapa0(e.passedTime);
 			updateCapa1(e.passedTime);
@@ -328,6 +494,11 @@ package
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
+			checkSnowMan();
+			
+			if (CAPA_2_MOUSE_CLICKED) {
+				checkEnemyClick();
+			}
 			
 			
 			GLOBAL_BOTON_ESPACIO = false;
@@ -336,6 +507,12 @@ package
 			GLOBAL_BOTON_S = false;
 			GLOBAL_BOTON_D = false;
 			GLOBAL_MOUSE_CLICKED = false;
+			CAPA_2_BOTON_FLECHA_ARR = false;
+			CAPA_2_BOTON_FLECHA_ABA = false;
+			CAPA_2_BOTON_FLECHA_IZQ = false;
+			CAPA_2_BOTON_FLECHA_DER = false;
+			CAPA_2_BOTON_ESPACIO = false;
+			CAPA_2_MOUSE_CLICKED = false;
 		}
 		
 	
@@ -344,16 +521,88 @@ package
 		private function updateCapa1(dt:Number):void {
 			
 			// Movimiento Personaje
-			if (GLOBAL_BOTON_W) character.y -= 60*dt;
-			else if (GLOBAL_BOTON_A) {
+			if (!pisotoneando) {
+				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
+				else if (CAPA_2_BOTON_FLECHA_IZQ) {
+					character.x -= 80*dt;
+					if (character.scaleX > 0) character.scaleX *= -1;
+				}
+				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
+				else if (CAPA_2_BOTON_FLECHA_DER) {
+					character.x += 80*dt;
+					if (character.scaleX < 0) character.scaleX *= -1;
+				}
+			}
+			
+			// Salto Personaje
+			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
+				pisotoneando = true;
+				character.removeChildren();
+				var img:Image = new Image(Assets.getTexture("character_jump"));
+				character.addChild(img);
+				
+				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
+				{
+					RB.removeChildren();
+					img = new Image(Assets.getTexture("RBP"));
+					RB.addChild(img)
+					RBPressed = true;
+					CAPA_1_BOTON_DER = true;
+				}
+				else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
+				{
+					LB.removeChildren();
+					img = new Image(Assets.getTexture("LBP"));
+					LB.addChild(img);
+					LBPressed = true;
+					CAPA_1_BOTON_IZQ = true;
+				}
+			}
+			
+			if (pisotoneando) {
+				jumptimer += dt;
+				if (jumptimer >= 0.5) {
+					pisotoneando = false;
+					character.removeChildren();
+					img = new Image(Assets.getTexture("character"));
+					character.addChild(img);
+					jumptimer = 0;
+				}
+			}
+			
+			if (RBPressed) {
+				RBdt += dt;
+				if (RBdt >= 0.5) {
+					RBPressed = false;
+					RB.removeChildren();
+					img = new Image(Assets.getTexture("RB"));
+					RB.addChild(img);
+					RBdt = 0;
+				}
+			}
+			
+			if (LBPressed) {
+				LBdt += dt;
+				if (LBdt >= 0.5) {
+					LBPressed = false;
+					LB.removeChildren();
+					img = new Image(Assets.getTexture("LB"));
+					LB.addChild(img);
+					LBdt = 0;
+				}
+			}
+				
+			/*if (CAPA_2_BOTON_FLECHA_ARR) character.y -= 60*dt;
+			else if (CAPA_2_BOTON_FLECHA_IZQ) {
 				character.x -= 80*dt;
 				if (character.scaleX > 0) character.scaleX *= -1;
 			}
-			else if (GLOBAL_BOTON_S) character.y += 60*dt;
-			else if (GLOBAL_BOTON_D) {
+			else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
+			else if (CAPA_2_BOTON_FLECHA_DER) {
 				character.x += 80*dt;
 				if (character.scaleX < 0) character.scaleX *= -1;
-			}
+			}*/
+			
 			
 			// Movimiento Hadita/Cursor
 			
@@ -399,8 +648,8 @@ package
 					enemyArray[i].x -= 80*dt;
 					if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
 				}
-				if (enemyArray[i].y < character.y) enemyArray[i].y += 60*dt;
-				if (enemyArray[i].y > character.y) enemyArray[i].y -= 60*dt;
+				if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
+				if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
 			}
 			
 			enemyCollision();
@@ -442,7 +691,7 @@ package
 		private function checkEnemyClick():void {
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
-				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x/*GLOBAL_MOUSE_X-capa1.x*/)), 2) + Math.pow((enemyArray[i].y - (fairy.y/*GLOBAL_MOUSE_Y-capa1.y*/)), 2)) < 25)  {
+				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
 					if (lifeUp == null && Math.round(Math.random() * 1) == 0) spawnLife(enemyArray[i].x, enemyArray[i].y);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
@@ -545,6 +794,7 @@ package
 				if (int(frogPoints) == 40) increasement = 0.024;
 				if (int(frogPoints) == 60) increasement = 0.035;
 				
+<<<<<<< HEAD
 				if (Input.isPressed(Input.RIGHT2))
 				{
 					CAPA_1_BOTON_DER = true;
@@ -555,9 +805,19 @@ package
 					CAPA_1_BOTON_IZQ = true;
 				}
 				else CAPA_1_BOTON_IZQ = false;
+=======
+
+				frogPoints += dt;
+				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				else CAPA_1_BOTON_DER = false;
+				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
+				else CAPA_1_BOTON_IZQ = false;*/
+>>>>>>> origin/master
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
+					CAPA_1_BOTON_DER = false;
 					gameMatrix[3][currentPos] = 0;
 					currentPos++;
 					changeSprite0();
@@ -567,6 +827,7 @@ package
 				
 				if (CAPA_1_BOTON_IZQ && currentPos > 0)
 				{	
+					CAPA_1_BOTON_IZQ = false;
 					gameMatrix[3][currentPos] = 0;
 					currentPos--;
 					changeSprite0();
@@ -590,7 +851,6 @@ package
 							{
 								if (gameMatrix[i][j] == 1) 
 								{
-									trace("found");
 									gameMatrix[i][j] = 0;
 									if (i + 1 <4)
 									{
@@ -749,6 +1009,7 @@ package
 			{
 				if (gameMatrix[3][currentPos] == 1)
 				{
+<<<<<<< HEAD
 					mouth0.visible = true;
 					character0.visible = false;
 					character1.visible = false;
@@ -765,6 +1026,13 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 					
+=======
+					if (gameMatrix[t][u] == 2)
+					{
+						character0.visible = true; 
+						character0.x = u*50;
+					}
+>>>>>>> origin/master
 				}
 
 			}
@@ -981,17 +1249,6 @@ package
 					rightHand.rotation = 0;
 				}
 				
-				/*
-				var point_hand_x:Number = rightHand.x + 25;
-				var point_hand_y:Number = rightHand.y - 0;
-				
-				//mouse.x = point_hand_x;
-				//mouse.y = point_hand_y;			
-				
-				var point_mouse_x:Number = point_hand_x + mouse.width/2;
-				var point_mouse_y:Number = point_hand_y + mouse.height/2;
-				*/
-				
 				if (GLOBAL_MOUSE_X < areaNeutral.x || GLOBAL_MOUSE_X > areaNeutral.x + areaNeutral.width ||
 				GLOBAL_MOUSE_Y < areaNeutral.y || GLOBAL_MOUSE_Y > areaNeutral.y + areaNeutral.height) {
 					mouseCatched = false;
@@ -1019,18 +1276,40 @@ package
 			}
 			else {
 				
-				//var point_hand_x:Number = rightHand.x + rightHand.width/2;
-				//var point_hand_y:Number = rightHand.y + rightHand.height/2;
-				/*
-				if (point_hand_x >= areaMouse.x && point_hand_x <= areaMouse.x + areaMouse.width &&
-				point_hand_y >= areaMouse.y && point_hand_y <= areaMouse.y + areaMouse.height) {
-					mouseCatched = true;
-				}
-				*/
-				
 				if (GLOBAL_MOUSE_X >= areaMouse.x && GLOBAL_MOUSE_X <= areaMouse.x + areaMouse.width &&
 				GLOBAL_MOUSE_Y >= areaMouse.y && GLOBAL_MOUSE_Y <= areaMouse.y + areaMouse.height) {
 					mouseCatched = true;
+				}
+				
+			}
+			
+		}
+		
+		
+		private function checkSnowMan():void {
+			
+			if (snowManCatched) {
+
+				
+				if (GLOBAL_MOUSE_X < areaSnowMan.x || GLOBAL_MOUSE_X > areaSnowMan.x + areaSnowMan.width ||
+				GLOBAL_MOUSE_Y < areaSnowMan.y || GLOBAL_MOUSE_Y > areaSnowMan.y + areaSnowMan.height) {
+					snowManCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = rightHand.x + 25;
+					var point_hand_y:Number = rightHand.y - 0;
+				
+					snowMan.x = point_hand_x;
+					snowMan.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (GLOBAL_MOUSE_X >= areaSnowMan.x && GLOBAL_MOUSE_X <= areaSnowMan.x + areaSnowMan.width &&
+				GLOBAL_MOUSE_Y >= areaSnowMan.y && GLOBAL_MOUSE_Y <= areaSnowMan.y + areaSnowMan.height) {
+					snowManCatched = true;
 				}
 				
 			}
