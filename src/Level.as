@@ -794,26 +794,13 @@ package
 				if (int(frogPoints) == 40) increasement = 0.024;
 				if (int(frogPoints) == 60) increasement = 0.035;
 				
-<<<<<<< HEAD
-				if (Input.isPressed(Input.RIGHT2))
-				{
-					CAPA_1_BOTON_DER = true;
-				}
-				else CAPA_1_BOTON_DER = false;
-				if (Input.isPressed(Input.LEFT2))
-				{
-					CAPA_1_BOTON_IZQ = true;
-				}
-				else CAPA_1_BOTON_IZQ = false;
-=======
-
+				
 				frogPoints += dt;
 				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
 				else CAPA_1_BOTON_IZQ = false;*/
->>>>>>> origin/master
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
@@ -959,8 +946,8 @@ package
 		
 		private function drawCapa0():void
 		{
-			var screen:Image = new Image(Assets.getAtlas().getTexture("DETB_BG"));
-			capa0.addChild(screen);
+			//var screen:Image = new Image(Assets.getAtlas().getTexture("DETB_BG"));
+			//capa0.addChild(screen);
 			
 			character0 = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
 			starling.core.Starling.juggler.add(character0);
@@ -1000,16 +987,24 @@ package
 			mouth2.y = heightCapa0 - mouth2.height-3;
 			mouth2.x = 100;
 			mouth2.visible = false;
+	
 		}
 		
 		private function changeSprite0():void
 		{	
+			/*
+					if (gameMatrix[t][u] == 2)
+					{
+						character0.visible = true; 
+						character0.x = u*50;
+					}
+					*/
 			
 			if (currentPos == 0)
 			{
 				if (gameMatrix[3][currentPos] == 1)
 				{
-<<<<<<< HEAD
+					
 					mouth0.visible = true;
 					character0.visible = false;
 					character1.visible = false;
@@ -1026,15 +1021,8 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 					
-=======
-					if (gameMatrix[t][u] == 2)
-					{
-						character0.visible = true; 
-						character0.x = u*50;
-					}
->>>>>>> origin/master
 				}
-
+				
 			}
 			
 			else if (currentPos == 1)
