@@ -245,6 +245,8 @@ package
 		private var textTime:TextField;
 		private var globalTime:Number = 0;
 		
+		private var ev:Boolean = true;
+		
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
@@ -253,6 +255,7 @@ package
 		
 		private var debug:Boolean = true;
 		private var ira:Number = 0;
+		private var fired:Boolean = false;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -596,7 +599,7 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) {
 				if (snowManCatched) {
-					ira -= 1;
+					ira -= 5;
 					if (ira < 0) { ira = 0; }
 					Squeaky();
 				}	
@@ -647,6 +650,7 @@ package
 						// SUENA EL BOSS
 					}
 					phoneEvent = 30 + Math.random() * 10;
+					ira += phoneBronca * 5 + phoneBronca * 2;
 					phoneBronca = 1;
 				}
 			}
@@ -675,12 +679,14 @@ package
 			
 			checkLeftVisibility();
 			checkRightVisibility();
-			ira += e.passedTime;
-			shakeHands((-1.05 + Math.pow(1.05,ira))/2);
 			
-			if (int(ira) == 10)
-				trace("ORDENADOR A LA MIERDA!");
+			//IRA GLOBAL
+			if (!fired)
+				ira += e.passedTime / 4;
+			else 
+				ira += e.passedTime * 10;
 			
+			shakeHands((-1.05 + Math.pow(1.05,ira))/4);
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -1111,7 +1117,7 @@ package
 				}
 				
 				// Salto Personaje
-				if (GLOBAL_BOTON_ESPACIO && !pisotoneando && !hurt) {
+				if (CAPA_2_BOTON_ESPACIO && !pisotoneando && !hurt) {
 					pisotoneando = true;
 					character.visible = false;
 					characterWalk.visible = false;
@@ -1296,6 +1302,7 @@ package
 					if (lifeUp == null && Math.round(Math.random() * 1) == 0) spawnLife(enemyArray[i].x, enemyArray[i].y);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
+					ira -= 2;
 				}
 			}
 			
@@ -1344,6 +1351,7 @@ package
 			
 		private function loseLife():void {
 			lifes -= 1;
+			ira += 5;
 			drawLifes();
 			hurt = true;
 			character.visible = false;
@@ -1369,12 +1377,14 @@ package
 				characterHurt.visible = false;
 				character.visible = false;
 				game1over = true;
+				ira += 15;
 			}
 		}
 		
 		private function gainLife():void {
 			if(lifes < 3){
 				lifes += 1;
+				//ira -= 5;
 				drawLifes();
 			}
 		}
@@ -1519,6 +1529,7 @@ package
 					if (gameMatrix[3][currentPos] == 1)
 					{
 						dead = true;
+						ira += 10;
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -1533,6 +1544,7 @@ package
 					if (gameMatrix[3][currentPos] == 1) 
 					{
 						dead = true;
+						ira += 10;
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -1559,6 +1571,7 @@ package
 										if (gameMatrix[i + 1][j] == 2)
 										{
 											dead = true;
+											ira += 10;
 										}
 										else 
 										{
@@ -1567,7 +1580,10 @@ package
 											changeSprite0();
 										}
 									}
-									else numBombs++;
+									else {
+										numBombs++;
+										ira -= 1;
+									}
 								}
 							}
 						}
@@ -2207,6 +2223,7 @@ package
 						
 						// ESTAS DESPEDIDO, MACHO
 						trace ("FIRED, HIJOPUTA");
+						fired = true;
 						
 					}
 					
