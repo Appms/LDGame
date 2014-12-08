@@ -128,6 +128,14 @@ package
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
 		
+		public var channel_SCA_Main:SoundChannel = new SoundChannel();
+		public var SCA_Main:Sound = new Assets.SCA_Main() as Sound;
+		public var SCA_Title:Sound = new Assets.FrogIntro() as Sound;
+		
+		public var powerUp:Sound = new Assets.PowerUp() as Sound;
+		public var buttonPushed:Sound = new Assets.ButtonSound() as Sound;
+		
+		
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
@@ -176,11 +184,18 @@ package
 		
 		private var closeIcon:Sprite;
 		
-		private var loadScreen:MovieClip;
-		private var loadStaticScreen:Image;
 		private var pcLoading:Boolean;
 		
+		private var loadGame1Screen:Sprite;
+		private var loadGame1Title:MovieClip;
+		private var loadGame1Timer:Number;
+		
+		
+		
+		
 		// PC
+		private var loadScreen:MovieClip;
+		private var loadStaticScreen:Sprite;
 		private var wallpaper:Sprite;
 		private var txtIcon:Sprite;
 		private var txtInfo:Sprite;
@@ -309,9 +324,9 @@ package
 			channel_phone = SoundPhone.play(0, 9999);
 			channel_phone.soundTransform = new SoundTransform(0, -1);
 
-			
+			var i:Image;
 			capa0 = new Sprite();
-			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
+			i = new Image(Assets.getAtlas().getTexture("capa0"));
 			capa0.addChild(i);
 			i.visible = false;
 			capa0.scaleX = 1.01;
@@ -752,7 +767,7 @@ package
 		// PC
 		
 		private function loadPC():void {
-			
+			var img:Image;
 			StartUp.play();
 			
 			capa1_ruido.visible = true;
@@ -760,8 +775,12 @@ package
 			pcLoading = true;
 			
 			
-			loadStaticScreen = new Image(Assets.getTexture("LoadScreen"));
+			loadStaticScreen = new Sprite();
+			img = new Image(Assets.getTexture("LoadScreen"));
+			loadStaticScreen.addChild(img);
 			capa1.addChild(loadStaticScreen);
+			loadStaticScreen.x = 0;
+			loadStaticScreen.y = 0;
 			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 1);
 			loadScreen.play();
 			loadScreen.pivotX = loadScreen.width / 2;
@@ -870,9 +889,10 @@ package
 		}
 		
 		private function checkPCClick():void {
-			if ( Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+			if ( txtInfo.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
 				shutdownPC();
-				initGame1();
+				loadGame1();
+				//initGame1();
 			}
 			if ( txtInfo.visible == false && Math.abs(txtIcon.x - cursor.x) < txtIcon.width/2 && Math.abs(txtIcon.y - cursor.y) < txtIcon.height/2)  {
 				txtInfo.visible = true;
@@ -884,9 +904,7 @@ package
 				txtClose.visible = false;
 			}
 		}
-				
-				
-			
+		
 		
 		private function shutdownPC():void {
 			capa1.removeChildren();
@@ -895,7 +913,35 @@ package
 		
 		// GAME1
 		
+		private function loadGame1():void {
+			
+			var img:Image;
+			SCA_Title.play();
+			loadGame1Screen = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("capa1"));
+			loadGame1Screen.addChild(img);
+			capa1.addChild(loadGame1Screen);
+			
+			loadGame1Title = new MovieClip(Assets.getAtlas().getTextures("SCA_Title"), 0.33);
+			starling.core.Starling.juggler.add(loadGame1Title);
+			capa1.addChild(loadGame1Title);
+			loadGame1Title.pivotX = loadGame1Title.width / 2;
+			loadGame1Title.pivotY = loadGame1Title.height / 2;
+			loadGame1Title.x = widthCapa1 / 2;
+			loadGame1Title.y = heightCapa1 / 2;
+			loadGame1Title.play();
+			loadGame1Title.loop = false;
+			loadGame1Title.addEventListener(Event.COMPLETE, loadGame1TitleCompleted);
+		}
+		
+		private function loadGame1TitleCompleted(event:Event):void {
+			capa1.removeChildren();
+			initGame1();
+		}
+		
 		private function initGame1():void {
+			channel_SCA_Main = SCA_Main.play(0, 999999);
+			//channel_SCA_Main.soundTransform.volume(0.25);
 			
 			var img:Image;
 			
@@ -954,7 +1000,7 @@ package
 			LBdt = 0;
 			
 			
-			character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
+			character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 8);
 			starling.core.Starling.juggler.add(character);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
@@ -963,7 +1009,7 @@ package
 			character.pivotY = character.height / 2;
 			character.visible = true;
 			
-			characterWalk = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_walk"), 6);
+			characterWalk = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_walk"), 8);
 			starling.core.Starling.juggler.add(characterWalk);
 			capa1.addChild(characterWalk);
 			characterWalk.x = character.x;
@@ -995,7 +1041,7 @@ package
 			characterDeath = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_death"), 0.5);
 			starling.core.Starling.juggler.add(characterDeath);
 			capa1.addChild(characterDeath);
-			characterDeath.addFrameAt(0, Assets.getAtlas().getTexture("SCA_hero_hurt_01"), null, 1 / 6);
+			characterDeath.addFrameAt(0, Assets.getAtlas().getTexture("SCA_hero_hurt_01"), null, 2 / 3);
 			characterDeath.x = character.x;
 			characterDeath.y = character.y;
 			characterDeath.pivotX = character.width / 2;
@@ -1020,6 +1066,15 @@ package
 			glassface.pivotX = glassface.width / 2;
 			glassface.pivotY = glassface.height / 2;
 			glassface.visible = false;
+			
+			
+			enemySplash = new MovieClip(Assets.getAtlas().getTextures("SCA_bug_explode"),6);
+			starling.core.Starling.juggler.add(enemySplash);
+			capa1.addChild(enemySplash);
+			enemySplash.pivotX = enemySplash.width / 2;
+			enemySplash.pivotY = enemySplash.height / 2;
+			enemySplash.visible = false;
+			enemySplash.stop();
 			
 			
 			laserTimer = 0;
@@ -1061,7 +1116,6 @@ package
 					checkGame1Click();
 				}
 				else {
-					fairy.visible = true;
 					fairy_laser.visible = false;
 				}
 				
@@ -1099,7 +1153,7 @@ package
 					}
 					
 					else if (CAPA_2_BOTON_FLECHA_IZQ) {
-						if (character.x > 0) {
+						if (character.x - character.width/4 > 0) {
 							character.x -= 160*dt;
 							if (characterWalk.visible == false) {
 								characterWalk.visible = true;
@@ -1138,7 +1192,7 @@ package
 					}
 					
 					else if (CAPA_2_BOTON_FLECHA_DER) {
-						if (character.x < widthCapa1) {
+						if (character.x + character.width/4 < widthCapa1) {
 							character.x += 160*dt;
 							if (characterWalk.visible == false) {
 								characterWalk.visible = true;
@@ -1168,6 +1222,7 @@ package
 					var img:Image;
 					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2)
 					{
+						buttonPushed.play();
 						RB.removeChildren();
 						img = new Image(Assets.getTexture("RBP"));
 						RB.addChild(img)
@@ -1176,6 +1231,7 @@ package
 					}
 					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2 - 2)
 					{
+						buttonPushed.play();
 						LB.removeChildren();
 						img = new Image(Assets.getTexture("LBP"));
 						LB.addChild(img);
@@ -1319,6 +1375,11 @@ package
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - character.x), 2) + Math.pow((enemyArray[i].y - character.y), 2)) < 25) {
+					enemySplash.x = enemyArray[i].x;
+					enemySplash.y = enemyArray[i].y;
+					enemySplash.visible = true;
+					enemySplash.play();
+					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
 					loseLife();
@@ -1326,17 +1387,26 @@ package
 			}
 		}
 		
+		private function endEnemySplash(event:Event):void {
+			enemySplash.visible = false;
+			enemySplash.stop();
+		}
+		
 		private function checkGame1Click():void {
-			laserTimer = 0.5;
+			laserTimer = 0.25;
 			fairy_laser.x = fairy.x;
 			fairy_laser.y = fairy.y;
 			fairy_laser.visible = true;
-			fairy.visible = false;
 			
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
 					if (lifeUp == null && Math.round(Math.random() * 1) == 0) spawnLife(enemyArray[i].x, enemyArray[i].y);
+					enemySplash.x = enemyArray[i].x;
+					enemySplash.y = enemyArray[i].y;
+					enemySplash.visible = true;
+					enemySplash.play();
+					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
 					ira -= 2;
@@ -1419,6 +1489,7 @@ package
 		}
 		
 		private function gainLife():void {
+			powerUp.play();
 			if(lifes < 3){
 				lifes += 1;
 				//ira -= 5;
@@ -1531,6 +1602,7 @@ package
 		}
 		
 		private function shutdownGame1():void {
+			channel_SCA_Main.stop();
 			shutDownFrog();
 			capa1.removeChildren();
 			capa1_careto.removeChildren();
