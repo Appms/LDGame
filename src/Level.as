@@ -114,6 +114,10 @@ package
 		private var initFrog:Boolean;
 		private var frogRunning:Boolean;
 		private var copyText:TextField;
+		private var numBombs:Number;
+		private var bombScore:TextField;
+		private var bombScoreCopy:TextField;
+		
 
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
@@ -223,6 +227,11 @@ package
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
 		
+		private var textIra:TextField;
+		private var textTime:TextField;
+		private var globalTime:Number = 0;
+		
+		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
 		
@@ -310,9 +319,7 @@ package
 			heightCapa1 = capa1.height;
 			pcRunning = false;
 			game1Running = false;
-			
-			//loadPC();
-			
+					
 			// *********************** CAPA 2 ***********************
 			
 			areaMouse = new Sprite();
@@ -459,6 +466,15 @@ package
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
 			GLOBAL_MOUSE_Y = 500;	
+			
+			textIra = new TextField(100, 50, "", "Arial", 24);
+			capa2.addChild(textIra);
+			textIra.x = 650;
+			textTime = new TextField(100, 50, "", "Arial", 24);
+			capa2.addChild(textTime);
+			textTime.x = 650;
+			textTime.y = 50;
+			
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -481,6 +497,10 @@ package
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
+			
+			globalTime+= e.passedTime;
+			textIra.text = "Ira: " + ira;
+			textTime.text = "Time: " + int(globalTime);
 			
 			if (Input.isPressed(Input.SPACE))
 			{
@@ -506,11 +526,10 @@ package
 					if (ira < 0) { ira = 0; }
 					Squeaky();
 				}	
-
 			}
 			
 			//temporal encender apagar PC
-			if(Input.isDown(Input.UP2)) clickScreenButton = true;
+			if (Input.isPressed(Input.UP2)) clickScreenButton = true;
 			
 			if (GLOBAL_MOUSE_MANTAINED) {
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
@@ -652,6 +671,19 @@ package
 			wallpaper.scaleX = 0.21;
 			wallpaper.scaleY = 0.25;
 			
+			
+			gameIcon = new Sprite();
+			img = new Image(Assets.getTexture("gameIcon"));
+			gameIcon.addChild(img);
+			capa1.addChild(gameIcon);
+			gameIcon.x = 25;
+			gameIcon.y = 100;
+			gameIcon.pivotX = gameIcon.width / 2;
+			gameIcon.pivotY = gameIcon.height / 2;
+			gameIcon.scaleX = 0.65;
+			gameIcon.scaleY = 0.65;
+			
+			
 			txtIcon = new Sprite();
 			img = new Image(Assets.getTexture("txtIcon"));
 			txtIcon.addChild(img);
@@ -668,8 +700,8 @@ package
 			img = new Image(Assets.getTexture("textInfo2"));
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
-			txtInfo.x = widthCapa1 / 10;
-			txtInfo.y = heightCapa1 / 10;
+			txtInfo.x = 1;
+			txtInfo.y = 10;
 			txtInfo.scaleX = 0.5;
 			txtInfo.scaleY = 0.5;
 			txtInfo.visible = false;
@@ -678,22 +710,12 @@ package
 			img = new Image(Assets.getTexture("txtClose"));
 			txtClose.addChild(img);
 			capa1.addChild(txtClose);
-			txtClose.scaleX = txtInfo.scaleX;
-			txtClose.scaleY = txtInfo.scaleY;
-			txtClose.x = txtInfo.x + 504*txtClose.scaleX;
-			txtClose.y = txtInfo.y + 8*txtClose.scaleY;
+			txtClose.scaleX = 0.55;
+			txtClose.scaleY = 0.55;
+			txtClose.x = txtInfo.x + txtInfo.width - txtClose.width - 4;//504*txtClose.scaleX;
+			txtClose.y = txtInfo.y + 1//8*txtClose.scaleY;
 			txtClose.visible = false;
 			
-			gameIcon = new Sprite();
-			img = new Image(Assets.getTexture("gameIcon"));
-			gameIcon.addChild(img);
-			capa1.addChild(gameIcon);
-			gameIcon.x = 25;
-			gameIcon.y = 100;
-			gameIcon.pivotX = gameIcon.width / 2;
-			gameIcon.pivotY = gameIcon.height / 2;
-			gameIcon.scaleX = 0.65;
-			gameIcon.scaleY = 0.65;
 			
 			cursor = new Sprite();
 			img = new Image(Assets.getTexture("cursor"));
@@ -1295,10 +1317,15 @@ package
 		}
 		
 		private function initGame0():void
-		{
+		{						
+			copyText = new TextField(150, 180 , "" , "RetroFont", 36, 0x8dab89);
+			copyText.x = 2;
+			copyText.y = 2;
+			capa0.addChild(copyText);
 			secsPassed = 0;
 			currentTrack = 0;
 			genSecs = 0;
+			secs = 4;
 			deathSecs = 0;
 			highScore = 0;
 			frogPoints = 0;
@@ -1333,12 +1360,29 @@ package
 			matrixText.y = 0;
 			matrixText.border = false;
 			capa0.addChild(matrixText);
-			
 								
 			copyText = new TextField(150, 180 , "" , "RetroFont", 36, 0x8dab89);
 			copyText.x = 2;
 			copyText.y = 2;
 			capa0.addChild(copyText);
+			
+			numBombs = 0;
+			var bombScoreString:String = "" + numBombs;
+			
+			bombScore = new TextField(50, 20, bombScoreString, "RetroFont", 36, 0x000000);
+			bombScore.x = 100;
+			bombScore.y = 10;
+			capa0.addChild(bombScore);
+			
+			bombScore.visible = false;
+			
+
+			bombScoreCopy = new TextField(50, 20, bombScoreString, "RetroFont", 36, 0x8dab89);
+			bombScoreCopy.x = 102;
+			bombScoreCopy.y = 12;
+			capa0.addChild(bombScoreCopy);
+			
+			bombScoreCopy.visible = false;
 		}
 		
 		private function shutdownGame1():void {
@@ -1353,6 +1397,9 @@ package
 		{	
 			if (initiated)
 			{
+				
+				if (CAPA_1_BOTON_DER) CAPA_1_BOTON_DER = false;
+				if (CAPA_1_BOTON_IZQ) CAPA_1_BOTON_IZQ = false;
 				if (secsPassed == 0) FrogIntro.play();;
 				
 				matrixText.visible = false;
@@ -1367,15 +1414,11 @@ package
 					intro.visible = false;
 					screen.visible = true;
 					character1.visible = true;
-					
 				}
-				
 			}
 			
 			else if(!dead)
 			{
-				//matrixText.visible = true;
-				//updateSprites0();
 				customDt = dt + increasement;
 				frogPoints += customDt;
 				
@@ -1386,12 +1429,6 @@ package
 				
 				
 				frogPoints += dt;
-				/*
-				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
-				else CAPA_1_BOTON_DER = false;
-				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
-				else CAPA_1_BOTON_IZQ = false;
-				*/
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
@@ -1450,16 +1487,15 @@ package
 											changeSprite0();
 										}
 									}
+									else numBombs++;
 								}
 							}
 						}
-						
 						secsPassed = 0;
 					}
 				}
 				
 				genSecs += customDt;
-				
 				
 				if (genSecs >= 4&& secsPassed==0)
 				{
@@ -1486,13 +1522,18 @@ package
 				}
 				//matrixText.fontSize = 48;
 				matrixText.text = test;
+				
+				bombScore.visible = true;
+				bombScore.text = ""+numBombs;
+				bombScoreCopy.visible = true;
+				bombScoreCopy.text = ""+numBombs;
 			}	
 			
 			if (dead)
 			{
-				var selectAni:Boolean = true;
-				deathSecs += dt;
 				
+				var selectAni:Boolean = true;
+				deathSecs += dt;		
 				
 				character0.visible = false;
 				character1.visible = false;
@@ -1530,6 +1571,8 @@ package
 				
 				if(deathSecs >= 3.25)
 				{		
+					bombScore.visible = false;
+					bombScoreCopy.visible = false;
 					matrixText.visible = true;
 					death0.visible = false;
 					death0.stop();
@@ -1538,18 +1581,17 @@ package
 					death2.visible = false;
 					death2.stop();
 					
-					if (frogPoints > highScore) highScore = frogPoints;
+					if (numBombs > highScore) highScore = numBombs;
 					secs -= dt;
 					genSecs = 0;
 					secsPassed = 0;
 					generated = false;
-					test = "Score: " + int(frogPoints);
+					test = "Score: " + numBombs;
 					test += "\n";
 					test += "Best: " + int(highScore);
 					test += "\n\n";
 					test += "Next in: " + int(secs);
 					
-
 					
 					copyText.text = test;
 					copyText.visible = true;
@@ -1579,6 +1621,7 @@ package
 					matrixText.visible = false;
 					copyText.visible = false;
 					secs = 4;
+					numBombs = 0;
 				}
 			}
 		}
