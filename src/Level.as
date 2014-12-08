@@ -139,8 +139,20 @@ package
 		private var CAPA_2_LEFT_MOUSE_X:Number = 200;
 		private var CAPA_2_LEFT_MOUSE_Y:Number = 500;
 		
-		private var leftHand:Sprite;
-		private var rightHand:Sprite;
+		private var leftHand1:Sprite;
+		private var leftHand2:Sprite;
+		private var leftHandMouse1:Sprite;
+		private var leftHandMouse2:Sprite;
+		private var leftShirt:Sprite;
+		
+		private var rightHand1:Sprite;
+		private var rightHand2:Sprite;
+		private var rightHandMouse1:Sprite;
+		private var rightHandMouse2:Sprite;
+		private var rightShirt:Sprite;
+		
+		private var computer:Sprite;
+		private var keyboard:Sprite;
 		
 		private var areaMouse:Sprite;
 		private var areaNeutral:Sprite;
@@ -168,6 +180,9 @@ package
 		private var test_F_ARR:Sprite;
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
+		
+		private var changed_x_rotation:Number = 73;
+		private var changed_y_rotation:Number = 43;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -350,6 +365,16 @@ package
 			
 			// *********************** CAPA 2 ***********************
 			
+			computer = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_computer"));
+			computer.addChild(i);
+			capa2.addChild(computer);
+			
+			keyboard = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_keyboard"));
+			keyboard.addChild(i);
+			capa2.addChild(keyboard);
+			
 			areaMouse = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaMouse.addChild(i);
@@ -402,17 +427,17 @@ package
 			areaPhone.y = 225;
 			
 			phone_base = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("phone_base"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_telefone_base"));
 			phone_base.addChild(i);
 			capa2.addChild(phone_base);
-			phone_base.x = areaPhone.x + areaPhone.width/2 - phone_base.width/2 -14;
+			phone_base.x = areaPhone.x + areaPhone.width/2 - phone_base.width/2 -32;
 			phone_base.y = areaPhone.y + areaPhone.height / 2 - phone_base.height / 2;
 			
 			phone = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("phone"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_telefone"));
 			phone.addChild(i);
 			capa2.addChild(phone);
-			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -14;
+			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -32;
 			phone.y = areaPhone.y + areaPhone.height / 2 - phone.height / 2;
 			
 			areaCoffe = new Sprite();
@@ -479,21 +504,59 @@ package
 			test_ESP.x = 165;
 			test_ESP.y = 470 +30;
 			
-			leftHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
+			leftHand1 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_01"));
 			i.scaleX *= -1;
-			leftHand.addChild(i);
-			capa2.addChild(leftHand);
-			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
-			leftHand.y = CAPA_2_LEFT_MOUSE_Y;
+			leftHand1.addChild(i);
+			capa2.addChild(leftHand1);
+			leftHand1.x = CAPA_2_LEFT_MOUSE_X;
+			leftHand1.y = CAPA_2_LEFT_MOUSE_Y;
+			
+			leftHand2 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_02"));
+			i.scaleX *= -1;
+			leftHand2.addChild(i);
+			capa2.addChild(leftHand2);
+				
+			leftShirt = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_shirt"));
+			i.scaleX *= -1;
+			leftShirt.addChild(i);
+			capa2.addChild(leftShirt);
 			
 
-			rightHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
-			rightHand.addChild(i);
-			capa2.addChild(rightHand);
+			rightHand1 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_01"));
+			rightHand1.addChild(i);
+			capa2.addChild(rightHand1);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
-			GLOBAL_MOUSE_Y = 500;	
+			GLOBAL_MOUSE_Y = 500;
+			
+			rightHand2 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_02"));
+			rightHand2.addChild(i);
+			capa2.addChild(rightHand2);
+			
+			rightHandMouse1 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
+			rightHandMouse1.addChild(i);
+			rightHandMouse1.rotation = ( -30) * Math.PI / 180;
+			capa2.addChild(rightHandMouse1);
+			rightHandMouse1.x = GLOBAL_MOUSE_X;
+			rightHandMouse1.y = GLOBAL_MOUSE_Y;
+			
+			rightHandMouse2 = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_02"));
+			rightHandMouse2.addChild(i);
+			rightHandMouse2.rotation = ( -30) * Math.PI / 180;
+			capa2.addChild(rightHandMouse2);
+			rightHandMouse2.x = rightHandMouse1.x;
+			rightHandMouse2.y = rightHandMouse1.y;
+			
+			rightShirt = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_shirt"));
+			rightShirt.addChild(i);
+			capa2.addChild(rightShirt);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -559,6 +622,9 @@ package
 					CAPA_2_BOTON_FLECHA_DER = true;
 				}
 			}
+			else {
+				
+			}
 			
 			if (Input.isPressed(Input.SPACE)) {
 				
@@ -592,13 +658,15 @@ package
 			phoneEvent -= e.passedTime;
 			checkPhoneEvent();
 			
-
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
 			checkSnowMan();
 			checkPhone();
 			checkCoffe();
+			
+			checkLeftVisibility();
+			checkRightVisibility();
 			//ira += e.passedTime;
 			shakeHands(ira);
 			
@@ -1211,28 +1279,29 @@ package
 			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
-			if (GLOBAL_BOTON_W) {
-				new_y -= dt * speed_leftHand;
-			}
-			if (GLOBAL_BOTON_S) {
-				new_y += dt * speed_leftHand;
-			}
-			if (GLOBAL_BOTON_A) {
-				new_x -= dt * speed_leftHand;
-			}
-			if (GLOBAL_BOTON_D) {
-				new_x += dt * speed_leftHand;
+			if (!Input.isDown(Input.SPACE)) {
+				if (GLOBAL_BOTON_W) {
+					new_y -= dt * speed_leftHand;
+				}
+				if (GLOBAL_BOTON_S) {
+					new_y += dt * speed_leftHand;
+				}
+				if (GLOBAL_BOTON_A) {
+					new_x -= dt * speed_leftHand;
+				}
+				if (GLOBAL_BOTON_D) {
+					new_x += dt * speed_leftHand;
+				}
 			}
 			
-			
-			if (new_x > capa1.x && new_y < capa1.y + heightCapa1) { 
-				var aux_desfase_x:int = new_x - capa1.x;
+			if (new_x > capa1.x +10 && new_y < capa1.y + heightCapa1 +55) { 
+				var aux_desfase_x:int = new_x - (capa1.x +10);
 				var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
 				if (aux_desfase_x > aux_desfase_y) {
-					new_y = capa1.y + heightCapa1;
+					new_y = capa1.y + heightCapa1 +55;
 				}
 				else {
-					new_x = capa1.x;
+					new_x = capa1.x +10;
 				}
 			}
 			
@@ -1241,21 +1310,29 @@ package
 			if ((new_x) > GAME.true_width / 2) {
 				new_x = GAME.true_width / 2;
 			}
-			if (new_x - leftHand.width < -leftHand.width/2) {
-				new_x = -leftHand.width/2 +leftHand.width;
+			if (new_x < leftHand1.width/2 -35) {
+				new_x = leftHand1.width/2 -35;
 			}
-			if (new_y > GAME.true_height - leftHand.height/2) {
-				new_y = GAME.true_height - leftHand.height/2;
+			if (new_y > GAME.true_height - leftHand1.height/6 -16 +55) {
+				new_y = GAME.true_height - leftHand1.height/6 -16 +55;
 			}
-			if (new_y < 0) {
-				new_y = 0;
+			if (new_y < 55) {
+				new_y = 55;
 			}
+			
 			
 			CAPA_2_LEFT_MOUSE_X = new_x;
 			CAPA_2_LEFT_MOUSE_Y = new_y;
 			
-			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
-			leftHand.y = new_y;
+			leftHand1.x = CAPA_2_LEFT_MOUSE_X +35;
+			leftHand1.y = CAPA_2_LEFT_MOUSE_Y -130 -55;
+			leftHand2.x = leftHand1.x;
+			leftHand2.y = leftHand1.y;
+			
+			//trace("X: " + CAPA_2_LEFT_MOUSE_X +"// Y: " + CAPA_2_LEFT_MOUSE_Y);
+			
+			leftShirt.x = leftHand1.x -120;
+			leftShirt.y = leftHand1.y +310;
 
 			// END MOVE LEFT HAND
 			
@@ -1265,43 +1342,38 @@ package
 			
 			
 			// MOVE RIGHT HAND
-			if (rightHand.rotation != 0) {
-				rightHand.x += 30;
-				rightHand.y -= 10;
-				rightHand.rotation = 0;
-			}
 			
-			var new_x:Number = rightHand.x;
-			var new_y:Number = rightHand.y;
+			var new_x:Number = rightHand1.x +50;
+			var new_y:Number = rightHand1.y +185;
 			var speed_rightHand:Number = 1000;
 			
-			if (GLOBAL_MOUSE_X != rightHand.x) {
-				if (GLOBAL_MOUSE_X > rightHand.x) {
+			if (GLOBAL_MOUSE_X != rightHand1.x) {
+				if (GLOBAL_MOUSE_X > rightHand1.x) {
 					new_x += dt * speed_rightHand;
 					if (GLOBAL_MOUSE_X < new_x) new_x = GLOBAL_MOUSE_X;
 				}
-				else if (GLOBAL_MOUSE_X < rightHand.x) {
+				else if (GLOBAL_MOUSE_X < rightHand1.x) {
 						new_x -= dt * speed_rightHand;
 					if (GLOBAL_MOUSE_X > new_x) new_x = GLOBAL_MOUSE_X;
 				}
 			}
 			
-			if (GLOBAL_MOUSE_Y != rightHand.y) {
-				if (GLOBAL_MOUSE_Y > rightHand.y) {
+			if (GLOBAL_MOUSE_Y != rightHand1.y) {
+				if (GLOBAL_MOUSE_Y > rightHand1.y) {
 					new_y += dt * speed_rightHand;
 					if (GLOBAL_MOUSE_Y < new_y) new_y = GLOBAL_MOUSE_Y;
 				}
-				else if (GLOBAL_MOUSE_Y < rightHand.y) {
+				else if (GLOBAL_MOUSE_Y < rightHand1.y) {
 					new_y -= dt * speed_rightHand;
 					if (GLOBAL_MOUSE_Y > new_y) new_y = GLOBAL_MOUSE_Y;
 				}
 			}
 			
-			if (new_x < capa1.x + widthCapa1 && new_y < capa1.y + heightCapa1) { 
+			if (new_x < capa1.x + widthCapa1 && new_y < capa1.y + heightCapa1 +55) { 
 				var aux_desfase_x:int = new_x -(capa1.x +widthCapa1);
 				var aux_desfase_y:int = new_y -(capa1.y +heightCapa1);
 				if (aux_desfase_x < aux_desfase_y) {
-					new_y = capa1.y + heightCapa1;
+					new_y = capa1.y + heightCapa1 +55;
 				}
 				else {
 					new_x = capa1.x + widthCapa1;
@@ -1326,18 +1398,27 @@ package
 				
 			}
 			
-			if (new_x < GAME.true_width / 2) {
-				new_x = GAME.true_width / 2;
+			if (new_x  < GAME.true_width / 2) {
+				new_x = GAME.true_width / 2 ;
 			}
-			if (new_x > GAME.true_width - rightHand.width / 2) {
-				new_x = GAME.true_width - rightHand.width / 2;
+			if (new_x -50 > GAME.true_width - rightHand1.width / 2) {
+				new_x = GAME.true_width - rightHand1.width / 2 +50;
 			}
-			if (new_y > GAME.true_height - rightHand.height / 2) {
-				new_y = GAME.true_height - rightHand.height / 2;
+			if (new_y -185 > GAME.true_height - rightHand1.height / 2) {
+				new_y = GAME.true_height - rightHand1.height / 2 +185;
+			}
+			if (new_y < 55) {
+				new_y = 55;
 			}
 			
-			rightHand.x = new_x;
-			rightHand.y = new_y;
+			
+			rightHand1.x = new_x -50;
+			rightHand1.y = new_y -185;
+			rightHand2.x = rightHand1.x;
+			rightHand2.y = rightHand1.y;
+			
+			rightShirt.x = rightHand1.x +120;
+			rightShirt.y = rightHand1.y +310;
 			
 			// END MOVE RIGHT HAND
 			
@@ -1352,31 +1433,21 @@ package
 			//degree = radians * 180 / Math.PI
 			
 			if (mouseCatched) {
-				if (rightHand.rotation != 0) {
-					rightHand.x += 30;
-					rightHand.y -= 10;
-					rightHand.rotation = 0;
-				}
 				
-				if (GLOBAL_MOUSE_X < areaNeutral.x || GLOBAL_MOUSE_X > areaNeutral.x + areaNeutral.width ||
-				GLOBAL_MOUSE_Y < areaNeutral.y || GLOBAL_MOUSE_Y > areaNeutral.y + areaNeutral.height) {
+				if (GLOBAL_MOUSE_X <= areaNeutral.x || GLOBAL_MOUSE_X >= areaNeutral.x + areaNeutral.width ||
+				GLOBAL_MOUSE_Y <= areaNeutral.y || GLOBAL_MOUSE_Y >= areaNeutral.y + areaNeutral.height) {
 					mouseCatched = false;
-					if (rightHand.rotation != 0) {
-						rightHand.x += 30;
-						rightHand.y -= 10;
-						rightHand.rotation = 0;
-					}
 				}
-				else {
+				else {		
 					
-					if (rotation == 0) {
-						rightHand.rotation = ( -30) * Math.PI / 180;
-						rightHand.x -= 30;
-						rightHand.y += 10;
-					}
+					rightHandMouse1.x = rightHand1.x -70;
+					rightHandMouse1.y = rightHand1.y +60;
 					
-					var point_hand_x:Number = rightHand.x + 25;
-					var point_hand_y:Number = rightHand.y - 0;
+					rightHandMouse2.x = rightHandMouse1.x;
+					rightHandMouse2.y = rightHandMouse1.y;
+					
+					var point_hand_x:Number = rightHandMouse1.x + 100;
+					var point_hand_y:Number = rightHandMouse1.y + 70;
 				
 					mouse.x = point_hand_x;
 					mouse.y = point_hand_y;	
@@ -1406,8 +1477,8 @@ package
 				}
 				else {
 					
-					var point_hand_x:Number = rightHand.x + 25;
-					var point_hand_y:Number = rightHand.y - 0;
+					var point_hand_x:Number = rightHand1.x + 25;
+					var point_hand_y:Number = rightHand1.y - 0;
 				
 					snowMan.x = point_hand_x;
 					snowMan.y = point_hand_y;	
@@ -1437,8 +1508,8 @@ package
 				}
 				else {
 					
-					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
-					var point_hand_y:Number = leftHand.y - 0;
+					var point_hand_x:Number = leftHand1.x + leftHand1.width - 25;
+					var point_hand_y:Number = leftHand1.y - 0;
 				
 					phone.x = point_hand_x;
 					phone.y = point_hand_y;	
@@ -1468,8 +1539,8 @@ package
 				}
 				else {
 					
-					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
-					var point_hand_y:Number = leftHand.y - 0;
+					var point_hand_x:Number = leftHand1.x + leftHand1.width - 25;
+					var point_hand_y:Number = leftHand1.y - 0;
 				
 					coffe.x = point_hand_x;
 					coffe.y = point_hand_y;	
@@ -1552,6 +1623,66 @@ package
 			else if (randi > 2 / 10) SoundSqueak8_02.play();
 			else if (randi > 1 / 10) SoundSqueak9_02.play();
 			else SoundSqueak10_02.play();
+		}
+		
+		private function checkRightVisibility():void {
+			
+			if (mouseCatched) {
+				if (GLOBAL_MOUSE_MANTAINED) {
+					rightHandMouse2.visible = true;
+					
+					rightHand1.visible = false;
+					rightHand2.visible = false;
+					rightHandMouse1.visible = false;
+				}
+				else {
+					rightHandMouse1.visible = true;
+					
+					rightHand1.visible = false;
+					rightHand2.visible = false;
+					rightHandMouse2.visible = false;
+				}
+			}
+			else if (snowManCatched) {
+				
+			}
+			else {
+				if (GLOBAL_MOUSE_MANTAINED) {
+					rightHand2.visible = true;
+					
+					rightHand1.visible = false;
+					rightHandMouse1.visible = false;
+					rightHandMouse2.visible = false;
+				}
+				else {
+					rightHand1.visible = true;
+					
+					rightHand2.visible = false;
+					rightHandMouse1.visible = false;
+					rightHandMouse2.visible = false;
+				}
+			}
+			
+		}
+		
+		private function checkLeftVisibility():void {
+			
+			if (false) {
+				
+			}
+			else {
+				if (Input.isDown(Input.SPACE)) {
+					leftHand2.visible = true;
+					
+					leftHand1.visible = false;
+				}
+				else {
+					leftHand1.visible = true;
+					
+					leftHand2.visible = false;
+				}
+			}
+			
 		}
 		
 	}
