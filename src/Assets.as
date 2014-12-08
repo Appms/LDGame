@@ -225,8 +225,11 @@ package
 		//[Embed(source = "../media/sounds/bug.mp3")]
 		//public static const BugSound:Class;
 		
-
-
+		[Embed(source = "../media/graphics/SNDeskWarning.png")]
+		public static const SNDeskWarning:Class;
+		
+		[Embed(source = "../media/graphics/SNHandWarning.png")]
+		public static const SNHandWarning:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
