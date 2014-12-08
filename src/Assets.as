@@ -219,6 +219,9 @@ package
 		[Embed(source="../media/sounds/Mumble_04.mp3")]
 		public static const SoundMumble4:Class;
 		
+		[Embed(source="../media/sounds/pound2.mp3")]
+		public static const SoundPunchKeyboard:Class;
+		
 		
 
 		

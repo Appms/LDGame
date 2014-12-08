@@ -71,6 +71,7 @@ package
 		public var SoundMumble1:Sound = new Assets.SoundMumble1() as Sound;
 		public var SoundMumble3:Sound = new Assets.SoundMumble3() as Sound;
 		public var SoundMumble4:Sound = new Assets.SoundMumble4() as Sound;
+		public var SoundPunchKeyboard:Sound = new Assets.SoundPunchKeyboard() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa0_ruido:MovieClip;
@@ -316,7 +317,9 @@ package
 		private var rageHard:Boolean = false;
 		private var timeRageSoft:Number = 0;
 		private var timeRageHard:Number = 0;
-		private var 
+		private var punchTazaTime:Boolean = false;
+		private var punchKeyboardTime:Boolean = false;
+		private var punchScreenTime:Boolean = false;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -613,8 +616,8 @@ package
 			capa2.addChild(test_BOOT);
 			if (debug) test_BOOT.alpha = 0.4;
 			else test_BOOT.alpha = 0;
-			test_BOOT.x = 563;
-			test_BOOT.y = 375;
+			test_BOOT.x = 381;
+			test_BOOT.y = 373;
 			
 			leftHand1 = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_01"));
@@ -1042,7 +1045,127 @@ package
 			else 
 				ira += e.passedTime * 10;
 			
-			shakeHands((-1.05 + Math.pow(1.05,ira))/4);
+			shakeHands(( -1.05 + Math.pow(1.05, ira)) / 4);
+			
+			if (punchTazaTime) {
+				var target_x:Number = 50;
+				var target_y:Number = 500;
+				var aux_speed:Number = 200;
+				
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 10 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 10) {
+					punchTazaTime = false;
+				}
+				else {
+					if (CAPA_2_LEFT_MOUSE_X != target_x) {
+						if (CAPA_2_LEFT_MOUSE_X > target_x) {
+							CAPA_2_LEFT_MOUSE_X -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X < target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_X < target_x) {
+							CAPA_2_LEFT_MOUSE_X += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X > target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+					}
+					if (CAPA_2_LEFT_MOUSE_Y != target_y) {			
+						if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+							CAPA_2_LEFT_MOUSE_Y -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+							CAPA_2_LEFT_MOUSE_Y += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}	
+					}
+				}
+			}
+			else if (punchKeyboardTime) {
+				var target_x:Number = 200;
+				var target_y:Number = 500;
+				var aux_speed:Number = 1000;
+				
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
+					punchKeyboardTime = false;
+					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
+				}
+				else {
+					if (CAPA_2_LEFT_MOUSE_X != target_x) {
+						if (CAPA_2_LEFT_MOUSE_X > target_x) {
+							CAPA_2_LEFT_MOUSE_X -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X < target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_X < target_x) {
+							CAPA_2_LEFT_MOUSE_X += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X > target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+					}
+					if (CAPA_2_LEFT_MOUSE_Y != target_y) {			
+						if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+							CAPA_2_LEFT_MOUSE_Y -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+							CAPA_2_LEFT_MOUSE_Y += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}	
+					}
+				}
+			}
+			else if (punchScreenTime) {
+				var target_x:Number = 200;
+				var target_y:Number = 500;
+				var aux_speed:Number = 200;
+				
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 10 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 10) {
+					punchScreenTime = false;
+					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
+				}
+				else {
+					if (CAPA_2_LEFT_MOUSE_X != target_x) {
+						if (CAPA_2_LEFT_MOUSE_X > target_x) {
+							CAPA_2_LEFT_MOUSE_X -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X < target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_X < target_x) {
+							CAPA_2_LEFT_MOUSE_X += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_X > target_x) {
+								CAPA_2_LEFT_MOUSE_X = target_x;
+							}
+						}
+					}
+					if (CAPA_2_LEFT_MOUSE_Y != target_y) {			
+						if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+							CAPA_2_LEFT_MOUSE_Y -= e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}
+						else if (CAPA_2_LEFT_MOUSE_Y < target_y) {
+							CAPA_2_LEFT_MOUSE_Y += e.passedTime * aux_speed;
+							if (CAPA_2_LEFT_MOUSE_Y > target_y) {
+								CAPA_2_LEFT_MOUSE_Y = target_y;
+							}
+						}	
+					}
+				}
+			}
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -2756,6 +2879,13 @@ package
 		
 		private function checkRage():void {
 			
+			/*
+			if (coffeAmount <= 0) {
+				punchTazaTime = 2;
+			}
+			*/
+			punchKeyboardTime = true;
+			
 			var aux_volumen:Number = 2;
 			
 			if (ira <= 50) {
@@ -2902,7 +3032,49 @@ package
 		
 		private function checkLeftVisibility():void {
 			
-			if (coffeEvent > 0) {
+			if (punchTazaTime || punchKeyboardTime || punchScreenTime) {
+				if (coffeEvent > 0) { coffeEvent = 0; coffeAmount++; }
+				if (phoneTalking > 0) { phoneTalking = 0; }
+				
+				if (punchScreenTime) {
+					leftHandFist.visible = true;
+					leftShirt.visible = true;
+					
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHand1.visible = false;
+					leftHand2.visible = false;
+					leftHandAnnoyed.visible = false;
+					phone.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
+					leftHandPalm1.visible = false;
+					leftHandPalm2.visible = false;
+				}
+				else if (punchKeyboardTime) {
+					leftHandFist.visible = true;
+					leftShirt.visible = true;
+					
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHand1.visible = false;
+					leftHand2.visible = false;
+					leftHandAnnoyed.visible = false;
+					phone.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
+					leftHandPalm1.visible = false;
+					leftHandPalm2.visible = false;
+				}
+				else if (punchTazaTime) {
+					
+				}
+			}
+			else if (coffeEvent > 0) {
 				
 				if (coffeAmount <= 0) {
 					if (coffeEvent >= 1.5) {
