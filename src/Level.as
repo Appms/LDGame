@@ -22,6 +22,7 @@ package
 	import starling.events.Touch;
 	import starling.events.TouchPhase;
 	import flash.ui.Mouse;
+	import starling.display.BlendMode;
 	/**
 	 * ...
 	 * @author Ruvipls
@@ -137,10 +138,24 @@ package
 		
 		public var channel_SCA_Main:SoundChannel = new SoundChannel();
 		public var SCA_Main:Sound = new Assets.SCA_Main() as Sound;
-		public var SCA_Title:Sound = new Assets.FrogIntro() as Sound;
 		
 		public var powerUp:Sound = new Assets.PowerUp() as Sound;
 		public var buttonPushed:Sound = new Assets.ButtonSound() as Sound;
+		
+		public var step1:Sound = new Assets.Step1() as Sound;
+		public var step2:Sound = new Assets.Step2() as Sound;
+		
+		public var StartUp:Sound = new Assets.StartUp() as Sound;
+		public var BugSound:Sound = new Assets.BugSound() as Sound;
+		public var JumpSound:Sound = new Assets.JumpSound() as Sound;
+		public var HurtSound:Sound = new Assets.HurtSound() as Sound;
+		public var DeathSound:Sound = new Assets.DeathSound() as Sound;
+		public var LaserSound:Sound = new Assets.LaserSound() as Sound;
+		
+		public var umad1:Sound = new Assets.umad1() as Sound;
+		public var umad2:Sound = new Assets.umad2() as Sound;
+		public var umad3:Sound = new Assets.umad3() as Sound;
+		public var umad4:Sound = new Assets.umad4() as Sound;
 		
 		
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
@@ -172,6 +187,9 @@ package
 		private var game1over:Boolean;
 		private var game1overDelay:Number;
 		private var character_basescale:Number;
+		
+		private var stepDelay:Number;
+		private var stepBool:Boolean;
 		
 		private var fairy:MovieClip;
 		private var fairy_laser:MovieClip;
@@ -212,7 +230,7 @@ package
 		
 		//Sounds
 		
-		public var StartUp:Sound = new Assets.StartUp() as Sound;
+
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -304,6 +322,11 @@ package
 		private var textTime:TextField;
 		private var globalTime:Number = 0;
 		
+		
+		private var snowmanCooldown:Number = 100;
+		private var snDeskWarning:Sprite;
+		private var snHandWarning:Sprite;
+
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
@@ -506,6 +529,14 @@ package
 			capa2.addChild(snowMan);
 			//snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
 			//snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
+			
+			snDeskWarning = new Sprite();
+			i = new Image(Assets.getTexture("SNDeskWarning"));
+			i.blendMode = BlendMode.SCREEN;
+			snDeskWarning.addChild(i);
+			snDeskWarning.x = snowMan.x;
+			snDeskWarning.y = snowMan.y;
+			capa2.addChild(snDeskWarning);
 			
 			areaPhone = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
@@ -748,6 +779,13 @@ package
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_palm_02"));
 			rightHandPalm2.addChild(i);
 			capa2.addChild(rightHandPalm2);
+			snHandWarning = new Sprite();
+			i = new Image(Assets.getTexture("SNHandWarning"));
+			i.blendMode = BlendMode.SCREEN;
+			snHandWarning.addChild(i);
+			snHandWarning.x = rightHandSnowMan.x;
+			snHandWarning.y = rightHandSnowMan.y;
+			capa2.addChild(snHandWarning);
 			
 			rightShirt = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
@@ -830,11 +868,11 @@ package
 			else GLOBAL_BOTON_D = false;
 			
 			if (GLOBAL_MOUSE_CLICKED) {
-				if (snowManCatched) {
+				if (snowManCatched && snowmanCooldown > 0) {
 					ira -= 5;
 					if (ira < 0) { ira = 0; }
 					Squeaky();
-
+					snowmanCooldown -= 10;
 				}
 				var point_handX:Number = rightHand1.x +50;
 				var point_handY:Number = rightHand1.y +185;
@@ -922,12 +960,12 @@ package
 					if (phoneBronca < 3) {
 						//HABLA LA SECRETARIA
 						phoneTalking = 10;
-						SoundSecretary.play(0, 0, new SoundTransform(2, -1));
+						SoundSecretary.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					else {
 						//HABLA EL BOSS
 						phoneTalking = 12;
-						SoundBoss.play(0, 0, new SoundTransform(2, -1));
+						SoundBoss.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					ira += phoneBronca * 5 + phoneBronca * 2;
 					checkRage();
@@ -936,7 +974,7 @@ package
 				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0) {
 					coffeAmount--;
 					coffeEvent = 3;
-					SoundSlurp.play(0, 0, new SoundTransform(1, -1));
+					SoundSlurp.play(0, 0, new SoundTransform(1, 0));
 				}
 				
 			}
@@ -1044,6 +1082,23 @@ package
 				ira += e.passedTime / 4;
 			else 
 				ira += e.passedTime * 10;
+				
+			//SNOWMAN COOLDOWN
+			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
+				snowmanCooldown += 0.1;
+			else
+			{
+				//poner Sprite
+				//reproducir explosión
+				
+				
+			}
+				
+			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
+			snHandWarning.alpha = 0 + ((100 - snowmanCooldown) / 100);
+			
+			snHandWarning.x = rightHandSnowMan.x;
+			snHandWarning.y = rightHandSnowMan.y;
 			
 			shakeHands(( -1.05 + Math.pow(1.05, ira)) / 4);
 			
@@ -1345,8 +1400,8 @@ package
 		
 		private function loadGame1():void {
 			
+			channel_SCA_Main = SCA_Main.play(0, 999999, new SoundTransform(0.4, 0));
 			var img:Image;
-			SCA_Title.play();
 			loadGame1Screen = new Sprite();
 			img = new Image(Assets.getAtlas().getTexture("capa1"));
 			loadGame1Screen.addChild(img);
@@ -1370,8 +1425,9 @@ package
 		}
 		
 		private function initGame1():void {
-			channel_SCA_Main = SCA_Main.play(0, 999999);
-			//channel_SCA_Main.soundTransform.volume(0.25);
+			
+			stepBool = true;
+			stepDelay = 0;
 			
 			var img:Image;
 			
@@ -1576,6 +1632,20 @@ package
 								glassface.visible = false;
 								oversize.visible = true;
 							}
+							
+							if (stepDelay >= 0) stepDelay -= dt;
+							else {
+								if (stepBool) {
+									step1.play(0,1,new SoundTransform(0.25,0));
+									stepBool = false;
+								}
+								else {
+									step2.play(0,1,new SoundTransform(0.25,0));
+									stepBool = true;
+								}
+								stepDelay = 1 / 8;
+							}
+							
 						}
 						
 						characterWalk.scaleX = character.scaleX;
@@ -1591,6 +1661,19 @@ package
 							}
 							if (character.scaleX < 0) character.scaleX *= -1;
 							characterWalk.scaleX = character.scaleX;
+							
+							if (stepDelay >= 0) stepDelay -= dt;
+							else {
+								if (stepBool) {
+									step1.play(0,1,new SoundTransform(0.25,0));
+									stepBool = false;
+								}
+								else {
+									step2.play(0,1,new SoundTransform(0.25,0));
+									stepBool = true;
+								}
+								stepDelay = 1 / 8;
+							}
 						}
 					}
 					
@@ -1615,6 +1698,19 @@ package
 								glassface.visible = false;
 								oversize.visible = true;
 							}
+							
+							if (stepDelay >= 0) stepDelay -= dt;
+							else {
+								if (stepBool) {
+									step1.play(0,1,new SoundTransform(0.25,0));
+									stepBool = false;
+								}
+								else {
+									step2.play(0,1,new SoundTransform(0.25,0));
+									stepBool = true;
+								}
+								stepDelay = 1 / 8;
+							}
 						}
 						
 						characterWalk.scaleX = character.scaleX;
@@ -1630,8 +1726,22 @@ package
 							}
 							if (character.scaleX > 0) character.scaleX *= -1;
 							characterWalk.scaleX = character.scaleX;
+							
+							if (stepDelay >= 0) stepDelay -= dt;
+							else {
+								if (stepBool) {
+									step1.play(0,1,new SoundTransform(0.25,0));
+									stepBool = false;
+								}
+								else {
+									step2.play(0,1,new SoundTransform(0.25,0));
+									stepBool = true;
+								}
+								stepDelay = 1 / 8;
+							}
 						}
 					}
+					else stepDelay = 0;
 					
 					characterWalk.x = character.x;
 					characterWalk.y = character.y;
@@ -1649,8 +1759,9 @@ package
 					characterJump.visible = true;
 					
 					characterJump.play();
+					JumpSound.play(0,1,new SoundTransform(0.6,0));
 					var img:Image;
-					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2)
+					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2+5)
 					{
 						buttonPushed.play();
 						RB.removeChildren();
@@ -1659,7 +1770,7 @@ package
 						RBPressed = true;
 						CAPA_1_BOTON_DER = true;
 					}
-					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2 - 2)
+					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2+1)
 					{
 						buttonPushed.play();
 						LB.removeChildren();
@@ -1748,6 +1859,13 @@ package
 						}
 						else {
 							enemyArray[i].x -= 80 * dt;
+							if (enemyArray[i].y < character.y && capa1.getChildIndex(enemyArray[i]) > capa1.getChildIndex(character)) {
+								capa1.swapChildren(enemyArray[i], characterDeath);
+								capa1.swapChildren(enemyArray[i], characterHurt);
+								capa1.swapChildren(enemyArray[i], characterJump);
+								capa1.swapChildren(enemyArray[i], characterWalk);
+								capa1.swapChildren(enemyArray[i], character);
+							}
 						}
 					}
 					else {
@@ -1757,7 +1875,14 @@ package
 							if (i>0) i--;
 						}
 						else {
-							enemyArray[i].x += 80*dt;
+							enemyArray[i].x += 80 * dt;
+							if (enemyArray[i].y < character.y && capa1.getChildIndex(enemyArray[i]) > capa1.getChildIndex(character)) {
+								capa1.swapChildren(enemyArray[i], characterDeath);
+								capa1.swapChildren(enemyArray[i], characterHurt);
+								capa1.swapChildren(enemyArray[i], characterJump);
+								capa1.swapChildren(enemyArray[i], characterWalk);
+								capa1.swapChildren(enemyArray[i], character);
+							}
 						}
 					}
 				}
@@ -1769,21 +1894,28 @@ package
 			}
 			else {
 				game1overDelay -= dt;
+				if (game1overDelay <= 1) {
+					if (characterDeath.visible) characterDeath.visible = false;
+					else characterDeath.visible = true;
+				}
 				if (game1overDelay <= 0) {
 					game1overDelay = 2;
 					game1Running = false;
 					game1over = false;
 					shutdownGame1();
-					initGame1();
+					loadGame1();
 				}
 			}
 			
 		}
 		
 		private function addEnemy():void {
+			BugSound.play();
 			newEnemy = new MovieClip(Assets.getAtlas().getTextures("SCA_bug_walk"), 6);
 			starling.core.Starling.juggler.add(newEnemy);
 			capa1.addChild(newEnemy);
+			capa1.swapChildren(newEnemy, fairy_laser);
+			capa1.swapChildren(newEnemy, fairy);
 			newEnemy.pivotX = newEnemy.width / 2;
 			newEnemy.pivotY = newEnemy.height / 2;
 			
@@ -1804,7 +1936,7 @@ package
 		private function enemyCollision():void {
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
-				if ( Math.sqrt(Math.pow((enemyArray[i].x - character.x), 2) + Math.pow((enemyArray[i].y - character.y), 2)) < 25) {
+				if ( Math.sqrt(Math.pow((enemyArray[i].x - character.x), 2) + Math.pow((enemyArray[i].y - character.y-10), 2)) < 24) {
 					enemySplash.x = enemyArray[i].x;
 					enemySplash.y = enemyArray[i].y;
 					enemySplash.visible = true;
@@ -1812,6 +1944,31 @@ package
 					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
+					BugSound.play();
+					HurtSound.play(0, 1, new SoundTransform(40, 0));
+					
+					switch (Math.round(Math.random()*3.5+0.5)) 
+					{
+						case 1:
+							umad1.play(0, 1, new SoundTransform(1, 0));
+						break;
+						
+						case 2:
+							umad2.play(0, 1, new SoundTransform(1.5, 0));
+						break;
+						
+						case 3:
+							umad3.play(0, 1, new SoundTransform(1.5, 0));
+						break;
+						
+						case 4:
+							umad4.play(0, 1, new SoundTransform(2.5, 0));
+						break;
+						
+						default:
+							umad3.play(0, 1, new SoundTransform(1.5, 0));
+					}
+					
 					loseLife();
 				}
 			}
@@ -1823,10 +1980,18 @@ package
 		}
 		
 		private function checkGame1Click():void {
-			laserTimer = 0.25;
-			fairy_laser.x = fairy.x;
-			fairy_laser.y = fairy.y;
-			fairy_laser.visible = true;
+			
+			if ( Math.sqrt(Math.pow((closeIcon.x - fairy.x+20), 2) + Math.pow((closeIcon.y - fairy.y), 2)) < closeIcon.width)  {
+				shutdownGame1();
+				initPC();
+			}
+			else {
+				laserTimer = 0.25;
+				fairy_laser.x = fairy.x;
+				fairy_laser.y = fairy.y;
+				fairy_laser.visible = true;
+				LaserSound.play(0.2,1,new SoundTransform(0.6,0));
+			}
 			
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
@@ -1841,12 +2006,7 @@ package
 					enemyArray.splice(i, 1);
 					ira -= 2;
 				}
-			}
-			
-			if ( Math.sqrt(Math.pow((closeIcon.x - fairy.x+20), 2) + Math.pow((closeIcon.y - fairy.y), 2)) < closeIcon.width)  {
-				shutdownGame1();
-				initPC();
-			}
+			}			
 		}
 		
 		private function spawnLife(x:Number, y:Number):void {
@@ -1914,6 +2074,7 @@ package
 				characterWalk.visible = false;
 				characterHurt.visible = false;
 				character.visible = false;
+				DeathSound.play(0,1,new SoundTransform(30,0));
 				game1over = true;
 				ira += 15;
 				checkRage();
@@ -2480,6 +2641,7 @@ package
 						bomb.x = 50 * u +16;
 						bomb.y = 40 * t;
 						bombsAway.push(bomb);
+
 					}
 				}
 			}	
@@ -2488,8 +2650,9 @@ package
 			{	
 				starling.core.Starling.juggler.add(bombsAway[i]);
 				capa0.addChild(bombsAway[i]);
+				capa0.swapChildren(bombsAway[i], bombScoreCopy);
+				capa0.swapChildren(bombsAway[i], bombScore);
 			}
-		
 		}
 		
 		private function shutDownFrog():void
@@ -2735,11 +2898,15 @@ package
 					snowManCatched = false;
 				}
 				
+				else if ( snowmanCooldown <= 0)
+					snowManCatched = false;
+					//CAMBIAR IMAGEN SNOWMAN
+				
 			}
 			else {
 				
 				if (GLOBAL_MOUSE_X >= areaSnowMan.x && GLOBAL_MOUSE_X <= areaSnowMan.x + areaSnowMan.width &&
-				GLOBAL_MOUSE_Y >= areaSnowMan.y && GLOBAL_MOUSE_Y <= areaSnowMan.y + areaSnowMan.height) {
+				GLOBAL_MOUSE_Y >= areaSnowMan.y && GLOBAL_MOUSE_Y <= areaSnowMan.y + areaSnowMan.height && snowmanCooldown > 0) {
 					snowManCatched = true;
 				}
 				
@@ -2822,7 +2989,7 @@ package
 				
 				if (channel_phone.soundTransform.volume == 0) {
 					channel_phone = SoundPhone.play(0, 9999);
-					channel_phone.soundTransform = new SoundTransform(1, -1);
+					channel_phone.soundTransform = new SoundTransform(0.8, -1);
 				}
 				
 				
@@ -2860,7 +3027,7 @@ package
 			else if (randi > 3 / 10) SoundSqueak7_01.play();
 			else if (randi > 2 / 10) SoundSqueak8_01.play();
 			else if (randi > 1 / 10) SoundSqueak9_01.play();
-			else SoundSqueak10_01.play();
+			else SoundSqueak10_01.play(0,1,new SoundTransform(0.7,1));
 		}
 		
 		private function Squeaky2():void {
@@ -2874,7 +3041,7 @@ package
 			else if (randi > 3 / 10) SoundSqueak7_02.play();
 			else if (randi > 2 / 10) SoundSqueak8_02.play();
 			else if (randi > 1 / 10) SoundSqueak9_02.play();
-			else SoundSqueak10_02.play();
+			else SoundSqueak10_02.play(0, 1, new SoundTransform(0.7, 1));
 		}
 		
 		private function checkRage():void {
@@ -2928,6 +3095,8 @@ package
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandMouse2.visible = true;
 					snowMan.visible = true;
+					rightHandSnowMan.visible = true;
+					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -2937,10 +3106,13 @@ package
 					rightHandSnowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snHandWarning.visible = false;
 				}
 				else {
 					rightHandMouse1.visible = true;
 					snowMan.visible = true;
+					rightHandSnowMan.visible = true;
+					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -2950,12 +3122,14 @@ package
 					rightHandSnowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snHandWarning.visible = false;
 				}
 			}
 			else if (snowManCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandFist.visible = true;
 					rightHandSnowMan.visible = true;
+					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -2965,10 +3139,12 @@ package
 					snowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snDeskWarning.visible = false;
 				}
 				else {
 					rightHandAnnoyed.visible = true;
 					snowMan.visible = true;
+					snDeskWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -2978,6 +3154,7 @@ package
 					rightHandSnowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snHandWarning.visible = false;
 				}
 			}
 			else if (rageSoft || rageHard) {
@@ -3003,6 +3180,7 @@ package
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHand2.visible = true;
 					snowMan.visible = true;
+					snDeskWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHandMouse1.visible = false;
@@ -3012,10 +3190,12 @@ package
 					rightHandSnowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snHandWarning.visible = false;
 				}
 				else {
 					rightHand1.visible = true;
 					snowMan.visible = true;
+					snDeskWarning.visible = true;
 					
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
@@ -3025,6 +3205,7 @@ package
 					rightHandSnowMan.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
+					snHandWarning.visible = false;
 				}
 			}
 			
