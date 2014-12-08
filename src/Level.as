@@ -1029,7 +1029,7 @@ package
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
-				snowmanCooldown += 1;
+				snowmanCooldown += 0.1;
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
 			snHandWarning.alpha = 0 + ((100 - snowmanCooldown) / 100);
