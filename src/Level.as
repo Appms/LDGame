@@ -116,28 +116,31 @@ package
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
 		
+		private var backgroundGame1:Sprite;
 		private var character:MovieClip;
 		private var characterWalk:MovieClip;
 		private var characterJump:MovieClip;
 		private var characterHurt:MovieClip;
 		private var characterDeath:MovieClip;
+		private var oversize:MovieClip;
+		private var glassface:Sprite;
 		private var jumptimer:Number;
 		private var hurttimer:Number;
 		private var pisotoneando:Boolean;
 		private var hurt:Boolean;
 		private var game1over:Boolean;
 		private var game1overDelay:Number;
-		private var oversizeY:Number;
 		private var character_basescale:Number;
 		
-		private var fairy:Sprite;
-		private var fairy_displacement:Point;
+		private var fairy:MovieClip;
+		private var fairy_laser:MovieClip;
+		private var laserTimer:Number;
 		
-		private var newEnemy:Sprite;
+		private var newEnemy:MovieClip;
 		private var enemyArray:Array;
 		private var enemySpawner:Number;
+		private var enemySplash:MovieClip;
 		
-		private var gamepad:Sprite;
 		private var LB:Sprite;
 		private var RB:Sprite;
 		private var LBPressed:Boolean;
@@ -569,11 +572,6 @@ package
 			//ira += e.passedTime;
 			shakeHands(ira);
 			
-			if (CAPA_2_MOUSE_CLICKED) {
-				if (pcRunning) checkPCClick();
-				if (game1Running) checkGame1Click();
-			}
-			
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -672,6 +670,10 @@ package
 			if (cursor.x < 0) cursor.x = 0;
 			if (cursor.y+cursor.height > heightCapa1) cursor.y = heightCapa1-cursor.height;
 			if (cursor.y < 0) cursor.y = 0;
+			
+			if (CAPA_2_MOUSE_CLICKED) {
+				checkPCClick();
+			}
 		}
 		
 		private function checkPCClick():void {
@@ -704,21 +706,22 @@ package
 			
 			var img:Image;
 			
-			lifes = 3;
-			lifesArray = new Array();
-			drawLifes();
-			lifeUpDt = 0;
-			
 			enemyArray = new Array();
 			
 			jumptimer = 0;
 			hurttimer = 0;
-			oversizeY = 0;
 			enemySpawner = 8 + Math.random()*5;
 			character_basescale = 1;
 			
 			game1over = false;
 			game1overDelay = 2;
+			
+			backgroundGame1 = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("capa1"));
+			backgroundGame1.addChild(img);
+			capa1.addChild(backgroundGame1);
+			backgroundGame1.x = 0;
+			backgroundGame1.y = 0;
 			
 			closeIcon = new Sprite();
 			img = new Image(Assets.getTexture("closeIcon"));
@@ -726,74 +729,39 @@ package
 			capa1.addChild(closeIcon);
 			closeIcon.scaleX = 0.1;
 			closeIcon.scaleY = 0.1;
-			closeIcon.x = widthCapa1 - closeIcon.width;
-			closeIcon.y = 0;
+			closeIcon.x = widthCapa1 - closeIcon.width*1.25;
+			closeIcon.y = closeIcon.height/4;
 			closeIcon.pivotX = closeIcon.width / 2;
 			closeIcon.pivotY = closeIcon.height / 2;
 			
-			
-			gamepad = new Sprite();
-			img = new Image(Assets.getTexture("gamepad"));
-			gamepad.addChild(img);
-			capa1.addChild(gamepad);
-			gamepad.x = widthCapa1 / 2;
-			gamepad.y = heightCapa1 / 2 + 100;
-			gamepad.pivotX = gamepad.width / 2;
-			gamepad.pivotY = gamepad.height / 2;
-			gamepad.scaleX = 0.1;
-			gamepad.scaleY = 0.1;
-			gamepad.rotation = Math.PI / 4;
 			
 			RB = new Sprite();
 			img = new Image(Assets.getTexture("RB"));
 			RB.addChild(img);
 			capa1.addChild(RB);
-			RB.x = widthCapa1 / 2 + 25;
-			RB.y = heightCapa1 / 2 + 100 + 15;
+			RB.x = widthCapa1 / 2 + 30;
+			RB.y = heightCapa1 / 2 + 100 ;
 			RB.pivotX = RB.width / 2;
 			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.1;
+			RB.scaleX = 0.2;
 			RB.scaleY = 0.1;
 			
 			LB = new Sprite();
 			img = new Image(Assets.getTexture("LB"));
 			LB.addChild(img);
 			capa1.addChild(LB);
-			LB.x = widthCapa1 / 2 - 15;
-			LB.y = heightCapa1 / 2 + 100 - 25;
+			LB.x = widthCapa1 / 2 - 49;
+			LB.y = heightCapa1 / 2 + 63;
 			LB.pivotX = LB.width / 2;
 			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.1;
-			LB.scaleY = 0.1;
+			LB.scaleX = 0.15;
+			LB.scaleY = 0.08;
 			
 			RBdt = 0;
 			LBdt = 0;
 			
 			
-			/*character = new Sprite();
-			i = new Image(Assets.getTexture("character"));
-			character.addChild(i);
-			capa1.addChild(character);
-			character.x = widthCapa1/2;
-			character.y = heightCapa1/2 + 100;
-			character.pivotX = character.width / 2;
-			character.pivotY = character.height / 2;
-			character.scaleX = 0.15;
-			character.scaleY = 0.15;*/
-			
-			/*character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
-			starling.core.Starling.juggler.add(character);
-			capa1.addChild(character);
-			character.addFrameAt(2, Assets.getAtlas().getTexture("SCA_hero_idle_01"), null, 1/6);
-			character.scaleX = character_basescale;
-			character.scaleY = character_basescale;
-			character.x = widthCapa1/2;
-			character.y = heightCapa1 - 50;
-			character.pivotX = character.width / 2;
-			character.pivotY = character.height / 2;
-			character.visible = true;*/
-			
-			character = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Idle"), 6);
+			character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
 			starling.core.Starling.juggler.add(character);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
@@ -802,18 +770,7 @@ package
 			character.pivotY = character.height / 2;
 			character.visible = true;
 			
-			
-			/*characterWalk = new MovieClip(Assets.getAtlas2().getTextures("SCA_hero_walk"), 6);
-			starling.core.Starling.juggler.add(characterWalk);
-			capa1.addChild(characterWalk);
-			characterWalk.scaleX = character.scaleX;
-			characterWalk.scaleY = character.scaleY;
-			characterWalk.x = character.x;
-			characterWalk.y = character.y;
-			characterWalk.pivotX = characterWalk.width / 2;
-			characterWalk.pivotY = characterWalk.height / 2;
-			characterWalk.visible = false;*/
-			characterWalk = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Idle"), 6);
+			characterWalk = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_walk"), 6);
 			starling.core.Starling.juggler.add(characterWalk);
 			capa1.addChild(characterWalk);
 			characterWalk.x = character.x;
@@ -822,7 +779,7 @@ package
 			characterWalk.pivotY = characterWalk.height / 2;
 			characterWalk.visible = false;
 			
-			characterJump = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
+			characterJump = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_jump"), 6);
 			starling.core.Starling.juggler.add(characterJump);
 			capa1.addChild(characterJump);
 			characterJump.x = character.x;
@@ -832,7 +789,7 @@ package
 			characterJump.visible = false;
 			characterJump.stop();
 			
-			characterHurt = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
+			characterHurt = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_hurt"), 6);
 			starling.core.Starling.juggler.add(characterHurt);
 			capa1.addChild(characterHurt);
 			characterHurt.x = character.x;
@@ -842,9 +799,10 @@ package
 			characterHurt.visible = false;
 			characterHurt.stop();
 			
-			characterDeath = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Explosion"), 6);
+			characterDeath = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_death"), 0.5);
 			starling.core.Starling.juggler.add(characterDeath);
 			capa1.addChild(characterDeath);
+			characterDeath.addFrameAt(0, Assets.getAtlas().getTexture("SCA_hero_hurt_01"), null, 1 / 6);
 			characterDeath.x = character.x;
 			characterDeath.y = character.y;
 			characterDeath.pivotX = character.width / 2;
@@ -852,16 +810,46 @@ package
 			characterDeath.visible = false;
 			characterDeath.stop();
 			
+			oversize = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_face"), 3);
+			starling.core.Starling.juggler.add(oversize);
+			capa1.addChild(oversize);
+			oversize.x = widthCapa1 / 2;
+			oversize.y = heightCapa1 + oversize.height + 50;
+			oversize.pivotX = oversize.width / 2;
+			oversize.pivotY = oversize.height / 2;
 			
-			fairy = new Sprite();
-			img = new Image(Assets.getTexture("fairy"));
-			fairy.addChild(img);
+			glassface = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("SCA_hero_glassface"));
+			glassface.addChild(img);
+			capa1.addChild(glassface);
+			glassface.x = widthCapa1 / 2;
+			glassface.y = heightCapa1 / 2;
+			glassface.pivotX = glassface.width / 2;
+			glassface.pivotY = glassface.height / 2;
+			glassface.visible = false;
+			
+			
+			laserTimer = 0;
+			
+			fairy = new MovieClip(Assets.getAtlas().getTextures("SCA_eye_fly"), 6);
+			starling.core.Starling.juggler.add(fairy);
 			capa1.addChild(fairy);
 			fairy.pivotX = fairy.width / 2;
 			fairy.pivotY = fairy.height / 2;
-			fairy.scaleX = 0.025;
-			fairy.scaleY = 0.025;
-			fairy_displacement = new Point(0, 0);
+			fairy.x = widthCapa1 / 2;
+			fairy.y = heightCapa1 / 2;
+			
+			fairy_laser = new MovieClip(Assets.getAtlas().getTextures("SCA_eye_laser"), 6);
+			starling.core.Starling.juggler.add(fairy_laser);
+			capa1.addChild(fairy_laser);
+			fairy_laser.pivotX = fairy.pivotX;
+			fairy_laser.pivotY = fairy.pivotY;
+			fairy_laser.visible = false;
+			
+			lifes = 3;
+			lifesArray = new Array();
+			drawLifes();
+			lifeUpDt = 0;
 			
 			game1Running = true;
 		}
@@ -870,6 +858,19 @@ package
 		private function updateGame1(dt:Number):void {
 			
 			if (!game1over) {
+				
+				if (laserTimer > 0) {
+					laserTimer -= dt;
+				}
+				else if (CAPA_2_MOUSE_CLICKED) {
+					checkGame1Click();
+				}
+				else {
+					fairy.visible = true;
+					fairy_laser.visible = false;
+				}
+				
+				
 				// Movimiento Personaje
 				if (!pisotoneando && !hurt) {
 					
@@ -877,17 +878,25 @@ package
 					characterWalk.visible = false;
 					
 					if (CAPA_2_BOTON_FLECHA_ARR) {
-						if (oversizeY <= 0) {
-							if ( character.y > capa1.height / 2 + 25) {
-								character.y -= 120 * dt;
-								character.scaleX = character_basescale + (character.y - 250) / 250;
-								character.scaleY = character_basescale + (character.y - 250) / 250;
+						if ( character.y > heightCapa1 / 2 + 34) {
+							character.y -= 120 * dt;
+							if (character.scaleX > 0) character.scaleX = character_basescale + (character.y - 250) / 250;
+							else character.scaleX = -(character_basescale + (character.y - 250) / 250);
+							character.scaleY = character_basescale + (character.y - 250) / 250;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
 							}
-						}
-						else {
-							oversizeY -= 5 * dt;
-							character.scaleX = character_basescale + oversizeY;
-							character.scaleY = character_basescale + oversizeY;
+							
+							oversize.y += 240 * dt;
+							if (oversize.y <= heightCapa1/2 + 50) {
+								glassface.visible = true;
+								oversize.visible = false;
+							}
+							else {
+								glassface.visible = false;
+								oversize.visible = true;
+							}
 						}
 						
 						characterWalk.scaleX = character.scaleX;
@@ -907,17 +916,26 @@ package
 					}
 					
 					else if (CAPA_2_BOTON_FLECHA_ABA) {
-						if (character.y < heightCapa1+50) {
+						if (character.y < heightCapa1+250) {
 							character.y += 120 * dt;
-							character.scaleX = character_basescale + (character.y - 250) / 250;
+							if (character.scaleX > 0) character.scaleX = character_basescale + (character.y - 250) / 250;
+							else character.scaleX = -(character_basescale + (character.y - 250) / 250);
 							character.scaleY = character_basescale + (character.y - 250) / 250;
-						}
-						else if(oversizeY <= 8) {
-							oversizeY += 5 * dt;
-							character.scaleX = character_basescale + oversizeY;
-							character.scaleY = character_basescale + oversizeY;
-							if (character.x < widthCapa1 / 2) character.x += 80 * dt;
-							else if (character.x > widthCapa1 / 2) character.x -= 80 * dt;
+							
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							
+							oversize.y -= 240 * dt;
+							if (oversize.y <= heightCapa1/2 + 50) {
+								glassface.visible = true;
+								oversize.visible = false;
+							}
+							else {
+								glassface.visible = false;
+								oversize.visible = true;
+							}
 						}
 						
 						characterWalk.scaleX = character.scaleX;
@@ -953,7 +971,7 @@ package
 					
 					characterJump.play();
 					var img:Image;
-					if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
+					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2)
 					{
 						RB.removeChildren();
 						img = new Image(Assets.getTexture("RBP"));
@@ -961,7 +979,7 @@ package
 						RBPressed = true;
 						CAPA_1_BOTON_DER = true;
 					}
-					else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
+					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2 - 2)
 					{
 						LB.removeChildren();
 						img = new Image(Assets.getTexture("LBP"));
@@ -1026,10 +1044,10 @@ package
 				}
 				
 				
-				if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
-				if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
-				if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
-				if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
+				if (fairy.x + fairy.width/4 > widthCapa1) fairy.x = widthCapa1-fairy.width/4;
+				if (fairy.x - fairy.width/4 < 0) fairy.x = 0 + fairy.width/4;
+				if (fairy.y + fairy.height/4 > heightCapa1) fairy.y = heightCapa1 - fairy.height/4;
+				if (fairy.y - fairy.height/4 < 0) fairy.y = 0 + fairy.height/4;
 				
 				// Spawnear Enemigos
 				enemySpawner -= dt;
@@ -1041,16 +1059,6 @@ package
 				// Movimiento Enemigos
 				var i:Number;
 				for (i = 0; i < enemyArray.length; i++) {
-					/*if (enemyArray[i].x < character.x) {
-						enemyArray[i].x += 80*dt;
-						if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
-					}
-					if (enemyArray[i].x > character.x) {
-						enemyArray[i].x -= 80*dt;
-						if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
-					}*/
-					//if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
-					//if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
 					if (enemyArray[i].scaleX > 0) {
 						if (enemyArray[i].x <= 0) {
 							capa1.removeChild(enemyArray[i]);
@@ -1092,18 +1100,12 @@ package
 		}
 		
 		private function addEnemy():void {
-			newEnemy = new Sprite();
-			var i:Image = new Image(Assets.getTexture("enemy"));
-			newEnemy.addChild(i);
+			newEnemy = new MovieClip(Assets.getAtlas().getTextures("SCA_bug_walk"), 6);
+			starling.core.Starling.juggler.add(newEnemy);
 			capa1.addChild(newEnemy);
 			newEnemy.pivotX = newEnemy.width / 2;
 			newEnemy.pivotY = newEnemy.height / 2;
-			newEnemy.scaleX = 0.05;
-			newEnemy.scaleY = 0.05;
 			
-			/*if (Math.round(Math.random()) == 0) newEnemy.x = 0;
-			else newEnemy.x = widthCapa1;
-			newEnemy.y = heightCapa1 / 2 + 75;*/
 			if (Math.round(Math.random()) == 0) {
 				newEnemy.x = 0;
 				newEnemy.scaleX *= -1;
@@ -1130,6 +1132,12 @@ package
 		}
 		
 		private function checkGame1Click():void {
+			laserTimer = 0.5;
+			fairy_laser.x = fairy.x;
+			fairy_laser.y = fairy.y;
+			fairy_laser.visible = true;
+			fairy.visible = false;
+			
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
@@ -1147,15 +1155,15 @@ package
 		
 		private function spawnLife(x:Number, y:Number):void {
 			lifeUp = new Sprite();
-			var i:Image = new Image(Assets.getTexture("heart"));
+			var i:Image = new Image(Assets.getAtlas().getTexture("SCA_vida"));
 			lifeUp.addChild(i);
 			capa1.addChild(lifeUp);
 			lifeUp.x = x;
 			lifeUp.y = y;
 			lifeUp.pivotX = lifeUp.width / 2;
 			lifeUp.pivotY = lifeUp.height / 2;
-			lifeUp.scaleX = 0.03;
-			lifeUp.scaleY = 0.03;
+			lifeUp.scaleX = 0.75;
+			lifeUp.scaleY = 0.75;
 		}
 		
 		private function updateLifeUp(dt:Number):void {
@@ -1227,12 +1235,10 @@ package
 			
 			for (i = 0; i < lifes; i++) {
 				var life:Sprite = new Sprite();
-				var img:Image = new Image(Assets.getTexture("heart"));
+				var img:Image = new Image(Assets.getAtlas().getTexture("SCA_vida"));
 				life.addChild(img);
 				capa1.addChild(life);
-				life.scaleX = 0.05;
-				life.scaleY = 0.05;
-				life.x = life.width * i + 8;
+				life.x = (life.width-8) * i;
 				life.y = 0;
 				lifesArray.push(life);
 			}
