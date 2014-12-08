@@ -1,57 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:95840467edc8199e930623c5a3d3662b:347c8da29860932426eb424fc3bfd231:a61cba8975c307742327789f7fed8c88$ -->
+<!-- $TexturePacker:SmartUpdate:c6655ae2eef567a4aca080dcdc6bc55a:dc975dba83c471f9f0e56e8e68629f46:a61cba8975c307742327789f7fed8c88$ -->
 <TextureAtlas imagePath="mySpriteSheet.png">
-    <SubTexture name="DETB_BG" x="2" y="2" width="152" height="180"/>
-    <SubTexture name="DETB_Bomb_01" x="156" y="2" width="32" height="32"/>
-    <SubTexture name="DETB_Bomb_02" x="190" y="2" width="32" height="32"/>
-    <SubTexture name="DETB_Front_Explosion_01" x="224" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Explosion_02" x="282" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Explosion_03" x="340" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Explosion_04" x="398" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Explosion_05" x="456" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Idle_01" x="514" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Idle_02" x="572" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Front_Open" x="630" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Intro_01" x="688" y="2" width="152" height="180"/>
-    <SubTexture name="DETB_Intro_02" x="842" y="2" width="152" height="180"/>
-    <SubTexture name="DETB_Left_Explosion_01" x="996" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Explosion_02" x="282" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Explosion_03" x="340" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Explosion_04" x="398" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Explosion_05" x="456" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Idle_01" x="1054" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Idle_02" x="1112" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Left_Open" x="1170" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Explosion_01" x="1228" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Explosion_02" x="282" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Explosion_03" x="340" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Explosion_04" x="398" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Explosion_05" x="456" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Idle_01" x="1286" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Idle_02" x="1344" y="2" width="56" height="68"/>
-    <SubTexture name="DETB_Right_Open" x="1402" y="2" width="56" height="68"/>
-    <SubTexture name="SCA_bug_explode_01" x="1460" y="2" width="72" height="52"/>
-    <SubTexture name="SCA_bug_explode_02" x="1534" y="2" width="72" height="52"/>
-    <SubTexture name="SCA_bug_explode_03" x="1608" y="2" width="72" height="52"/>
-    <SubTexture name="SCA_bug_walk_01" x="1682" y="2" width="72" height="52"/>
-    <SubTexture name="SCA_bug_walk_02" x="1756" y="2" width="72" height="52"/>
-    <SubTexture name="SCA_eye_fly_01" x="1830" y="2" width="60" height="44"/>
-    <SubTexture name="SCA_eye_fly_02" x="1892" y="2" width="60" height="44"/>
-    <SubTexture name="SCA_eye_laser_01" x="1954" y="2" width="60" height="44"/>
-    <SubTexture name="SCA_hero_idle_01" x="2" y="184" width="825" height="600"/>
-    <SubTexture name="SCA_hero_idle_02" x="829" y="184" width="825" height="600"/>
-    <SubTexture name="SCA_hero_idle_04" x="2" y="786" width="825" height="600"/>
-    <SubTexture name="area_mouse" x="829" y="786" width="200" height="150"/>
-    <SubTexture name="area_neutral" x="1031" y="786" width="280" height="210"/>
-    <SubTexture name="capa0" x="1313" y="786" width="150" height="180"/>
-    <SubTexture name="capa1" x="1465" y="786" width="400" height="300"/>
-    <SubTexture name="capa2" x="2" y="1388" width="800" height="600"/>
-    <SubTexture name="lefthand" x="804" y="1388" width="100" height="146"/>
-    <SubTexture name="mouse" x="906" y="1388" width="161" height="142"/>
-    <SubTexture name="phone" x="1069" y="1388" width="175" height="302"/>
-    <SubTexture name="phone_base" x="1246" y="1388" width="175" height="302"/>
-    <SubTexture name="righthand" x="1423" y="1388" width="100" height="146"/>
-    <SubTexture name="snowman" x="1525" y="1388" width="100" height="210"/>
-    <SubTexture name="test" x="1627" y="1388" width="37" height="33"/>
+    <SubTexture name="DETB_Bomb_01" x="2013" y="260" width="32" height="32"/>
+    <SubTexture name="DETB_Bomb_02" x="2013" y="364" width="24" height="28" frameX="0" frameY="-4" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="DETB_Front_Explosion_01" x="345" y="1520" width="56" height="68"/>
+    <SubTexture name="DETB_Front_Explosion_02" x="2013" y="294" width="28" height="28" frameX="-16" frameY="-32" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Explosion_03" x="2008" y="541" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Explosion_04" x="2008" y="503" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Explosion_05" x="1854" y="222" width="1" height="1" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Idle_01" x="335" y="1760" width="56" height="52" frameX="0" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Idle_02" x="335" y="1702" width="56" height="56" frameX="0" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Front_Open" x="345" y="1590" width="56" height="56" frameX="0" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Intro_01" x="1220" y="893" width="152" height="180"/>
+    <SubTexture name="DETB_Intro_02" x="1066" y="859" width="152" height="180"/>
+    <SubTexture name="DETB_Left_Explosion_01" x="2" y="1920" width="52" height="68" frameX="-4" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Explosion_02" x="2013" y="294" width="28" height="28" frameX="-16" frameY="-32" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Explosion_03" x="2008" y="541" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Explosion_04" x="2008" y="503" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Explosion_05" x="1854" y="222" width="1" height="1" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Idle_01" x="152" y="1974" width="48" height="52" frameX="-4" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Idle_02" x="102" y="1978" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Left_Open" x="56" y="1920" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Explosion_01" x="661" y="1515" width="52" height="68" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Explosion_02" x="2013" y="294" width="28" height="28" frameX="-16" frameY="-32" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Explosion_03" x="2008" y="541" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Explosion_04" x="2008" y="503" width="36" height="36" frameX="-12" frameY="-28" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Explosion_05" x="1854" y="222" width="1" height="1" frameX="0" frameY="0" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Idle_01" x="106" y="1920" width="48" height="52" frameX="-4" frameY="-16" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Idle_02" x="52" y="1990" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="DETB_Right_Open" x="2" y="1990" width="48" height="56" frameX="-4" frameY="-12" frameWidth="56" frameHeight="68"/>
+    <SubTexture name="OFFICE_computer" x="804" y="2" width="586" height="456" frameX="-98" frameY="-14" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_hand_annoyed" x="404" y="1174" width="260" height="316" frameX="-36" frameY="-120" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_click_01" x="403" y="1492" width="256" height="310" frameX="-40" frameY="-126" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_click_02" x="2" y="1618" width="256" height="300" frameX="-40" frameY="-136" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_fist" x="661" y="1585" width="248" height="302" frameX="-48" frameY="-134" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_grab" x="802" y="859" width="262" height="332" frameX="-34" frameY="-104" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_mouse_01" x="795" y="1193" width="262" height="316" frameX="-34" frameY="-120" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_mouse_02" x="2" y="1304" width="260" height="312" frameX="-36" frameY="-124" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_palm_01" x="428" y="816" width="276" height="356" frameX="-20" frameY="-80" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_palm_02" x="1826" y="615" width="210" height="356" frameX="-86" frameY="-80" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_key_down" x="751" y="1481" width="42" height="34" frameX="-439" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_left" x="751" y="1445" width="42" height="34" frameX="-397" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_right" x="202" y="1966" width="46" height="34" frameX="-478" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_space" x="1858" y="2" width="188" height="34" frameX="-164" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_up" x="2008" y="438" width="38" height="28" frameX="-435" frameY="-470" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_keyboard" x="1392" y="2" width="464" height="218" frameX="-114" frameY="-382" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_mouse" x="264" y="1304" width="137" height="130"/>
+    <SubTexture name="OFFICE_shirt" x="804" y="460" width="450" height="397" frameX="-14" frameY="-22" frameWidth="464" frameHeight="427"/>
+    <SubTexture name="OFFICE_telefone" x="710" y="604" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_base" x="1066" y="1041" width="137" height="225" frameX="0" frameY="-4" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_hand" x="1256" y="460" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="SCA_bug_explode_01" x="339" y="1648" width="60" height="52" frameX="-6" frameY="0" frameWidth="72" frameHeight="52"/>
+    <SubTexture name="SCA_bug_explode_02" x="2008" y="579" width="36" height="34" frameX="-15" frameY="-12" frameWidth="72" frameHeight="52"/>
+    <SubTexture name="SCA_bug_explode_03" x="2035" y="38" width="10" height="20" frameX="-30" frameY="-22" frameWidth="72" frameHeight="52"/>
+    <SubTexture name="SCA_bug_walk_01" x="347" y="1436" width="54" height="42" frameX="-8" frameY="-5" frameWidth="72" frameHeight="52"/>
+    <SubTexture name="SCA_bug_walk_02" x="347" y="1480" width="54" height="38" frameX="-8" frameY="-9" frameWidth="72" frameHeight="52"/>
+    <SubTexture name="SCA_eye_fly_01" x="2008" y="404" width="38" height="32" frameX="-11" frameY="-4" frameWidth="60" frameHeight="44"/>
+    <SubTexture name="SCA_eye_fly_02" x="2013" y="324" width="26" height="38" frameX="-17" frameY="0" frameWidth="60" frameHeight="44"/>
+    <SubTexture name="SCA_eye_laser_01" x="156" y="1920" width="52" height="44" frameX="-4" frameY="0" frameWidth="60" frameHeight="44"/>
+    <SubTexture name="SCA_hero_death_01" x="260" y="1646" width="77" height="50" frameX="-7" frameY="-20" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_face_01" x="1376" y="572" width="448" height="394" frameX="-102" frameY="-6" frameWidth="550" frameHeight="400"/>
+    <SubTexture name="SCA_hero_face_02" x="1392" y="222" width="460" height="348" frameX="-90" frameY="-52" frameWidth="550" frameHeight="400"/>
+    <SubTexture name="SCA_hero_glassface" x="2" y="604" width="424" height="396" frameX="-126" frameY="-4" frameWidth="550" frameHeight="400"/>
+    <SubTexture name="SCA_hero_hurt_01" x="264" y="1576" width="79" height="68" frameX="-8" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_idle_01" x="666" y="1445" width="83" height="68" frameX="-4" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_idle_02" x="260" y="1768" width="73" height="64" frameX="-13" frameY="-5" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_idle_03" x="710" y="763" width="89" height="68" frameX="-1" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_idle_04" x="666" y="1445" width="83" height="68" frameX="-4" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_jump_01" x="260" y="1698" width="73" height="68" frameX="-7" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_jump_02" x="706" y="1167" width="87" height="64" frameX="-11" frameY="-7" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_walk_01" x="264" y="1506" width="79" height="68" frameX="0" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_hero_walk_02" x="264" y="1436" width="81" height="68" frameX="-13" frameY="-1" frameWidth="99" frameHeight="72"/>
+    <SubTexture name="SCA_left_button" x="1826" y="586" width="50" height="20" frameX="-125" frameY="-209" frameWidth="400" frameHeight="300"/>
+    <SubTexture name="SCA_right_button" x="706" y="1129" width="88" height="36" frameX="-184" frameY="-238" frameWidth="400" frameHeight="300"/>
+    <SubTexture name="SCA_vida" x="1220" y="859" width="34" height="32" frameX="-5" frameY="0" frameWidth="44" frameHeight="32"/>
+    <SubTexture name="area_mouse" x="260" y="1834" width="200" height="150"/>
+    <SubTexture name="area_neutral" x="428" y="604" width="280" height="210"/>
+    <SubTexture name="capa0" x="1854" y="404" width="152" height="180"/>
+    <SubTexture name="capa1" x="2" y="1002" width="400" height="300"/>
+    <SubTexture name="capa2" x="2" y="2" width="800" height="600"/>
+    <SubTexture name="lefthand" x="706" y="981" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="mouse" x="1854" y="260" width="157" height="142" frameX="0" frameY="0" frameWidth="161" frameHeight="142"/>
+    <SubTexture name="phone" x="1256" y="666" width="115" height="224" frameX="-15" frameY="0" frameWidth="175" frameHeight="302"/>
+    <SubTexture name="phone_base" x="1858" y="38" width="175" height="220" frameX="0" frameY="-79" frameWidth="175" frameHeight="302"/>
+    <SubTexture name="righthand" x="706" y="833" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="snowman" x="666" y="1233" width="100" height="210"/>
+    <SubTexture name="test" x="2008" y="468" width="37" height="33"/>
 </TextureAtlas>

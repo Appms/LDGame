@@ -20,6 +20,7 @@ package
 	import flash.media.SoundTransform;
 	import starling.events.Touch;
 	import starling.events.TouchPhase;
+	import flash.ui.Mouse;
 	/**
 	 * ...
 	 * @author Ruvipls
@@ -35,27 +36,34 @@ package
 		private var key_enter:int = 13;
 		
 		public var ch1:SoundChannel = new SoundChannel();
+		public var channel_phone:SoundChannel = new SoundChannel();
+		public var channel_office:SoundChannel = new SoundChannel();
+		
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
-		public var SoundSqueak1:Sound = new Assets.SoundSqueak1() as Sound;
-		public var SoundSqueak2:Sound = new Assets.SoundSqueak2() as Sound;
-		public var SoundSqueak3:Sound = new Assets.SoundSqueak3() as Sound;
-		public var SoundSqueak4:Sound = new Assets.SoundSqueak4() as Sound;
-		public var SoundSqueak5:Sound = new Assets.SoundSqueak5() as Sound;
-		public var SoundSqueak6:Sound = new Assets.SoundSqueak6() as Sound;
-		public var SoundSqueak7:Sound = new Assets.SoundSqueak7() as Sound;
-		public var SoundSqueak8:Sound = new Assets.SoundSqueak8() as Sound;
-		public var SoundSqueak9:Sound = new Assets.SoundSqueak9() as Sound;
-		public var SoundSqueak10:Sound = new Assets.SoundSqueak10() as Sound;
-		public var SoundSqueak11:Sound = new Assets.SoundSqueak11() as Sound;
-		public var SoundSqueak12:Sound = new Assets.SoundSqueak12() as Sound;
-		public var SoundSqueak13:Sound = new Assets.SoundSqueak13() as Sound;
-		public var SoundSqueak14:Sound = new Assets.SoundSqueak14() as Sound;
-		public var SoundSqueak15:Sound = new Assets.SoundSqueak15() as Sound;
-		public var SoundSqueak16:Sound = new Assets.SoundSqueak16() as Sound;
-		public var SoundSqueak17:Sound = new Assets.SoundSqueak17() as Sound;
-		public var SoundSqueak18:Sound = new Assets.SoundSqueak18() as Sound;
-		public var SoundSqueak19:Sound = new Assets.SoundSqueak19() as Sound;
-		public var SoundSqueak20:Sound = new Assets.SoundSqueak20() as Sound;
+		public var SoundSqueak1_01:Sound = new Assets.SoundSqueak1_01() as Sound;
+		public var SoundSqueak2_01:Sound = new Assets.SoundSqueak2_01() as Sound;
+		public var SoundSqueak3_01:Sound = new Assets.SoundSqueak3_01() as Sound;
+		public var SoundSqueak4_01:Sound = new Assets.SoundSqueak4_01() as Sound;
+		public var SoundSqueak5_01:Sound = new Assets.SoundSqueak5_01() as Sound;
+		public var SoundSqueak6_01:Sound = new Assets.SoundSqueak6_01() as Sound;
+		public var SoundSqueak7_01:Sound = new Assets.SoundSqueak7_01() as Sound;
+		public var SoundSqueak8_01:Sound = new Assets.SoundSqueak8_01() as Sound;
+		public var SoundSqueak9_01:Sound = new Assets.SoundSqueak9_01() as Sound;
+		public var SoundSqueak10_01:Sound = new Assets.SoundSqueak10_01() as Sound;
+		public var SoundSqueak1_02:Sound = new Assets.SoundSqueak1_02() as Sound;
+		public var SoundSqueak2_02:Sound = new Assets.SoundSqueak2_02() as Sound;
+		public var SoundSqueak3_02:Sound = new Assets.SoundSqueak3_02() as Sound;
+		public var SoundSqueak4_02:Sound = new Assets.SoundSqueak4_02() as Sound;
+		public var SoundSqueak5_02:Sound = new Assets.SoundSqueak5_02() as Sound;
+		public var SoundSqueak6_02:Sound = new Assets.SoundSqueak6_02() as Sound;
+		public var SoundSqueak7_02:Sound = new Assets.SoundSqueak7_02() as Sound;
+		public var SoundSqueak8_02:Sound = new Assets.SoundSqueak8_02() as Sound;
+		public var SoundSqueak9_02:Sound = new Assets.SoundSqueak9_02() as Sound;
+		public var SoundSqueak10_02:Sound = new Assets.SoundSqueak10_02() as Sound;
+		public var SoundPhone:Sound = new Assets.SoundPhone() as Sound;
+		public var SoundOffice:Sound = new Assets.SoundOffice() as Sound;
+		public var SoundKey:Sound = new Assets.SoundKey() as Sound;
+		public var SoundClick:Sound = new Assets.SoundClick() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -112,27 +120,55 @@ package
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
+		private var pcRunning:Boolean;
+		private var game1Running:Boolean;
+		
+		private var widthCapa1:Number;
+		private var heightCapa1:Number;
+		
 		private var lifes:Number;
 		private var lifesArray:Array;
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
-		private var character:Sprite;
+		
+		private var character:MovieClip;
+		private var characterWalk:MovieClip;
+		private var characterJump:MovieClip;
+		private var characterHurt:MovieClip;
+		private var characterDeath:MovieClip;
 		private var jumptimer:Number;
+		private var hurttimer:Number;
+		private var pisotoneando:Boolean;
+		private var hurt:Boolean;
+		private var game1over:Boolean;
+		private var game1overDelay:Number;
+		private var oversizeY:Number;
+		private var character_basescale:Number;
+		
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
+		
 		private var newEnemy:Sprite;
-		private var enemyArray:Array = new Array();
-		private var enemySpawner:Number = 0;
-		private var widthCapa1:Number;
-		private var heightCapa1:Number;
+		private var enemyArray:Array;
+		private var enemySpawner:Number;
+		
 		private var gamepad:Sprite;
-		private var pisotoneando:Boolean;
 		private var LB:Sprite;
 		private var RB:Sprite;
 		private var LBPressed:Boolean;
 		private var RBPressed:Boolean;
 		private var LBdt:Number;
 		private var RBdt:Number;
+		
+		private var closeIcon:Sprite;
+		
+		// PC
+		private var wallpaper:Sprite;
+		private var txtIcon:Sprite;
+		private var txtInfo:Sprite;
+		private var txtClose:Sprite;
+		private var gameIcon:Sprite;
+		private var cursor:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -142,6 +178,9 @@ package
 		private var CAPA_2_BOTON_FLECHA_ARR:Boolean = false;
 		private var CAPA_2_BOTON_FLECHA_ABA:Boolean = false;
 		private var CAPA_2_MOUSE_CLICKED:Boolean = false;
+		
+		private var CAPA_2_LEFT_MOUSE_X:Number = 200;
+		private var CAPA_2_LEFT_MOUSE_Y:Number = 500;
 		
 		private var leftHand:Sprite;
 		private var rightHand:Sprite;
@@ -155,13 +194,28 @@ package
 		private var snowMan:Sprite;
 		private var snowManCatched:Boolean = false;
 		
+		private var phone_base:Sprite;
+		private var areaPhone:Sprite;
+		private var phone:Sprite;
+		private var phoneCatched:Boolean = false;
+		
+		private var phoneEvent:Number = 0;
+		private var phoneBronca:Number = 1;
+		
+		private var areaCoffe:Sprite;
+		private var coffe:Sprite;
+		private var coffeCatched:Boolean = false;
+		
 		private var test_F_IZQ:Sprite;
 		private var test_F_DER:Sprite;
 		private var test_F_ARR:Sprite;
 		private var test_F_ABA:Sprite;
+		private var test_ESP:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
+		private var debug:Boolean = true;
+		private var ira:Number = 0;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -171,6 +225,7 @@ package
 		private var GLOBAL_MOUSE_MANTAINED:Boolean = false;
 		private var GLOBAL_MOUSE_X:Number = 0;
 		private var GLOBAL_MOUSE_Y:Number = 0;
+		
 		
 		// FIN ATRIBUTOS
 		
@@ -186,6 +241,8 @@ package
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			//this.touchable = false;
+			//Mouse.hide();
+			
 
 		}
 		
@@ -200,7 +257,10 @@ package
 			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			//ch1 = SoundMenu.play(0, 9999);
-			OfficeSound.play(0, 9999);
+			channel_office = SoundOffice.play(0, 999999);
+			channel_phone = SoundPhone.play(0, 9999);
+			channel_phone.soundTransform = new SoundTransform(0, -1);
+
 			
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
@@ -230,79 +290,14 @@ package
 			heightCapa0 = capa0.height;
 			
 			frogRunning = false;
-			initGame0();
 			
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
 			heightCapa1 = capa1.height;
+			pcRunning = false;
+			game1Running = false;
 			
-			lifes = 3;
-			lifesArray = new Array();
-			drawLifes();
-			lifeUpDt = 0;
-			
-			jumptimer = 0;
-			
-			gamepad = new Sprite();
-			i = new Image(Assets.getTexture("gamepad"));
-			gamepad.addChild(i);
-			capa1.addChild(gamepad);
-			gamepad.x = widthCapa1 / 2;
-			gamepad.y = heightCapa1 / 2 + 100;
-			gamepad.pivotX = gamepad.width / 2;
-			gamepad.pivotY = gamepad.height / 2;
-			gamepad.scaleX = 0.1;
-			gamepad.scaleY = 0.1;
-			gamepad.rotation = Math.PI / 4;
-			
-			RB = new Sprite();
-			i = new Image(Assets.getTexture("RB"));
-			RB.addChild(i);
-			capa1.addChild(RB);
-			RB.x = widthCapa1 / 2 + 25;
-			RB.y = heightCapa1 / 2 + 100 + 15;
-			RB.pivotX = RB.width / 2;
-			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.1;
-			RB.scaleY = 0.1;
-			
-			LB = new Sprite();
-			i = new Image(Assets.getTexture("LB"));
-			LB.addChild(i);
-			capa1.addChild(LB);
-			LB.x = widthCapa1 / 2 - 15;
-			LB.y = heightCapa1 / 2 + 100 - 25;
-			LB.pivotX = LB.width / 2;
-			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.1;
-			LB.scaleY = 0.1;
-			
-			RBdt = 0;
-			LBdt = 0;
-			
-			
-			character = new Sprite();
-			i = new Image(Assets.getTexture("character"));
-			character.addChild(i);
-			capa1.addChild(character);
-			character.x = widthCapa1/2;
-			character.y = heightCapa1/2 + 100;
-			character.pivotX = character.width / 2; // 132
-			character.pivotY = character.height / 2; // 224
-			character.scaleX = 0.15;
-			character.scaleY = 0.15;
-			
-			
-			fairy = new Sprite();
-			i = new Image(Assets.getTexture("fairy"));
-			fairy.addChild(i);
-			capa1.addChild(fairy);
-			fairy.pivotX = fairy.width / 2;
-			fairy.pivotY = fairy.height / 2;
-			fairy.scaleX = 0.025;
-			fairy.scaleY = 0.025;
-			fairy_displacement = new Point(0, 0);
-			
+			loadPC();
 			
 			
 			
@@ -311,12 +306,16 @@ package
 			areaMouse = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaMouse.addChild(i);
+			if (debug) areaMouse.alpha = 0.2;
+			else areaMouse.alpha = 0;
 			areaMouse.x = 570;
 			areaMouse.y = 425;
 			
 			areaNeutral = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_neutral"));
 			areaNeutral.addChild(i);
+			if (debug) areaNeutral.alpha = 0.2;
+			else areaNeutral.alpha = 0;
 			areaNeutral.x = areaMouse.x + areaMouse.width/2 - areaNeutral.width/2;
 			areaNeutral.y = areaMouse.y + areaMouse.height/2 - areaNeutral.height/2;
 			
@@ -334,54 +333,116 @@ package
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaSnowMan.addChild(i);
 			capa2.addChild(areaSnowMan);
+			if (debug) areaSnowMan.alpha = 0.2;
+			else areaSnowMan.alpha = 0;
 			areaSnowMan.x = 600;
 			areaSnowMan.y = 225;
 			
 			snowMan = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			i = new Image(Assets.getAtlas().getTexture("snowman"));
 			snowMan.addChild(i);
 			capa2.addChild(snowMan);
 			snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
 			snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
 			
+			areaPhone = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaPhone.addChild(i);
+			capa2.addChild(areaPhone);
+			if (debug) areaPhone.alpha = 0.2;
+			else areaPhone.alpha = 0;
+			areaPhone.x = 0;
+			areaPhone.y = 225;
+			
+			phone_base = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("phone_base"));
+			phone_base.addChild(i);
+			capa2.addChild(phone_base);
+			phone_base.x = areaPhone.x + areaPhone.width/2 - phone_base.width/2 -14;
+			phone_base.y = areaPhone.y + areaPhone.height / 2 - phone_base.height / 2;
+			
+			phone = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("phone"));
+			phone.addChild(i);
+			capa2.addChild(phone);
+			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -14;
+			phone.y = areaPhone.y + areaPhone.height / 2 - phone.height / 2;
+			
+			areaCoffe = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaCoffe.addChild(i);
+			capa2.addChild(areaCoffe);
+			if (debug) areaCoffe.alpha = 0.2;
+			else areaCoffe.alpha = 0;
+			areaCoffe.scaleX = 0.6;
+			areaCoffe.scaleY = 1.4;
+			areaCoffe.x = 0;
+			areaCoffe.y = 400;
+			
+			coffe = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			coffe.addChild(i);
+			capa2.addChild(coffe);
+			coffe.x = areaCoffe.x + areaCoffe.width/2 - coffe.width/2;
+			coffe.y = areaCoffe.y + areaCoffe.height / 2 - coffe.height / 2;
+			
 			test_F_ARR = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_ARR.addChild(i);
 			capa2.addChild(test_F_ARR);
+			if (debug) test_F_ARR.alpha = 0.4;
+			else test_F_ARR.alpha = 0;
 			test_F_ARR.x = 436;
-			test_F_ARR.y = 432;
+			test_F_ARR.y = 432 +32;
 			
 			test_F_ABA = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_ABA.addChild(i);
 			capa2.addChild(test_F_ABA);
+			if (debug) test_F_ABA.alpha = 0.4;
+			else test_F_ABA.alpha = 0;
 			test_F_ABA.x = 442;
-			test_F_ABA.y = 470;
+			test_F_ABA.y = 470 +30;
 			
 			test_F_IZQ = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_IZQ.addChild(i);
 			capa2.addChild(test_F_IZQ);
+			if (debug) test_F_IZQ.alpha = 0.4;
+			else test_F_IZQ.alpha = 0;
 			test_F_IZQ.x = 400;
-			test_F_IZQ.y = 470;
+			test_F_IZQ.y = 470 +30;
 			
 			test_F_DER = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_DER.addChild(i);
 			capa2.addChild(test_F_DER);
+			if (debug) test_F_DER.alpha = 0.4;
+			else test_F_DER.alpha = 0;
 			test_F_DER.x = 484;
-			test_F_DER.y = 470;
+			test_F_DER.y = 470 +30;
+			
+			test_ESP = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_ESP.addChild(i);
+			capa2.addChild(test_ESP);
+			if (debug) test_ESP.alpha = 0.4;
+			else test_ESP.alpha = 0;
+			test_ESP.scaleX = 5.027;
+			test_ESP.x = 165;
+			test_ESP.y = 470 +30;
 			
 			leftHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("lefthand"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
+			i.scaleX *= -1;
 			leftHand.addChild(i);
 			capa2.addChild(leftHand);
-			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
-			leftHand.y = 500;
+			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
+			leftHand.y = CAPA_2_LEFT_MOUSE_Y;
 			
 
 			rightHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
 			rightHand.addChild(i);
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
@@ -402,6 +463,7 @@ package
 				if (mouseCatched) { CAPA_2_MOUSE_CLICKED = true; }
 			}
 			if (touch && touch.phase == TouchPhase.ENDED) {
+				if (snowManCatched) { Squeaky2(); }
 				GLOBAL_MOUSE_MANTAINED = false;
 			}
 		}
@@ -425,27 +487,9 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) {
 				if (snowManCatched) {
-					var randi:Number = Math.random();
-					if (randi > 19/20) SoundSqueak1.play();
-					else if (randi > 18 / 20) SoundSqueak2.play();
-					else if (randi > 17 / 20) SoundSqueak3.play();
-					else if (randi > 16 / 20) SoundSqueak4.play();
-					else if (randi > 15 / 20) SoundSqueak5.play();
-					else if (randi > 14 / 20) SoundSqueak6.play();
-					else if (randi > 13 / 20) SoundSqueak7.play();
-					else if (randi > 12 / 20) SoundSqueak8.play();
-					else if (randi > 11 / 20) SoundSqueak9.play();
-					else if (randi > 10 / 20) SoundSqueak10.play();
-					else if (randi > 9 / 20) SoundSqueak11.play();
-					else if (randi > 8 / 20) SoundSqueak12.play();
-					else if (randi > 7 / 20) SoundSqueak13.play();
-					else if (randi > 6 / 20) SoundSqueak14.play();
-					else if (randi > 5 / 20) SoundSqueak15.play();
-					else if (randi > 4 / 20) SoundSqueak16.play();
-					else if (randi > 3 / 20) SoundSqueak17.play();
-					else if (randi > 2 / 20) SoundSqueak18.play();
-					else if (randi > 1 / 20) SoundSqueak19.play();
-					else SoundSqueak20.play();
+					ira -= 1;
+					if (ira < 0) { ira = 0; }
+					Squeaky();
 				}	
 
 			}
@@ -454,37 +498,73 @@ package
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
 				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
 					CAPA_2_BOTON_FLECHA_ARR = true;
-					trace("MANTAINED FLECHA ARRIBA");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_ABA.x && GLOBAL_MOUSE_X <= test_F_ABA.x + test_F_ABA.width &&
 				GLOBAL_MOUSE_Y >= test_F_ABA.y && GLOBAL_MOUSE_Y <= test_F_ABA.y + test_F_ABA.height) {
 					CAPA_2_BOTON_FLECHA_ABA = true;
-					trace("MANTAINED FLECHA ABAJO");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_IZQ.x && GLOBAL_MOUSE_X <= test_F_IZQ.x + test_F_IZQ.width &&
 				GLOBAL_MOUSE_Y >= test_F_IZQ.y && GLOBAL_MOUSE_Y <= test_F_IZQ.y + test_F_IZQ.height) {
 					CAPA_2_BOTON_FLECHA_IZQ = true;
-					trace("MANTAINED FLECHA IZQUIERDA");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_DER.x && GLOBAL_MOUSE_X <= test_F_DER.x + test_F_DER.width &&
 				GLOBAL_MOUSE_Y >= test_F_DER.y && GLOBAL_MOUSE_Y <= test_F_DER.y + test_F_DER.height) {
 					CAPA_2_BOTON_FLECHA_DER = true;
-					trace("MANTAINED FLECHA DERECHA");
 				}
 			}
 						
 			if(frogRunning) updateCapa0(e.passedTime);
-			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 
+			
+			if (Input.isPressed(Input.SPACE)) {
+				
+				
+				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
+				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
+					CAPA_2_BOTON_ESPACIO = true;
+				}
+				
+				if (phoneCatched && phoneEvent <= 0) {
+					
+					channel_phone.soundTransform = new SoundTransform(0, -1);
+					if (phoneBronca < 3) {
+						// SUENA LA SECRETARIA
+					}
+					else {
+						// SUENA EL BOSS
+					}
+					phoneEvent = 30 + Math.random() * 10;
+					phoneBronca = 1;
+				}
+			}
+			
+			// ****************** CAPA 0 ******************
+			
+			
+			// ****************** CAPA 1 ******************
+			
+			if (pcRunning) updatePC(e.passedTime);
+			if (game1Running) updateGame1(e.passedTime);
+			
+			// ****************** CAPA 2 ******************
+			
+			phoneEvent -= e.passedTime;
+			checkPhoneEvent();
+			
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
 			checkSnowMan();
+			checkPhone();
+			checkCoffe();
+			//ira += e.passedTime;
+			shakeHands(ira);
 			
 			if (CAPA_2_MOUSE_CLICKED) {
-				checkEnemyClick();
+				if (pcRunning) checkPCClick();
+				if (game1Running) checkGame1Click();
 			}
 			
 			
@@ -502,146 +582,507 @@ package
 			CAPA_2_MOUSE_CLICKED = false;
 		}
 		
-	
+		// PC
 		
+		private function loadPC():void {
+			// Cool animations
+			initPC();
+		}
 		
-		private function updateCapa1(dt:Number):void {
+		private function initPC():void {
+			var img: Image;
 			
-			// Movimiento Personaje
-			if (!pisotoneando) {
-				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_IZQ) {
-					character.x -= 80*dt;
-					if (character.scaleX > 0) character.scaleX *= -1;
-				}
-				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_DER) {
-					character.x += 80*dt;
-					if (character.scaleX < 0) character.scaleX *= -1;
-				}
-			}
+			wallpaper = new Sprite();
+			img = new Image(Assets.getTexture("wallpaper"));
+			wallpaper.addChild(img);
+			capa1.addChild(wallpaper);
+			wallpaper.scaleX = 0.21;
+			wallpaper.scaleY = 0.25;
 			
-			// Salto Personaje
-			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
-				pisotoneando = true;
-				character.removeChildren();
-				var img:Image = new Image(Assets.getTexture("character_jump"));
-				character.addChild(img);
-				
-				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
-				{
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RBP"));
-					RB.addChild(img)
-					RBPressed = true;
-					CAPA_1_BOTON_DER = true;
-				}
-				else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
-				{
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LBP"));
-					LB.addChild(img);
-					LBPressed = true;
-					CAPA_1_BOTON_IZQ = true;
-				}
-			}
-			
-			if (pisotoneando) {
-				jumptimer += dt;
-				if (jumptimer >= 0.5) {
-					pisotoneando = false;
-					character.removeChildren();
-					img = new Image(Assets.getTexture("character"));
-					character.addChild(img);
-					jumptimer = 0;
-				}
-			}
-			
-			if (RBPressed) {
-				RBdt += dt;
-				if (RBdt >= 0.5) {
-					RBPressed = false;
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RB"));
-					RB.addChild(img);
-					RBdt = 0;
-				}
-			}
-			
-			if (LBPressed) {
-				LBdt += dt;
-				if (LBdt >= 0.5) {
-					LBPressed = false;
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LB"));
-					LB.addChild(img);
-					LBdt = 0;
-				}
-			}
-				
-			/*if (CAPA_2_BOTON_FLECHA_ARR) character.y -= 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_IZQ) {
-				character.x -= 80*dt;
-				if (character.scaleX > 0) character.scaleX *= -1;
-			}
-			else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_DER) {
-				character.x += 80*dt;
-				if (character.scaleX < 0) character.scaleX *= -1;
-			}*/
+			txtIcon = new Sprite();
+			img = new Image(Assets.getTexture("txtIcon"));
+			txtIcon.addChild(img);
+			capa1.addChild(txtIcon);
+			txtIcon.x = 25;
+			txtIcon.y = 25;
+			txtIcon.pivotX = txtIcon.width / 2;
+			txtIcon.pivotY = txtIcon.height / 2;
+			txtIcon.scaleX = 0.25;
+			txtIcon.scaleY = 0.25;
 			
 			
-			// Movimiento Hadita/Cursor
+			txtInfo = new Sprite();
+			img = new Image(Assets.getTexture("textInfo2"));
+			txtInfo.addChild(img);
+			capa1.addChild(txtInfo);
+			txtInfo.x = widthCapa1 / 4;
+			txtInfo.y = heightCapa1 / 4;
+			txtInfo.scaleX = 0.5;
+			txtInfo.scaleY = 0.5;
+			txtInfo.visible = false;
 			
-			/*fairy_displacement.x += Math.random() * 2.0 - 1.0;
-			fairy_displacement.y += Math.random() * 2.0 - 1.0;
-			if (fairy_displacement.x > 5) fairy_displacement.x = 5;
-			if (fairy_displacement.x < -5) fairy_displacement.x = -5;
-			if (fairy_displacement.y > 5) fairy_displacement.y = 5;
-			if (fairy_displacement.y < 5) fairy_displacement.y = -5;*/
+			txtClose = new Sprite();
+			img = new Image(Assets.getTexture("txtClose"));
+			txtClose.addChild(img);
+			capa1.addChild(txtClose);
+			txtClose.scaleX = txtInfo.scaleX;
+			txtClose.scaleY = txtInfo.scaleY;
+			txtClose.x = txtInfo.x + 504*txtClose.scaleX;
+			txtClose.y = txtInfo.y + 8*txtClose.scaleY;
+			txtClose.visible = false;
 			
-			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
-			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
+			gameIcon = new Sprite();
+			img = new Image(Assets.getTexture("gameIcon"));
+			gameIcon.addChild(img);
+			capa1.addChild(gameIcon);
+			gameIcon.x = 25;
+			gameIcon.y = 100;
+			gameIcon.pivotX = gameIcon.width / 2;
+			gameIcon.pivotY = gameIcon.height / 2;
+			gameIcon.scaleX = 0.65;
+			gameIcon.scaleY = 0.65;
 			
-			//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
-			//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
-
+			cursor = new Sprite();
+			img = new Image(Assets.getTexture("cursor"));
+			cursor.addChild(img);
+			capa1.addChild(cursor);
+			cursor.x = widthCapa1/2;
+			cursor.y = heightCapa1/2;
+			cursor.scaleX = 0.025;
+			cursor.scaleY = 0.025;
+			
+			pcRunning = true;
+		}
+		
+		private function updatePC(dt:Number):void {
+			
 			if (mouseCatched) {
-				fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
-				fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+				cursor.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+				cursor.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
 			}
 			
-			
-			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
-			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
-			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
-			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
-			
-			// Spawnear Enemigos
-			enemySpawner += dt;
-			if (enemySpawner >= 3) {
-				addEnemy();
-				enemySpawner = 0;
+			if (cursor.x+cursor.width > widthCapa1) cursor.x = widthCapa1-cursor.width;
+			if (cursor.x < 0) cursor.x = 0;
+			if (cursor.y+cursor.height > heightCapa1) cursor.y = heightCapa1-cursor.height;
+			if (cursor.y < 0) cursor.y = 0;
+		}
+		
+		private function checkPCClick():void {
+			if ( Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+				shutdownPC();
+				initGame1();
+			}
+			if ( txtInfo.visible == false && Math.abs(txtIcon.x - cursor.x) < txtIcon.width/2 && Math.abs(txtIcon.y - cursor.y) < txtIcon.height/2)  {
+				txtInfo.visible = true;
+				txtClose.visible = true;
 			}
 			
-			// Movimiento Enemigos
-			var i:Number;
-			for (i = 0; i < enemyArray.length; i++) {
-				if (enemyArray[i].x < character.x) {
-					enemyArray[i].x += 80*dt;
-					if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
+			if ( txtInfo.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
+				txtInfo.visible = false;
+				txtClose.visible = false;
+			}
+		}
+				
+				
+			
+		
+		private function shutdownPC():void {
+			capa1.removeChildren();
+			pcRunning = false;
+		}
+		
+		// GAME1
+		
+		private function initGame1():void {
+			
+			var img:Image;
+			
+			lifes = 3;
+			lifesArray = new Array();
+			drawLifes();
+			lifeUpDt = 0;
+			
+			enemyArray = new Array();
+			
+			jumptimer = 0;
+			hurttimer = 0;
+			oversizeY = 0;
+			enemySpawner = 8 + Math.random()*5;
+			character_basescale = 1;
+			
+			game1over = false;
+			game1overDelay = 2;
+			
+			closeIcon = new Sprite();
+			img = new Image(Assets.getTexture("closeIcon"));
+			closeIcon.addChild(img);
+			capa1.addChild(closeIcon);
+			closeIcon.scaleX = 0.1;
+			closeIcon.scaleY = 0.1;
+			closeIcon.x = widthCapa1 - closeIcon.width;
+			closeIcon.y = 0;
+			closeIcon.pivotX = closeIcon.width / 2;
+			closeIcon.pivotY = closeIcon.height / 2;
+			
+			
+			gamepad = new Sprite();
+			img = new Image(Assets.getTexture("gamepad"));
+			gamepad.addChild(img);
+			capa1.addChild(gamepad);
+			gamepad.x = widthCapa1 / 2;
+			gamepad.y = heightCapa1 / 2 + 100;
+			gamepad.pivotX = gamepad.width / 2;
+			gamepad.pivotY = gamepad.height / 2;
+			gamepad.scaleX = 0.1;
+			gamepad.scaleY = 0.1;
+			gamepad.rotation = Math.PI / 4;
+			
+			RB = new Sprite();
+			img = new Image(Assets.getTexture("RB"));
+			RB.addChild(img);
+			capa1.addChild(RB);
+			RB.x = widthCapa1 / 2 + 25;
+			RB.y = heightCapa1 / 2 + 100 + 15;
+			RB.pivotX = RB.width / 2;
+			RB.pivotY = RB.height / 2;
+			RB.scaleX = 0.1;
+			RB.scaleY = 0.1;
+			
+			LB = new Sprite();
+			img = new Image(Assets.getTexture("LB"));
+			LB.addChild(img);
+			capa1.addChild(LB);
+			LB.x = widthCapa1 / 2 - 15;
+			LB.y = heightCapa1 / 2 + 100 - 25;
+			LB.pivotX = LB.width / 2;
+			LB.pivotY = LB.height / 2;
+			LB.scaleX = 0.1;
+			LB.scaleY = 0.1;
+			
+			RBdt = 0;
+			LBdt = 0;
+			
+			
+			/*character = new Sprite();
+			i = new Image(Assets.getTexture("character"));
+			character.addChild(i);
+			capa1.addChild(character);
+			character.x = widthCapa1/2;
+			character.y = heightCapa1/2 + 100;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.scaleX = 0.15;
+			character.scaleY = 0.15;*/
+			
+			/*character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
+			starling.core.Starling.juggler.add(character);
+			capa1.addChild(character);
+			character.addFrameAt(2, Assets.getAtlas().getTexture("SCA_hero_idle_01"), null, 1/6);
+			character.scaleX = character_basescale;
+			character.scaleY = character_basescale;
+			character.x = widthCapa1/2;
+			character.y = heightCapa1 - 50;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.visible = true;*/
+			
+			character = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Idle"), 6);
+			starling.core.Starling.juggler.add(character);
+			capa1.addChild(character);
+			character.x = widthCapa1/2;
+			character.y = heightCapa1 - 50;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.visible = true;
+			
+			
+			/*characterWalk = new MovieClip(Assets.getAtlas2().getTextures("SCA_hero_walk"), 6);
+			starling.core.Starling.juggler.add(characterWalk);
+			capa1.addChild(characterWalk);
+			characterWalk.scaleX = character.scaleX;
+			characterWalk.scaleY = character.scaleY;
+			characterWalk.x = character.x;
+			characterWalk.y = character.y;
+			characterWalk.pivotX = characterWalk.width / 2;
+			characterWalk.pivotY = characterWalk.height / 2;
+			characterWalk.visible = false;*/
+			characterWalk = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Idle"), 6);
+			starling.core.Starling.juggler.add(characterWalk);
+			capa1.addChild(characterWalk);
+			characterWalk.x = character.x;
+			characterWalk.y = character.y;
+			characterWalk.pivotX = characterWalk.width / 2;
+			characterWalk.pivotY = characterWalk.height / 2;
+			characterWalk.visible = false;
+			
+			characterJump = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
+			starling.core.Starling.juggler.add(characterJump);
+			capa1.addChild(characterJump);
+			characterJump.x = character.x;
+			characterJump.y = character.y;
+			characterJump.pivotX = character.width / 2;
+			characterJump.pivotY = character.height / 2;
+			characterJump.visible = false;
+			characterJump.stop();
+			
+			characterHurt = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
+			starling.core.Starling.juggler.add(characterHurt);
+			capa1.addChild(characterHurt);
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.pivotX = character.width / 2;
+			characterHurt.pivotY = character.height / 2;
+			characterHurt.visible = false;
+			characterHurt.stop();
+			
+			characterDeath = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Explosion"), 6);
+			starling.core.Starling.juggler.add(characterDeath);
+			capa1.addChild(characterDeath);
+			characterDeath.x = character.x;
+			characterDeath.y = character.y;
+			characterDeath.pivotX = character.width / 2;
+			characterDeath.pivotY = character.height / 2;
+			characterDeath.visible = false;
+			characterDeath.stop();
+			
+			
+			fairy = new Sprite();
+			img = new Image(Assets.getTexture("fairy"));
+			fairy.addChild(img);
+			capa1.addChild(fairy);
+			fairy.pivotX = fairy.width / 2;
+			fairy.pivotY = fairy.height / 2;
+			fairy.scaleX = 0.025;
+			fairy.scaleY = 0.025;
+			fairy_displacement = new Point(0, 0);
+			
+			initGame0();
+			game1Running = true;
+			
+		}
+		
+		
+		private function updateGame1(dt:Number):void {
+			
+			if (!game1over) {
+				// Movimiento Personaje
+				if (!pisotoneando && !hurt) {
+					
+					character.visible = true;
+					characterWalk.visible = false;
+					
+					if (CAPA_2_BOTON_FLECHA_ARR) {
+						if (oversizeY <= 0) {
+							if ( character.y > capa1.height / 2 + 25) {
+								character.y -= 120 * dt;
+								character.scaleX = character_basescale + (character.y - 250) / 250;
+								character.scaleY = character_basescale + (character.y - 250) / 250;
+							}
+						}
+						else {
+							oversizeY -= 5 * dt;
+							character.scaleX = character_basescale + oversizeY;
+							character.scaleY = character_basescale + oversizeY;
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_IZQ) {
+						if (character.x > 0) {
+							character.x -= 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX < 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_ABA) {
+						if (character.y < heightCapa1+50) {
+							character.y += 120 * dt;
+							character.scaleX = character_basescale + (character.y - 250) / 250;
+							character.scaleY = character_basescale + (character.y - 250) / 250;
+						}
+						else if(oversizeY <= 8) {
+							oversizeY += 5 * dt;
+							character.scaleX = character_basescale + oversizeY;
+							character.scaleY = character_basescale + oversizeY;
+							if (character.x < widthCapa1 / 2) character.x += 80 * dt;
+							else if (character.x > widthCapa1 / 2) character.x -= 80 * dt;
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_DER) {
+						if (character.x < widthCapa1) {
+							character.x += 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX > 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					characterWalk.x = character.x;
+					characterWalk.y = character.y;
 				}
-				if (enemyArray[i].x > character.x) {
-					enemyArray[i].x -= 80*dt;
-					if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
+				
+				// Salto Personaje
+				if (GLOBAL_BOTON_ESPACIO && !pisotoneando && !hurt) {
+					pisotoneando = true;
+					character.visible = false;
+					characterWalk.visible = false;
+					characterJump.x = character.x;
+					characterJump.y = character.y;
+					characterJump.scaleX = character.scaleX;
+					characterJump.scaleY = character.scaleY;
+					characterJump.visible = true;
+					
+					characterJump.play();
+					var img:Image;
+					if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
+					{
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RBP"));
+						RB.addChild(img)
+						RBPressed = true;
+						CAPA_1_BOTON_DER = true;
+					}
+					else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
+					{
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LBP"));
+						LB.addChild(img);
+						LBPressed = true;
+						CAPA_1_BOTON_IZQ = true;
+					}
 				}
-				if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
-				if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
+				
+				if (pisotoneando) {
+					jumptimer += dt;
+					if (jumptimer >= 0.5) {
+						pisotoneando = false;
+						characterJump.stop();
+						characterJump.visible = false;
+						character.visible = true;
+						jumptimer = 0;
+					}
+				}
+				if (hurt) {
+					hurttimer += dt;
+					if (hurttimer >= 0.5) {
+						hurt = false;
+						characterHurt.stop();
+						characterHurt.visible = false;
+						character.visible = true;
+						hurttimer = 0;
+					}
+				}
+				
+				if (RBPressed) {
+					RBdt += dt;
+					if (RBdt >= 0.5) {
+						RBPressed = false;
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RB"));
+						RB.addChild(img);
+						RBdt = 0;
+					}
+				}
+				
+				if (LBPressed) {
+					LBdt += dt;
+					if (LBdt >= 0.5) {
+						LBPressed = false;
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LB"));
+						LB.addChild(img);
+						LBdt = 0;
+					}
+				}
+				
+				
+				// Movimiento Hadita/Cursor
+				
+				//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
+				//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
+				
+				if (mouseCatched) {
+					fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+					fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+				}
+				
+				
+				if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
+				if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
+				if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
+				if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
+				
+				// Spawnear Enemigos
+				enemySpawner -= dt;
+				if (enemySpawner <= 0) {
+					addEnemy();
+					enemySpawner = 8 + Math.round(Math.random()*5);
+				}
+				
+				// Movimiento Enemigos
+				var i:Number;
+				for (i = 0; i < enemyArray.length; i++) {
+					/*if (enemyArray[i].x < character.x) {
+						enemyArray[i].x += 80*dt;
+						if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
+					}
+					if (enemyArray[i].x > character.x) {
+						enemyArray[i].x -= 80*dt;
+						if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
+					}*/
+					//if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
+					//if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
+					if (enemyArray[i].scaleX > 0) {
+						if (enemyArray[i].x <= 0) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x -= 80 * dt;
+						}
+					}
+					else {
+						if (enemyArray[i].x >= widthCapa1) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x += 80*dt;
+						}
+					}
+				}
+				
+				enemyCollision();
+				
+				updateLifeUp(dt);
+				
 			}
-			
-			enemyCollision();
-			
-			updateLifeUp(dt);
+			else {
+				game1overDelay -= dt;
+				if (game1overDelay <= 0) {
+					game1overDelay = 2;
+					game1Running = false;
+					game1over = false;
+					shutdownGame1();
+					initGame1();
+				}
+			}
 			
 		}
 		
@@ -655,9 +1096,17 @@ package
 			newEnemy.scaleX = 0.05;
 			newEnemy.scaleY = 0.05;
 			
-			if (Math.round(Math.random()) == 0) newEnemy.x = 0;
+			/*if (Math.round(Math.random()) == 0) newEnemy.x = 0;
 			else newEnemy.x = widthCapa1;
-			newEnemy.y = heightCapa1 / 2 + 75;
+			newEnemy.y = heightCapa1 / 2 + 75;*/
+			if (Math.round(Math.random()) == 0) {
+				newEnemy.x = 0;
+				newEnemy.scaleX *= -1;
+			}
+			else {
+				newEnemy.x = widthCapa1;
+			}
+			newEnemy.y = heightCapa1 / 2 + 60 + Math.random() * 60.0;
 			
 			enemyArray.push(newEnemy);
 		}
@@ -675,7 +1124,7 @@ package
 			}
 		}
 		
-		private function checkEnemyClick():void {
+		private function checkGame1Click():void {
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
@@ -683,6 +1132,11 @@ package
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
 				}
+			}
+			
+			if ( Math.sqrt(Math.pow((closeIcon.x - fairy.x+20), 2) + Math.pow((closeIcon.y - fairy.y), 2)) < closeIcon.width)  {
+				shutdownGame1();
+				initPC();
 			}
 		}
 		
@@ -726,7 +1180,31 @@ package
 		private function loseLife():void {
 			lifes -= 1;
 			drawLifes();
-			//if (lifes <= 0){has perdido joputa}
+			hurt = true;
+			character.visible = false;
+			characterWalk.visible = false;
+			characterJump.visible = false;
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.scaleX = character.scaleX;
+			characterHurt.scaleY = character.scaleY;
+			characterHurt.visible = true;
+			characterHurt.play();
+			
+			if (lifes <= 0) {
+				characterDeath.x = character.x;
+				characterDeath.y = character.y;
+				characterDeath.scaleX = character.scaleX;
+				characterDeath.scaleY = character.scaleY;
+				characterDeath.stop();
+				characterDeath.play();
+				characterDeath.visible = true;
+				characterJump.visible = false;
+				characterWalk.visible = false;
+				characterHurt.visible = false;
+				character.visible = false;
+				game1over = true;
+			}
 		}
 		
 		private function gainLife():void {
@@ -802,9 +1280,16 @@ package
 			capa0.addChild(copyText);
 		}
 		
+		private function shutdownGame1():void {
+			shutDownFrog();
+			capa1.removeChildren();
+			game1Running = false;
+		}
+		
+		// GAME 0
+		
 		private function updateCapa0(dt:Number):void
 		{	
-			
 			if (initiated)
 			{
 				if (secsPassed == 0) FrogIntro.play();;
@@ -880,7 +1365,7 @@ package
 				if (generated)
 				{
 					secsPassed += customDt;
-
+				
 					if (secsPassed >= 1.2)
 					{	
 						FrogTick.play();
@@ -1053,7 +1538,7 @@ package
 		
 		private function drawCapa0():void
 		{
-			screen = new Image(Assets.getTexture("DETB_BG"));
+			screen = new Image(Assets.getAtlas().getTexture("capa0"));
 			capa0.addChild(screen);
 			screen.visible = false;
 			
@@ -1247,13 +1732,12 @@ package
 		private function moveLeftHand(dt:Number):void {
 			
 			// MOVE LEFT HAND
-			var new_x:Number = leftHand.x;
-			var new_y:Number = leftHand.y;
+			var new_x:Number = CAPA_2_LEFT_MOUSE_X;
+			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
 			if (GLOBAL_BOTON_W) {
 				new_y -= dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_y = capa1.y + heightCapa1; }
 			}
 			if (GLOBAL_BOTON_S) {
 				new_y += dt * speed_leftHand;
@@ -1263,14 +1747,27 @@ package
 			}
 			if (GLOBAL_BOTON_D) {
 				new_x += dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_x = capa1.x - leftHand.width; }
 			}
 			
-			if ((new_x + leftHand.width) > GAME.true_width / 2) {
-				new_x = GAME.true_width / 2 - leftHand.width;
+			
+			if (new_x > capa1.x && new_y < capa1.y + heightCapa1) { 
+				var aux_desfase_x:int = new_x - capa1.x;
+				var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
+				if (aux_desfase_x > aux_desfase_y) {
+					new_y = capa1.y + heightCapa1;
+				}
+				else {
+					new_x = capa1.x;
+				}
 			}
-			if (new_x < -leftHand.width/2) {
-				new_x = -leftHand.width/2;
+			
+			
+			
+			if ((new_x) > GAME.true_width / 2) {
+				new_x = GAME.true_width / 2;
+			}
+			if (new_x - leftHand.width < -leftHand.width/2) {
+				new_x = -leftHand.width/2 +leftHand.width;
 			}
 			if (new_y > GAME.true_height - leftHand.height/2) {
 				new_y = GAME.true_height - leftHand.height/2;
@@ -1279,7 +1776,10 @@ package
 				new_y = 0;
 			}
 			
-			leftHand.x = new_x;
+			CAPA_2_LEFT_MOUSE_X = new_x;
+			CAPA_2_LEFT_MOUSE_Y = new_y;
+			
+			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
 			leftHand.y = new_y;
 
 			// END MOVE LEFT HAND
@@ -1447,8 +1947,135 @@ package
 				}
 				
 			}
+			
+		}
+		
+		private function checkPhone():void {
+			
+			if (phoneCatched) {
+
+				
+				if (CAPA_2_LEFT_MOUSE_X < areaPhone.x || CAPA_2_LEFT_MOUSE_X > areaPhone.x + areaPhone.width ||
+				CAPA_2_LEFT_MOUSE_Y < areaPhone.y || CAPA_2_LEFT_MOUSE_Y > areaPhone.y + areaPhone.height) {
+					phoneCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
+					var point_hand_y:Number = leftHand.y - 0;
+				
+					phone.x = point_hand_x;
+					phone.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (CAPA_2_LEFT_MOUSE_X >= areaPhone.x && CAPA_2_LEFT_MOUSE_X <= areaPhone.x + areaPhone.width &&
+				CAPA_2_LEFT_MOUSE_Y >= areaPhone.y && CAPA_2_LEFT_MOUSE_Y <= areaPhone.y + areaPhone.height) {
+					phoneCatched = true;
+				}
+				
+			}
 
 			
+		}
+		
+		private function checkCoffe():void {
+			
+			if (coffeCatched) {
+
+				
+				if (CAPA_2_LEFT_MOUSE_X < areaCoffe.x || CAPA_2_LEFT_MOUSE_X > areaCoffe.x + areaCoffe.width ||
+				CAPA_2_LEFT_MOUSE_Y < areaCoffe.y || CAPA_2_LEFT_MOUSE_Y > areaCoffe.y + areaCoffe.height) {
+					coffeCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
+					var point_hand_y:Number = leftHand.y - 0;
+				
+					coffe.x = point_hand_x;
+					coffe.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (CAPA_2_LEFT_MOUSE_X >= areaCoffe.x && CAPA_2_LEFT_MOUSE_X <= areaCoffe.x + areaCoffe.width &&
+				CAPA_2_LEFT_MOUSE_Y >= areaCoffe.y && CAPA_2_LEFT_MOUSE_Y <= areaCoffe.y + areaCoffe.height) {
+					coffeCatched = true;
+				}
+				
+			}
+
+			
+		}
+		
+		private function shakeHands(intensity:Number):void {
+			
+			CAPA_2_LEFT_MOUSE_X += (Math.random() * 2 -1) *(intensity);
+			CAPA_2_LEFT_MOUSE_Y += (Math.random() * 2 -1) * (intensity);
+			
+			GLOBAL_MOUSE_X += (Math.random() * 2 -1) * (intensity);
+			GLOBAL_MOUSE_Y += (Math.random() * 2 -1) * (intensity);
+			
+		}
+		
+		private function checkPhoneEvent():void {
+			
+			if (phoneEvent <= 0) {
+				
+				if (channel_phone.soundTransform.volume == 0) {
+					channel_phone = SoundPhone.play(0, 9999);
+					channel_phone.soundTransform = new SoundTransform(1, -1);
+				}
+				
+				
+				if (phoneEvent <= -(3 + phoneBronca*3)) {
+					
+					phoneEvent = 30 + Math.random()*10;
+					channel_phone.soundTransform = new SoundTransform(0, -1);
+					phoneBronca++;
+					
+					if (phoneBronca > 3) {
+						
+						// ESTAS DESPEDIDO, MACHO
+						trace ("FIRED, HIJOPUTA");
+						
+					}
+					
+				}
+			}
+			
+		}
+		
+		private function Squeaky():void {
+			var randi:Number = Math.random();
+			if (randi > 9/10) SoundSqueak1_01.play();
+			else if (randi > 8 / 10) SoundSqueak2_01.play();
+			else if (randi > 7 / 10) SoundSqueak3_01.play();
+			else if (randi > 6 / 10) SoundSqueak4_01.play();
+			else if (randi > 5 / 10) SoundSqueak5_01.play();
+			else if (randi > 4 / 10) SoundSqueak6_01.play();
+			else if (randi > 3 / 10) SoundSqueak7_01.play();
+			else if (randi > 2 / 10) SoundSqueak8_01.play();
+			else if (randi > 1 / 10) SoundSqueak9_01.play();
+			else SoundSqueak10_01.play();
+		}
+		
+		private function Squeaky2():void {
+			var randi:Number = Math.random();
+			if (randi > 9/10) SoundSqueak1_02.play();
+			else if (randi > 8 / 10) SoundSqueak2_02.play();
+			else if (randi > 7 / 10) SoundSqueak3_02.play();
+			else if (randi > 6 / 10) SoundSqueak4_02.play();
+			else if (randi > 5 / 10) SoundSqueak5_02.play();
+			else if (randi > 4 / 10) SoundSqueak6_02.play();
+			else if (randi > 3 / 10) SoundSqueak7_02.play();
+			else if (randi > 2 / 10) SoundSqueak8_02.play();
+			else if (randi > 1 / 10) SoundSqueak9_02.play();
+			else SoundSqueak10_02.play();
 		}
 		
 	}

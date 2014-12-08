@@ -13,9 +13,11 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
-		/*
+		
 		private static var gameTextures2:Dictionary = new Dictionary();
 		private static var gameTextureAtlas2:TextureAtlas;
+		
+		/*
 		private static var gameTextures3:Dictionary = new Dictionary();
 		private static var gameTextureAtlas3:TextureAtlas;
 		*/
@@ -23,9 +25,12 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
+		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
+		public static const AtlasXmlGame:Class;
+		
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
-
+		
 		// ****************** CAPA 1 ******************
 		[Embed(source = "../media/graphics/crusader.png")]
 		public static const character:Class;
@@ -53,6 +58,30 @@ package
 		[Embed(source = "../media/graphics/RBP.png")]
 		public static const RBP:Class;
 		
+		[Embed(source = "../media/graphics/closeIcon.png")]
+		public static const closeIcon:Class;
+		
+		[Embed(source = "../media/graphics/wallpaper.jpg")]
+		public static const wallpaper:Class;
+		
+		[Embed(source = "../media/graphics/txtIcon.png")]
+		public static const txtIcon:Class;
+		
+		[Embed(source = "../media/graphics/txtInfo.png")]
+		public static const txtInfo:Class;
+		
+		[Embed(source = "../media/graphics/txtInfo2.png")]
+		public static const textInfo2:Class;
+		
+		[Embed(source = "../media/graphics/txtClose.png")]
+		public static const txtClose:Class;
+		
+		[Embed(source = "../media/graphics/gameIcon.png")]
+		public static const gameIcon:Class;
+		
+		[Embed(source = "../media/graphics/cursor.png")]
+		public static const cursor:Class;
+		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
 
@@ -62,78 +91,71 @@ package
 		
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;
-		
-		[Embed(source = "../media/graphics/DETB_BG.png")]
-		public static const DETB_BG:Class;
-		
-
-		
-		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
-		public static const AtlasXmlGame:Class;
-		
 	
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;
 		
-		[Embed(source="../media/sounds/squeak1.mp3")]
-		public static const SoundSqueak1:Class;
+		[Embed(source="../media/sounds/squeak1_01.mp3")]
+		public static const SoundSqueak1_01:Class;
 		
-		[Embed(source="../media/sounds/squeak2.mp3")]
-		public static const SoundSqueak2:Class;
+		[Embed(source="../media/sounds/squeak1_02.mp3")]
+		public static const SoundSqueak1_02:Class;
 		
-		[Embed(source="../media/sounds/squeak3.mp3")]
-		public static const SoundSqueak3:Class;
+		[Embed(source="../media/sounds/squeak2_01.mp3")]
+		public static const SoundSqueak2_01:Class;
 		
-		[Embed(source="../media/sounds/squeak4.mp3")]
-		public static const SoundSqueak4:Class;
+		[Embed(source="../media/sounds/squeak2_02.mp3")]
+		public static const SoundSqueak2_02:Class;
 		
-		[Embed(source="../media/sounds/squeak5.mp3")]
-		public static const SoundSqueak5:Class;
+		[Embed(source="../media/sounds/squeak3_01.mp3")]
+		public static const SoundSqueak3_01:Class;
 		
-		[Embed(source="../media/sounds/squeak6.mp3")]
-		public static const SoundSqueak6:Class;
+		[Embed(source="../media/sounds/squeak3_02.mp3")]
+		public static const SoundSqueak3_02:Class;
 		
-		[Embed(source="../media/sounds/squeak7.mp3")]
-		public static const SoundSqueak7:Class;
+		[Embed(source="../media/sounds/squeak4_01.mp3")]
+		public static const SoundSqueak4_01:Class;
 		
-		[Embed(source="../media/sounds/squeak8.mp3")]
-		public static const SoundSqueak8:Class;
+		[Embed(source="../media/sounds/squeak4_02.mp3")]
+		public static const SoundSqueak4_02:Class;
 		
-		[Embed(source="../media/sounds/squeak9.mp3")]
-		public static const SoundSqueak9:Class;
+		[Embed(source="../media/sounds/squeak5_01.mp3")]
+		public static const SoundSqueak5_01:Class;
 		
-		[Embed(source="../media/sounds/squeak10.mp3")]
-		public static const SoundSqueak10:Class;
+		[Embed(source="../media/sounds/squeak5_02.mp3")]
+		public static const SoundSqueak5_02:Class;
 		
-		[Embed(source="../media/sounds/squeak11.mp3")]
-		public static const SoundSqueak11:Class;
+		[Embed(source="../media/sounds/squeak6_01.mp3")]
+		public static const SoundSqueak6_01:Class;
 		
-		[Embed(source="../media/sounds/squeak12.mp3")]
-		public static const SoundSqueak12:Class;
+		[Embed(source="../media/sounds/squeak6_02.mp3")]
+		public static const SoundSqueak6_02:Class;
 		
-		[Embed(source="../media/sounds/squeak13.mp3")]
-		public static const SoundSqueak13:Class;
+		[Embed(source="../media/sounds/squeak7_01.mp3")]
+		public static const SoundSqueak7_01:Class;
 		
-		[Embed(source="../media/sounds/squeak14.mp3")]
-		public static const SoundSqueak14:Class;
+		[Embed(source="../media/sounds/squeak7_02.mp3")]
+		public static const SoundSqueak7_02:Class;
 		
-		[Embed(source="../media/sounds/squeak15.mp3")]
-		public static const SoundSqueak15:Class;
+		[Embed(source="../media/sounds/squeak8_01.mp3")]
+		public static const SoundSqueak8_01:Class;
 		
-		[Embed(source="../media/sounds/squeak16.mp3")]
-		public static const SoundSqueak16:Class;
+		[Embed(source="../media/sounds/squeak8_02.mp3")]
+		public static const SoundSqueak8_02:Class;
 		
-		[Embed(source="../media/sounds/squeak17.mp3")]
-		public static const SoundSqueak17:Class;
+		[Embed(source="../media/sounds/squeak9_01.mp3")]
+		public static const SoundSqueak9_01:Class;
 		
-		[Embed(source="../media/sounds/squeak18.mp3")]
-		public static const SoundSqueak18:Class;
+		[Embed(source="../media/sounds/squeak9_02.mp3")]
+		public static const SoundSqueak9_02:Class;
 		
-		[Embed(source="../media/sounds/squeak19.mp3")]
-		public static const SoundSqueak19:Class;
+		[Embed(source="../media/sounds/squeak10_01.mp3")]
+		public static const SoundSqueak10_01:Class;
 		
+		/*
 		[Embed(source="../media/sounds/squeak20.mp3")]
 		public static const SoundSqueak20:Class;
+		*/
 		
 		[Embed(source="../media/sounds/tick.mp3")]
 		public static const FrogTick:Class;
@@ -152,6 +174,22 @@ package
 		
 		[Embed(source = "../media/graphics/retroFont.ttf", fontFamily ="RetroFont", embedAsCFF = false)]
 		public static const RetroFont:Class;
+
+		[Embed(source="../media/sounds/squeak10_02.mp3")]
+		public static const SoundSqueak10_02:Class;
+		
+		[Embed(source="../media/sounds/click.mp3")]
+		public static const SoundClick:Class;
+		
+		[Embed(source="../media/sounds/key.mp3")]
+		public static const SoundKey:Class;
+		
+		[Embed(source="../media/sounds/office.mp3")]
+		public static const SoundOffice:Class;
+		
+		[Embed(source="../media/sounds/phone_call.mp3")]
+		public static const SoundPhone:Class;
+
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
@@ -170,7 +208,7 @@ package
 			}
 			return gameTextureAtlas2;
 		}
-		*/
+		
 		
 		/*
 		public static function getAtlas3():TextureAtlas {
