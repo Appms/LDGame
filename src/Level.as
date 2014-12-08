@@ -541,10 +541,10 @@ package
 			rightShirt.addChild(i);
 			capa2.addChild(rightShirt);
 			
-			textIra = new TextField(100, 50, "", "Arial", 24);
+			textIra = new TextField(150, 50, "", "Arial", 24);
 			capa2.addChild(textIra);
 			textIra.x = 650;
-			textTime = new TextField(100, 50, "", "Arial", 24);
+			textTime = new TextField(150, 50, "", "Arial", 24);
 			capa2.addChild(textTime);
 			textTime.x = 650;
 			textTime.y = 50;
@@ -573,7 +573,7 @@ package
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
 			globalTime+= e.passedTime;
-			textIra.text = "Ira: " + ira;
+			textIra.text = "Ira: " + int(ira);
 			textTime.text = "Time: " + int(globalTime);
 			
 			if (Input.isPressed(Input.SPACE))
@@ -675,8 +675,11 @@ package
 			
 			checkLeftVisibility();
 			checkRightVisibility();
-			//ira += e.passedTime;
-			shakeHands(ira);
+			ira += e.passedTime;
+			shakeHands((-1.05 + Math.pow(1.05,ira))/2);
+			
+			if (int(ira) == 10)
+				trace("ORDENADOR A LA MIERDA!");
 			
 			
 			GLOBAL_BOTON_ESPACIO = false;
