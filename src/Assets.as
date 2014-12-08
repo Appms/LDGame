@@ -219,7 +219,7 @@ package
 		[Embed(source = "../media/sounds/powerUp.mp3")]
 		public static const PowerUp:Class;
 		
-		[Embed(source = "../media/sounds/button.mp3")]
+		[Embed(source = "../media/sounds/button_pushed.mp3")]
 		public static const ButtonSound:Class;
 		
 		//[Embed(source = "../media/sounds/bug.mp3")]
