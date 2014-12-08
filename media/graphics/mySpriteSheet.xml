@@ -12,11 +12,11 @@
     <SubTexture name="DETB07" x="558" y="1546" width="152" height="180"/>
     <SubTexture name="DETB08" x="914" y="1416" width="152" height="180"/>
     <SubTexture name="DETB09" x="760" y="1386" width="152" height="180"/>
-    <SubTexture name="DETB10" x="914" y="1234" width="152" height="180"/>
-    <SubTexture name="DETB11" x="404" y="1426" width="152" height="180"/>
-    <SubTexture name="DETB12" x="606" y="1364" width="152" height="180"/>
-    <SubTexture name="DETB13" x="760" y="1204" width="152" height="180"/>
-    <SubTexture name="DETB14" x="962" y="1052" width="152" height="180"/>
+    <SubTexture name="DETB010" x="914" y="1234" width="152" height="180"/>
+    <SubTexture name="DETB011" x="404" y="1426" width="152" height="180"/>
+    <SubTexture name="DETB012" x="606" y="1364" width="152" height="180"/>
+    <SubTexture name="DETB013" x="760" y="1204" width="152" height="180"/>
+    <SubTexture name="DETB014" x="962" y="1052" width="152" height="180"/>
     <SubTexture name="DETB_Bomb_01" x="1230" y="386" width="32" height="32"/>
     <SubTexture name="DETB_Bomb_02" x="1230" y="490" width="24" height="28" frameX="0" frameY="-4" frameWidth="32" frameHeight="32"/>
     <SubTexture name="DETB_Front_Explosion_01" x="1980" y="428" width="56" height="68"/>

@@ -67,8 +67,12 @@ package
 		public var SoundClick:Sound = new Assets.SoundClick() as Sound;
 		
 		private var capa0:Sprite;
+		private var capa0_ruido:MovieClip;
 		private var capa1:Sprite;
+		private var capa1_careto:Sprite;
+		private var capa1_ruido:MovieClip;
 		private var capa2:Sprite;
+		
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 0
 		
@@ -117,6 +121,8 @@ package
 		private var numBombs:Number;
 		private var bombScore:TextField;
 		private var bombScoreCopy:TextField;
+		private var pressText:TextField;
+		private var pressTextCopy:TextField;
 		
 
 		
@@ -172,6 +178,7 @@ package
 		
 		private var loadScreen:MovieClip;
 		private var loadStaticScreen:Image;
+		private var pcLoading:Boolean;
 		
 		// PC
 		private var wallpaper:Sprite;
@@ -186,6 +193,7 @@ package
 		public var StartUp:Sound = new Assets.StartUp() as Sound;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
+		
 		
 		private var CAPA_2_BOTON_ESPACIO:Boolean = false;
 		private var CAPA_2_BOTON_FLECHA_IZQ:Boolean = false;
@@ -302,18 +310,41 @@ package
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
 			capa0.addChild(i);
+			i.visible = false;
 			capa0.scaleX = 1.01;
 			capa0.scaleY = 1.01;
 			addChild(capa0);
 			capa0.x = GAME.true_width/2 - capa0.width/2;
 			capa0.y = 57;
 			
+			capa0_ruido= new MovieClip(Assets.getAtlas().getTextures("DETB0"), 5);
+			starling.core.Starling.juggler.add(capa0_ruido);
+			capa0_ruido.x = capa0.x + 2;
+			capa0_ruido.y = capa0.y +2; 
+			addChild(capa0_ruido);
+			capa0_ruido.visible = false;
+			
 			capa1 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa1"));
+			i.visible = false;
 			capa1.addChild(i);
 			addChild(capa1);
 			capa1.x = GAME.true_width/2 - capa1.width/2;
 			capa1.y = 41;
+			
+			capa1_careto = new Sprite();
+			addChild(capa1_careto);
+			capa1_careto.x = GAME.true_width/2 - capa1.width/2;
+			capa1_careto.y = 41;
+			
+			
+			capa1_ruido = new MovieClip(Assets.getAtlas().getTextures("SCANoise"), 10);
+			starling.core.Starling.juggler.add(capa1_ruido);
+			capa1_ruido.x = capa1.x-2;
+			capa1_ruido.y = capa1.y;
+			addChild(capa1_ruido);
+			capa1_ruido.visible = false;
+
 			
 			capa2 = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("capa2"));
@@ -331,8 +362,11 @@ package
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
 			heightCapa1 = capa1.height;
+			
+			pcLoading = false;
 			pcRunning = false;
 			game1Running = false;
+			
 					
 			// *********************** CAPA 2 ***********************
 			
@@ -544,7 +578,7 @@ package
 			textIra = new TextField(100, 50, "", "Arial", 24);
 			capa2.addChild(textIra);
 			textIra.x = 650;
-			textTime = new TextField(100, 50, "", "Arial", 24);
+			textTime = new TextField(150, 50, "", "Arial", 24);
 			capa2.addChild(textTime);
 			textTime.x = 650;
 			textTime.y = 50;
@@ -694,26 +728,32 @@ package
 			
 			if (clickScreenButton)
 			{
-				if(!game1Running && !pcRunning) loadPC();
-				else
+				if(!game1Running && !pcRunning && !pcLoading) loadPC();
+				else if(!pcLoading)
 				{
 					shutdownPC();
 					shutdownGame1();
+					capa1_ruido.visible = false;
+					
 				}
 				clickScreenButton = false;
 			}
 		}
-		
-
 		
 		// PC
 		
 		private function loadPC():void {
 			
 			StartUp.play();
+			
+			capa1_ruido.visible = true;
+			
+			pcLoading = true;
+			
+			
 			loadStaticScreen = new Image(Assets.getTexture("LoadScreen"));
 			capa1.addChild(loadStaticScreen);
-			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 0.5);
+			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 1);
 			loadScreen.play();
 			loadScreen.pivotX = loadScreen.width / 2;
 			loadScreen.pivotY = loadScreen.height / 2;
@@ -724,14 +764,11 @@ package
 			loadScreen.loop = false;
 			
 			loadScreen.addEventListener(Event.COMPLETE, loadCompleted);
-
-			
-			//loadScreen.visible = false;
-			//initPC();
 		}
 		
 		private function loadCompleted(event:Event):void
 		{
+			pcLoading = false;
 			loadStaticScreen.visible = false;
 			loadScreen.visible = false;
 			loadScreen.stop();
@@ -739,6 +776,9 @@ package
 		}
 		
 		private function initPC():void {
+			
+			capa1_ruido.visible = true;
+			
 			var img: Image;
 			
 			wallpaper = new Sprite();
@@ -747,7 +787,6 @@ package
 			capa1.addChild(wallpaper);
 			wallpaper.scaleX = 0.21;
 			wallpaper.scaleY = 0.25;
-			
 			
 			gameIcon = new Sprite();
 			img = new Image(Assets.getTexture("gameIcon"));
@@ -759,7 +798,6 @@ package
 			gameIcon.pivotY = gameIcon.height / 2;
 			gameIcon.scaleX = 0.65;
 			gameIcon.scaleY = 0.65;
-			
 			
 			txtIcon = new Sprite();
 			img = new Image(Assets.getTexture("txtIcon"));
@@ -791,8 +829,7 @@ package
 			txtClose.scaleY = 0.55;
 			txtClose.x = txtInfo.x + txtInfo.width - txtClose.width - 4;//504*txtClose.scaleX;
 			txtClose.y = txtInfo.y + 1//8*txtClose.scaleY;
-			txtClose.visible = false;
-			
+			txtClose.visible = false;	
 			
 			cursor = new Sprite();
 			img = new Image(Assets.getTexture("cursor"));
@@ -959,7 +996,7 @@ package
 			
 			oversize = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_face"), 3);
 			starling.core.Starling.juggler.add(oversize);
-			capa1.addChild(oversize);
+			capa1_careto.addChild(oversize);
 			oversize.x = widthCapa1 / 2;
 			oversize.y = heightCapa1 + oversize.height + 50;
 			oversize.pivotX = oversize.width / 2;
@@ -968,7 +1005,7 @@ package
 			glassface = new Sprite();
 			img = new Image(Assets.getAtlas().getTexture("SCA_hero_glassface"));
 			glassface.addChild(img);
-			capa1.addChild(glassface);
+			capa1_careto.addChild(glassface);
 			glassface.x = widthCapa1 / 2;
 			glassface.y = heightCapa1 / 2;
 			glassface.pivotX = glassface.width / 2;
@@ -1394,7 +1431,9 @@ package
 		}
 		
 		private function initGame0():void
-		{						
+		{	
+			capa0_ruido.visible = true;
+			
 			copyText = new TextField(150, 180 , "" , "RetroFont", 36, 0x8dab89);
 			copyText.x = 2;
 			copyText.y = 2;
@@ -1446,25 +1485,42 @@ package
 			numBombs = 0;
 			var bombScoreString:String = "" + numBombs;
 			
-			bombScore = new TextField(50, 20, bombScoreString, "RetroFont", 36, 0x000000);
-			bombScore.x = 100;
+			bombScore = new TextField(120, 20, bombScoreString, "RetroFont", 36, 0x000000);
+			bombScore.hAlign = "left";
+			bombScore.x = 102;
 			bombScore.y = 10;
 			capa0.addChild(bombScore);
 			
 			bombScore.visible = false;
 			
 
-			bombScoreCopy = new TextField(50, 20, bombScoreString, "RetroFont", 36, 0x8dab89);
-			bombScoreCopy.x = 102;
+			bombScoreCopy = new TextField(120, 20, bombScoreString, "RetroFont", 36, 0x8dab89);
+			bombScoreCopy.hAlign = "left";
+			bombScoreCopy.x = 104;
 			bombScoreCopy.y = 12;
 			capa0.addChild(bombScoreCopy);
 			
 			bombScoreCopy.visible = false;
+			
+			pressText= new TextField(150, 80, "Press any\nButton", "RetroFont", 30, 0x000000);
+			//pressText.hAlign = "left";
+			//pressText.x = 10;
+			pressText.y = 118;
+			capa0.addChild(pressText);
+			
+			pressTextCopy= new TextField(150, 80, "Press any\nButton", "RetroFont", 30, 0xe5eee5);
+			//pressTextCopy.hAlign = "left";
+			pressTextCopy.x = 2;
+			pressTextCopy.y = 116;
+			capa0.addChild(pressTextCopy);
+			
+			pressTextCopy.visible = false;
 		}
 		
 		private function shutdownGame1():void {
 			shutDownFrog();
 			capa1.removeChildren();
+			capa1_careto.removeChildren();
 			game1Running = false;
 		}
 		
@@ -1473,24 +1529,36 @@ package
 		private function updateCapa0(dt:Number):void
 		{	
 			if (initiated)
-			{
-				
-				if (CAPA_1_BOTON_DER) CAPA_1_BOTON_DER = false;
-				if (CAPA_1_BOTON_IZQ) CAPA_1_BOTON_IZQ = false;
-				if (secsPassed == 0) FrogIntro.play();;
+			{	
+				if (CAPA_1_BOTON_DER)
+				{
+					CAPA_1_BOTON_DER = false;
+					secsPassed = 1;
+				}
+				if (CAPA_1_BOTON_IZQ)
+				{
+					 CAPA_1_BOTON_IZQ = false;
+					 secsPassed = 1;
+				}
 				
 				matrixText.visible = false;
 				
 				intro.visible = true;
-				secsPassed+= dt;
-				if (secsPassed >= 3)
+				
+				pressText.visible = true;
+				pressTextCopy.visible = true;
+		
+				if (secsPassed == 1)
 				{
+					FrogIntro.play();
 					secsPassed = 0;
 					initiated = false;
 					matrixText.visible = false;
 					intro.visible = false;
 					screen.visible = true;
 					character1.visible = true;
+					pressText.visible = false;
+					pressTextCopy.visible = false;
 				}
 			}
 			
@@ -1903,6 +1971,7 @@ package
 			bombsAway = new Array();
 			capa0.removeChildren();
 			frogRunning = false;
+			capa0_ruido.visible = false;
 		}
 				
 		private function moveLeftHand(dt:Number):void {
