@@ -13,8 +13,15 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
+<<<<<<< HEAD
 		private static var gameTextures2:Dictionary = new Dictionary();
 		private static var gameTextureAtlas2:TextureAtlas;
+=======
+		
+		private static var gameTextures2:Dictionary = new Dictionary();
+		private static var gameTextureAtlas2:TextureAtlas;
+		
+>>>>>>> origin/master
 		/*
 		private static var gameTextures3:Dictionary = new Dictionary();
 		private static var gameTextureAtlas3:TextureAtlas;
@@ -23,12 +30,17 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
+<<<<<<< HEAD
 		[Embed(source = "../media/graphics/mySpriteSheet2.png")]
 		public static const AtlasTextureGame2:Class;
+=======
+		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
+		public static const AtlasXmlGame:Class;
+>>>>>>> origin/master
 		
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
-
+		
 		// ****************** CAPA 1 ******************
 		[Embed(source = "../media/graphics/crusader.png")]
 		public static const character:Class;
@@ -56,6 +68,33 @@ package
 		[Embed(source = "../media/graphics/RBP.png")]
 		public static const RBP:Class;
 		
+		[Embed(source = "../media/graphics/closeIcon.png")]
+		public static const closeIcon:Class;
+		
+		[Embed(source = "../media/graphics/wallpaper.jpg")]
+		public static const wallpaper:Class;
+		
+		[Embed(source = "../media/graphics/txtIcon.png")]
+		public static const txtIcon:Class;
+		
+		[Embed(source = "../media/graphics/txtInfo.png")]
+		public static const txtInfo:Class;
+		
+		[Embed(source = "../media/graphics/txtInfo2.png")]
+		public static const textInfo2:Class;
+		
+		[Embed(source = "../media/graphics/txtClose.png")]
+		public static const txtClose:Class;
+		
+		[Embed(source = "../media/graphics/gameIcon.png")]
+		public static const gameIcon:Class;
+		
+		[Embed(source = "../media/graphics/cursor.png")]
+		public static const cursor:Class;
+		
+		[Embed(source = "../media/graphics/loadScreen.jpg")]
+		public static const LoadScreen:Class;
+		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
 
@@ -65,6 +104,7 @@ package
 		
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;
+<<<<<<< HEAD
 		
 
 		
@@ -75,6 +115,8 @@ package
 		public static const AtlasXmlGame2:Class;
 		
 		
+=======
+>>>>>>> origin/master
 	
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;
@@ -136,6 +178,29 @@ package
 		[Embed(source="../media/sounds/squeak10_01.mp3")]
 		public static const SoundSqueak10_01:Class;
 		
+		/*
+		[Embed(source="../media/sounds/squeak20.mp3")]
+		public static const SoundSqueak20:Class;
+		*/
+		
+		[Embed(source="../media/sounds/tick.mp3")]
+		public static const FrogTick:Class;
+		
+		[Embed(source="../media/sounds/death.mp3")]
+		public static const FrogDeath:Class;
+		
+		[Embed(source="../media/sounds/move.mp3")]
+		public static const FrogMove:Class;
+		
+		[Embed(source="../media/sounds/office.mp3")]
+		public static const OfficeSound:Class;
+		
+		[Embed(source="../media/sounds/frogIntro.mp3")]
+		public static const FrogIntro:Class;
+		
+		[Embed(source = "../media/graphics/retroFont.ttf", fontFamily ="RetroFont", embedAsCFF = false)]
+		public static const RetroFont:Class;
+
 		[Embed(source="../media/sounds/squeak10_02.mp3")]
 		public static const SoundSqueak10_02:Class;
 		
@@ -150,6 +215,27 @@ package
 		
 		[Embed(source="../media/sounds/phone_call.mp3")]
 		public static const SoundPhone:Class;
+		
+		[Embed(source = "../media/sounds/startup.mp3")]
+		public static const StartUp:Class;
+
+		
+		//***************Sounds Capa 1****************
+		
+		[Embed(source = "../media/sounds/SCA_Main.mp3")]
+		public static const SCA_Main:Class;
+		
+		[Embed(source = "../media/sounds/powerUp.mp3")]
+		public static const PowerUp:Class;
+		
+		[Embed(source = "../media/sounds/button.mp3")]
+		public static const ButtonSound:Class;
+		
+		//[Embed(source = "../media/sounds/bug.mp3")]
+		//public static const BugSound:Class;
+		
+
+
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {

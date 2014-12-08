@@ -2,6 +2,7 @@ package
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -74,6 +75,12 @@ package
 		public const LEVELS_0:int = 4;
 		public const TRACKS_0:int  = 3;
 		
+		public var FrogDead:Sound = new Assets.FrogDeath() as Sound;
+		public var FrogMove:Sound = new Assets.FrogMove() as Sound;
+		public var FrogTick:Sound = new Assets.FrogTick() as Sound;
+		public var OfficeSound:Sound = new Assets.OfficeSound() as Sound;
+		private var FrogIntro:Sound = new Assets.FrogIntro() as Sound;
+		
 		private var gameMatrix:Array;
 		private var matrixText:TextField;
 		private var test:String;
@@ -92,12 +99,21 @@ package
 		private var character0:MovieClip;
 		private var character1:MovieClip;
 		private var character2:MovieClip;
+		private var intro:MovieClip;
 		private var bombsAway:Array;
 		private var widthCapa0:Number;
 		private var heightCapa0:Number;
 		private var mouth0:Image;
 		private var mouth1:Image;
 		private var mouth2:Image;
+		private var screen:Image;
+		private var death0:MovieClip;
+		private var death1:MovieClip;
+		private var death2:MovieClip;
+		private var secs:Number = 4;
+		private var initFrog:Boolean;
+		private var frogRunning:Boolean;
+		private var copyText:TextField;
 
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
@@ -105,27 +121,65 @@ package
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
 		
+		private var pcRunning:Boolean;
+		private var game1Running:Boolean;
+		
+		private var widthCapa1:Number;
+		private var heightCapa1:Number;
+		
 		private var lifes:Number;
 		private var lifesArray:Array;
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
-		private var character:Sprite;
+		
+		private var backgroundGame1:Sprite;
+		private var character:MovieClip;
+		private var characterWalk:MovieClip;
+		private var characterJump:MovieClip;
+		private var characterHurt:MovieClip;
+		private var characterDeath:MovieClip;
+		private var oversize:MovieClip;
+		private var glassface:Sprite;
 		private var jumptimer:Number;
-		private var fairy:Sprite;
-		private var fairy_displacement:Point;
-		private var newEnemy:Sprite;
-		private var enemyArray:Array = new Array();
-		private var enemySpawner:Number = 0;
-		private var widthCapa1:Number;
-		private var heightCapa1:Number;
-		private var gamepad:Sprite;
+		private var hurttimer:Number;
 		private var pisotoneando:Boolean;
+		private var hurt:Boolean;
+		private var game1over:Boolean;
+		private var game1overDelay:Number;
+		private var character_basescale:Number;
+		
+		private var fairy:MovieClip;
+		private var fairy_laser:MovieClip;
+		private var laserTimer:Number;
+		
+		private var newEnemy:MovieClip;
+		private var enemyArray:Array;
+		private var enemySpawner:Number;
+		private var enemySplash:MovieClip;
+		
 		private var LB:Sprite;
 		private var RB:Sprite;
 		private var LBPressed:Boolean;
 		private var RBPressed:Boolean;
 		private var LBdt:Number;
 		private var RBdt:Number;
+		
+		private var closeIcon:Sprite;
+		
+		private var loadScreen:MovieClip;
+		private var loadStaticScreen:Image;
+		
+		// PC
+		private var wallpaper:Sprite;
+		private var txtIcon:Sprite;
+		private var txtInfo:Sprite;
+		private var txtClose:Sprite;
+		private var gameIcon:Sprite;
+		private var cursor:Sprite;
+		
+		//Sounds
+		
+		public var StartUp:Sound = new Assets.StartUp() as Sound;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -183,8 +237,13 @@ package
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
 		
+<<<<<<< HEAD
 		private var changed_x_rotation:Number = 73;
 		private var changed_y_rotation:Number = 43;
+=======
+		//Rubén, ratón
+		private var clickScreenButton:Boolean;
+>>>>>>> origin/master
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -234,6 +293,7 @@ package
 			channel_office = SoundOffice.play(0, 999999);
 			channel_phone = SoundPhone.play(0, 9999);
 			channel_phone.soundTransform = new SoundTransform(0, -1);
+
 			
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
@@ -261,109 +321,16 @@ package
 			//**************** CAPA 0 ******************
 			widthCapa0 = capa0.width;
 			heightCapa0 = capa0.height;
-			drawCapa0();
-			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
-			test = new String();
-			initiated = true;
-			dead = false;
-			bombsAway = new Array();
 			
-			for (var t:int = 0; t < LEVELS_0; t++)
-			{	
-				gameMatrix[t] = new Array(TRACKS_0);
-				for (var u:int = 0; u < TRACKS_0; u++)
-				{	
-					gameMatrix[t][u] = 0;
-				}
-			}
-			
-			gameMatrix[3][1] = 2;
-			currentPos = 1;
-			
-			test = "Da Frog";
-			test += "\n";
-			test += "with TUPÉ";
-			
-			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
-			matrixText.x = 0;
-			matrixText.y = 0;
-			matrixText.border = false;
-			capa0.addChild(matrixText);
-			
+			frogRunning = false;
 			
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
 			heightCapa1 = capa1.height;
+			pcRunning = false;
+			game1Running = false;
 			
-			lifes = 3;
-			lifesArray = new Array();
-			drawLifes();
-			lifeUpDt = 0;
-			
-			jumptimer = 0;
-			
-			gamepad = new Sprite();
-			i = new Image(Assets.getTexture("gamepad"));
-			gamepad.addChild(i);
-			capa1.addChild(gamepad);
-			gamepad.x = widthCapa1 / 2;
-			gamepad.y = heightCapa1 / 2 + 100;
-			gamepad.pivotX = gamepad.width / 2;
-			gamepad.pivotY = gamepad.height / 2;
-			gamepad.scaleX = 0.1;
-			gamepad.scaleY = 0.1;
-			gamepad.rotation = Math.PI / 4;
-			
-			RB = new Sprite();
-			i = new Image(Assets.getTexture("RB"));
-			RB.addChild(i);
-			capa1.addChild(RB);
-			RB.x = widthCapa1 / 2 + 25;
-			RB.y = heightCapa1 / 2 + 100 + 15;
-			RB.pivotX = RB.width / 2;
-			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.1;
-			RB.scaleY = 0.1;
-			
-			LB = new Sprite();
-			i = new Image(Assets.getTexture("LB"));
-			LB.addChild(i);
-			capa1.addChild(LB);
-			LB.x = widthCapa1 / 2 - 15;
-			LB.y = heightCapa1 / 2 + 100 - 25;
-			LB.pivotX = LB.width / 2;
-			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.1;
-			LB.scaleY = 0.1;
-			
-			RBdt = 0;
-			LBdt = 0;
-			
-			
-			character = new Sprite();
-			i = new Image(Assets.getTexture("character"));
-			character.addChild(i);
-			capa1.addChild(character);
-			character.x = widthCapa1/2;
-			character.y = heightCapa1/2 + 100;
-			character.pivotX = character.width / 2; // 132
-			character.pivotY = character.height / 2; // 224
-			character.scaleX = 0.15;
-			character.scaleY = 0.15;
-			
-			
-			fairy = new Sprite();
-			i = new Image(Assets.getTexture("fairy"));
-			fairy.addChild(i);
-			capa1.addChild(fairy);
-			fairy.pivotX = fairy.width / 2;
-			fairy.pivotY = fairy.height / 2;
-			fairy.scaleX = 0.025;
-			fairy.scaleY = 0.025;
-			fairy_displacement = new Point(0, 0);
-			
-			
-			
+			//loadPC();
 			
 			// *********************** CAPA 2 ***********************
 			
@@ -593,7 +560,10 @@ package
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
-			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
+			if (Input.isPressed(Input.SPACE))
+			{
+				GLOBAL_BOTON_ESPACIO = true;
+			}
 			else GLOBAL_BOTON_ESPACIO = false;
 			
 			if (Input.isDown(Input.UP)) GLOBAL_BOTON_W = true;
@@ -617,6 +587,9 @@ package
 
 			}
 			
+			//temporal encender apagar PC
+			if(Input.isDown(Input.UP2)) clickScreenButton = true;
+			
 			if (GLOBAL_MOUSE_MANTAINED) {
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
 				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
@@ -635,9 +608,17 @@ package
 					CAPA_2_BOTON_FLECHA_DER = true;
 				}
 			}
+<<<<<<< HEAD
 			else {
 				
 			}
+=======
+						
+			if(frogRunning) updateCapa0(e.passedTime);
+			
+			// ****************** CAPA 2 ******************
+
+>>>>>>> origin/master
 			
 			if (Input.isPressed(Input.SPACE)) {
 				
@@ -661,10 +642,15 @@ package
 				}
 			}
 			
+			// ****************** CAPA 0 ******************
 			
 			
-			updateCapa0(e.passedTime);
-			updateCapa1(e.passedTime);
+			// ****************** CAPA 1 ******************
+			
+			if (pcRunning) updatePC(e.passedTime);
+			if (game1Running) updateGame1(e.passedTime);
+			
+		
 			
 			// ****************** CAPA 2 ******************
 			
@@ -683,10 +669,6 @@ package
 			//ira += e.passedTime;
 			shakeHands(ira);
 			
-			if (CAPA_2_MOUSE_CLICKED) {
-				checkEnemyClick();
-			}
-			
 			
 			GLOBAL_BOTON_ESPACIO = false;
 			GLOBAL_BOTON_W = false;
@@ -700,164 +682,575 @@ package
 			CAPA_2_BOTON_FLECHA_DER = false;
 			CAPA_2_BOTON_ESPACIO = false;
 			CAPA_2_MOUSE_CLICKED = false;
+			
+			if (clickScreenButton)
+			{
+				if(!game1Running && !pcRunning) loadPC();
+				else
+				{
+					shutdownPC();
+					shutdownGame1();
+				}
+				clickScreenButton = false;
+			}
 		}
 		
-	
-		
-		
-		private function updateCapa1(dt:Number):void {
-			
-			// Movimiento Personaje
-			if (!pisotoneando) {
-				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_IZQ) {
-					character.x -= 80*dt;
-					if (character.scaleX > 0) character.scaleX *= -1;
-				}
-				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_DER) {
-					character.x += 80*dt;
-					if (character.scaleX < 0) character.scaleX *= -1;
-				}
-			}
-			
-			// Salto Personaje
-			if (CAPA_2_BOTON_ESPACIO && !pisotoneando) {
-				pisotoneando = true;
-				character.removeChildren();
-				var img:Image = new Image(Assets.getTexture("character_jump"));
-				character.addChild(img);
-				
-				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
-				{
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RBP"));
-					RB.addChild(img)
-					RBPressed = true;
-					CAPA_1_BOTON_DER = true;
-				}
-				else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
-				{
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LBP"));
-					LB.addChild(img);
-					LBPressed = true;
-					CAPA_1_BOTON_IZQ = true;
-				}
-			}
-			
-			if (pisotoneando) {
-				jumptimer += dt;
-				if (jumptimer >= 0.5) {
-					pisotoneando = false;
-					character.removeChildren();
-					img = new Image(Assets.getTexture("character"));
-					character.addChild(img);
-					jumptimer = 0;
-				}
-			}
-			
-			if (RBPressed) {
-				RBdt += dt;
-				if (RBdt >= 0.5) {
-					RBPressed = false;
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RB"));
-					RB.addChild(img);
-					RBdt = 0;
-				}
-			}
-			
-			if (LBPressed) {
-				LBdt += dt;
-				if (LBdt >= 0.5) {
-					LBPressed = false;
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LB"));
-					LB.addChild(img);
-					LBdt = 0;
-				}
-			}
-				
-			/*if (CAPA_2_BOTON_FLECHA_ARR) character.y -= 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_IZQ) {
-				character.x -= 80*dt;
-				if (character.scaleX > 0) character.scaleX *= -1;
-			}
-			else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-			else if (CAPA_2_BOTON_FLECHA_DER) {
-				character.x += 80*dt;
-				if (character.scaleX < 0) character.scaleX *= -1;
-			}*/
-			
-			
-			// Movimiento Hadita/Cursor
-			
-			/*fairy_displacement.x += Math.random() * 2.0 - 1.0;
-			fairy_displacement.y += Math.random() * 2.0 - 1.0;
-			if (fairy_displacement.x > 5) fairy_displacement.x = 5;
-			if (fairy_displacement.x < -5) fairy_displacement.x = -5;
-			if (fairy_displacement.y > 5) fairy_displacement.y = 5;
-			if (fairy_displacement.y < 5) fairy_displacement.y = -5;*/
-			
-			//fairy.x = GLOBAL_MOUSE_X - capa1.x + fairy_displacement.x;
-			//fairy.y = GLOBAL_MOUSE_Y - capa1.y + fairy_displacement.y;
-			
-			//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
-			//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
 
+		
+		// PC
+		
+		private function loadPC():void {
+			
+			StartUp.play();
+			loadStaticScreen = new Image(Assets.getTexture("LoadScreen"));
+			capa1.addChild(loadStaticScreen);
+			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 0.5);
+			loadScreen.play();
+			loadScreen.pivotX = loadScreen.width / 2;
+			loadScreen.pivotY = loadScreen.height / 2;
+			loadScreen.x = widthCapa1 / 2;
+			loadScreen.y = heightCapa1 / 2+55;
+			starling.core.Starling.juggler.add(loadScreen);
+			capa1.addChild(loadScreen);
+			loadScreen.loop = false;
+			
+			loadScreen.addEventListener(Event.COMPLETE, loadCompleted);
+
+			
+			//loadScreen.visible = false;
+			//initPC();
+		}
+		
+		private function loadCompleted(event:Event):void
+		{
+			loadStaticScreen.visible = false;
+			loadScreen.visible = false;
+			loadScreen.stop();
+			initPC();
+		}
+		
+		private function initPC():void {
+			var img: Image;
+			
+			wallpaper = new Sprite();
+			img = new Image(Assets.getTexture("wallpaper"));
+			wallpaper.addChild(img);
+			capa1.addChild(wallpaper);
+			wallpaper.scaleX = 0.21;
+			wallpaper.scaleY = 0.25;
+			
+			txtIcon = new Sprite();
+			img = new Image(Assets.getTexture("txtIcon"));
+			txtIcon.addChild(img);
+			capa1.addChild(txtIcon);
+			txtIcon.x = 25;
+			txtIcon.y = 25;
+			txtIcon.pivotX = txtIcon.width / 2;
+			txtIcon.pivotY = txtIcon.height / 2;
+			txtIcon.scaleX = 0.25;
+			txtIcon.scaleY = 0.25;
+			
+			
+			txtInfo = new Sprite();
+			img = new Image(Assets.getTexture("textInfo2"));
+			txtInfo.addChild(img);
+			capa1.addChild(txtInfo);
+			txtInfo.x = widthCapa1 / 10;
+			txtInfo.y = heightCapa1 / 10;
+			txtInfo.scaleX = 0.5;
+			txtInfo.scaleY = 0.5;
+			txtInfo.visible = false;
+			
+			txtClose = new Sprite();
+			img = new Image(Assets.getTexture("txtClose"));
+			txtClose.addChild(img);
+			capa1.addChild(txtClose);
+			txtClose.scaleX = txtInfo.scaleX;
+			txtClose.scaleY = txtInfo.scaleY;
+			txtClose.x = txtInfo.x + 504*txtClose.scaleX;
+			txtClose.y = txtInfo.y + 8*txtClose.scaleY;
+			txtClose.visible = false;
+			
+			gameIcon = new Sprite();
+			img = new Image(Assets.getTexture("gameIcon"));
+			gameIcon.addChild(img);
+			capa1.addChild(gameIcon);
+			gameIcon.x = 25;
+			gameIcon.y = 100;
+			gameIcon.pivotX = gameIcon.width / 2;
+			gameIcon.pivotY = gameIcon.height / 2;
+			gameIcon.scaleX = 0.65;
+			gameIcon.scaleY = 0.65;
+			
+			cursor = new Sprite();
+			img = new Image(Assets.getTexture("cursor"));
+			cursor.addChild(img);
+			capa1.addChild(cursor);
+			cursor.x = widthCapa1/2;
+			cursor.y = heightCapa1/2;
+			cursor.scaleX = 0.025;
+			cursor.scaleY = 0.025;
+			
+			pcRunning = true;
+		}
+		
+		private function updatePC(dt:Number):void {
+			
 			if (mouseCatched) {
-				fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
-				fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+				cursor.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+				cursor.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
 			}
 			
+			if (cursor.x+cursor.width > widthCapa1) cursor.x = widthCapa1-cursor.width;
+			if (cursor.x < 0) cursor.x = 0;
+			if (cursor.y+cursor.height > heightCapa1) cursor.y = heightCapa1-cursor.height;
+			if (cursor.y < 0) cursor.y = 0;
 			
-			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
-			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
-			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
-			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
-			
-			// Spawnear Enemigos
-			enemySpawner += dt;
-			if (enemySpawner >= 3) {
-				addEnemy();
-				enemySpawner = 0;
+			if (CAPA_2_MOUSE_CLICKED) {
+				checkPCClick();
+			}
+		}
+		
+		private function checkPCClick():void {
+			if ( Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+				shutdownPC();
+				initGame1();
+			}
+			if ( txtInfo.visible == false && Math.abs(txtIcon.x - cursor.x) < txtIcon.width/2 && Math.abs(txtIcon.y - cursor.y) < txtIcon.height/2)  {
+				txtInfo.visible = true;
+				txtClose.visible = true;
 			}
 			
-			// Movimiento Enemigos
-			var i:Number;
-			for (i = 0; i < enemyArray.length; i++) {
-				if (enemyArray[i].x < character.x) {
-					enemyArray[i].x += 80*dt;
-					if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
+			if ( txtInfo.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
+				txtInfo.visible = false;
+				txtClose.visible = false;
+			}
+		}
+				
+				
+			
+		
+		private function shutdownPC():void {
+			capa1.removeChildren();
+			pcRunning = false;
+		}
+		
+		// GAME1
+		
+		private function initGame1():void {
+			
+			var img:Image;
+			
+			enemyArray = new Array();
+			
+			jumptimer = 0;
+			hurttimer = 0;
+			enemySpawner = 8 + Math.random()*5;
+			character_basescale = 1;
+			
+			game1over = false;
+			game1overDelay = 2;
+			
+			backgroundGame1 = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("capa1"));
+			backgroundGame1.addChild(img);
+			capa1.addChild(backgroundGame1);
+			backgroundGame1.x = 0;
+			backgroundGame1.y = 0;
+			
+			closeIcon = new Sprite();
+			img = new Image(Assets.getTexture("closeIcon"));
+			closeIcon.addChild(img);
+			capa1.addChild(closeIcon);
+			closeIcon.scaleX = 0.1;
+			closeIcon.scaleY = 0.1;
+			closeIcon.x = widthCapa1 - closeIcon.width*1.25;
+			closeIcon.y = closeIcon.height/4;
+			closeIcon.pivotX = closeIcon.width / 2;
+			closeIcon.pivotY = closeIcon.height / 2;
+			
+			
+			RB = new Sprite();
+			img = new Image(Assets.getTexture("RB"));
+			RB.addChild(img);
+			capa1.addChild(RB);
+			RB.x = widthCapa1 / 2 + 30;
+			RB.y = heightCapa1 / 2 + 100 ;
+			RB.pivotX = RB.width / 2;
+			RB.pivotY = RB.height / 2;
+			RB.scaleX = 0.2;
+			RB.scaleY = 0.1;
+			
+			LB = new Sprite();
+			img = new Image(Assets.getTexture("LB"));
+			LB.addChild(img);
+			capa1.addChild(LB);
+			LB.x = widthCapa1 / 2 - 49;
+			LB.y = heightCapa1 / 2 + 63;
+			LB.pivotX = LB.width / 2;
+			LB.pivotY = LB.height / 2;
+			LB.scaleX = 0.15;
+			LB.scaleY = 0.08;
+			
+			RBdt = 0;
+			LBdt = 0;
+			
+			
+			character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
+			starling.core.Starling.juggler.add(character);
+			capa1.addChild(character);
+			character.x = widthCapa1/2;
+			character.y = heightCapa1 - 50;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.visible = true;
+			
+			characterWalk = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_walk"), 6);
+			starling.core.Starling.juggler.add(characterWalk);
+			capa1.addChild(characterWalk);
+			characterWalk.x = character.x;
+			characterWalk.y = character.y;
+			characterWalk.pivotX = characterWalk.width / 2;
+			characterWalk.pivotY = characterWalk.height / 2;
+			characterWalk.visible = false;
+			
+			characterJump = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_jump"), 6);
+			starling.core.Starling.juggler.add(characterJump);
+			capa1.addChild(characterJump);
+			characterJump.x = character.x;
+			characterJump.y = character.y;
+			characterJump.pivotX = character.width / 2;
+			characterJump.pivotY = character.height / 2;
+			characterJump.visible = false;
+			characterJump.stop();
+			
+			characterHurt = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_hurt"), 6);
+			starling.core.Starling.juggler.add(characterHurt);
+			capa1.addChild(characterHurt);
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.pivotX = character.width / 2;
+			characterHurt.pivotY = character.height / 2;
+			characterHurt.visible = false;
+			characterHurt.stop();
+			
+			characterDeath = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_death"), 0.5);
+			starling.core.Starling.juggler.add(characterDeath);
+			capa1.addChild(characterDeath);
+			characterDeath.addFrameAt(0, Assets.getAtlas().getTexture("SCA_hero_hurt_01"), null, 1 / 6);
+			characterDeath.x = character.x;
+			characterDeath.y = character.y;
+			characterDeath.pivotX = character.width / 2;
+			characterDeath.pivotY = character.height / 2;
+			characterDeath.visible = false;
+			characterDeath.stop();
+			
+			oversize = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_face"), 3);
+			starling.core.Starling.juggler.add(oversize);
+			capa1.addChild(oversize);
+			oversize.x = widthCapa1 / 2;
+			oversize.y = heightCapa1 + oversize.height + 50;
+			oversize.pivotX = oversize.width / 2;
+			oversize.pivotY = oversize.height / 2;
+			
+			glassface = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("SCA_hero_glassface"));
+			glassface.addChild(img);
+			capa1.addChild(glassface);
+			glassface.x = widthCapa1 / 2;
+			glassface.y = heightCapa1 / 2;
+			glassface.pivotX = glassface.width / 2;
+			glassface.pivotY = glassface.height / 2;
+			glassface.visible = false;
+			
+			
+			laserTimer = 0;
+			
+			fairy = new MovieClip(Assets.getAtlas().getTextures("SCA_eye_fly"), 6);
+			starling.core.Starling.juggler.add(fairy);
+			capa1.addChild(fairy);
+			fairy.pivotX = fairy.width / 2;
+			fairy.pivotY = fairy.height / 2;
+			fairy.x = widthCapa1 / 2;
+			fairy.y = heightCapa1 / 2;
+			
+			fairy_laser = new MovieClip(Assets.getAtlas().getTextures("SCA_eye_laser"), 6);
+			starling.core.Starling.juggler.add(fairy_laser);
+			capa1.addChild(fairy_laser);
+			fairy_laser.pivotX = fairy.pivotX;
+			fairy_laser.pivotY = fairy.pivotY;
+			fairy_laser.visible = false;
+			
+			lifes = 3;
+			lifesArray = new Array();
+			drawLifes();
+			lifeUpDt = 0;
+			
+			initGame0();
+			game1Running = true;
+			
+		}
+		
+		
+		private function updateGame1(dt:Number):void {
+			
+			if (!game1over) {
+				
+				if (laserTimer > 0) {
+					laserTimer -= dt;
 				}
-				if (enemyArray[i].x > character.x) {
-					enemyArray[i].x -= 80*dt;
-					if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
+				else if (CAPA_2_MOUSE_CLICKED) {
+					checkGame1Click();
 				}
-				if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
-				if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
+				else {
+					fairy.visible = true;
+					fairy_laser.visible = false;
+				}
+				
+				
+				// Movimiento Personaje
+				if (!pisotoneando && !hurt) {
+					
+					character.visible = true;
+					characterWalk.visible = false;
+					
+					if (CAPA_2_BOTON_FLECHA_ARR) {
+						if ( character.y > heightCapa1 / 2 + 34) {
+							character.y -= 120 * dt;
+							if (character.scaleX > 0) character.scaleX = character_basescale + (character.y - 250) / 250;
+							else character.scaleX = -(character_basescale + (character.y - 250) / 250);
+							character.scaleY = character_basescale + (character.y - 250) / 250;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							
+							oversize.y += 240 * dt;
+							if (oversize.y <= heightCapa1/2 + 50) {
+								glassface.visible = true;
+								oversize.visible = false;
+							}
+							else {
+								glassface.visible = false;
+								oversize.visible = true;
+							}
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_IZQ) {
+						if (character.x > 0) {
+							character.x -= 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX < 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_ABA) {
+						if (character.y < heightCapa1+250) {
+							character.y += 120 * dt;
+							if (character.scaleX > 0) character.scaleX = character_basescale + (character.y - 250) / 250;
+							else character.scaleX = -(character_basescale + (character.y - 250) / 250);
+							character.scaleY = character_basescale + (character.y - 250) / 250;
+							
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							
+							oversize.y -= 240 * dt;
+							if (oversize.y <= heightCapa1/2 + 50) {
+								glassface.visible = true;
+								oversize.visible = false;
+							}
+							else {
+								glassface.visible = false;
+								oversize.visible = true;
+							}
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_DER) {
+						if (character.x < widthCapa1) {
+							character.x += 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX > 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					characterWalk.x = character.x;
+					characterWalk.y = character.y;
+				}
+				
+				// Salto Personaje
+				if (GLOBAL_BOTON_ESPACIO && !pisotoneando && !hurt) {
+					pisotoneando = true;
+					character.visible = false;
+					characterWalk.visible = false;
+					characterJump.x = character.x;
+					characterJump.y = character.y;
+					characterJump.scaleX = character.scaleX;
+					characterJump.scaleY = character.scaleY;
+					characterJump.visible = true;
+					
+					characterJump.play();
+					var img:Image;
+					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2)
+					{
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RBP"));
+						RB.addChild(img)
+						RBPressed = true;
+						CAPA_1_BOTON_DER = true;
+					}
+					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2 - 2)
+					{
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LBP"));
+						LB.addChild(img);
+						LBPressed = true;
+						CAPA_1_BOTON_IZQ = true;
+					}
+				}
+				
+				if (pisotoneando) {
+					jumptimer += dt;
+					if (jumptimer >= 0.5) {
+						pisotoneando = false;
+						characterJump.stop();
+						characterJump.visible = false;
+						character.visible = true;
+						jumptimer = 0;
+					}
+				}
+				if (hurt) {
+					hurttimer += dt;
+					if (hurttimer >= 0.5) {
+						hurt = false;
+						characterHurt.stop();
+						characterHurt.visible = false;
+						character.visible = true;
+						hurttimer = 0;
+					}
+				}
+				
+				if (RBPressed) {
+					RBdt += dt;
+					if (RBdt >= 0.5) {
+						RBPressed = false;
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RB"));
+						RB.addChild(img);
+						RBdt = 0;
+					}
+				}
+				
+				if (LBPressed) {
+					LBdt += dt;
+					if (LBdt >= 0.5) {
+						LBPressed = false;
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LB"));
+						LB.addChild(img);
+						LBdt = 0;
+					}
+				}
+				
+				
+				// Movimiento Hadita/Cursor
+				
+				//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
+				//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
+				
+				if (mouseCatched) {
+					fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+					fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+				}
+				
+				
+				if (fairy.x + fairy.width/4 > widthCapa1) fairy.x = widthCapa1-fairy.width/4;
+				if (fairy.x - fairy.width/4 < 0) fairy.x = 0 + fairy.width/4;
+				if (fairy.y + fairy.height/4 > heightCapa1) fairy.y = heightCapa1 - fairy.height/4;
+				if (fairy.y - fairy.height/4 < 0) fairy.y = 0 + fairy.height/4;
+				
+				// Spawnear Enemigos
+				enemySpawner -= dt;
+				if (enemySpawner <= 0) {
+					addEnemy();
+					enemySpawner = 8 + Math.round(Math.random()*5);
+				}
+				
+				// Movimiento Enemigos
+				var i:Number;
+				for (i = 0; i < enemyArray.length; i++) {
+					if (enemyArray[i].scaleX > 0) {
+						if (enemyArray[i].x <= 0) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x -= 80 * dt;
+						}
+					}
+					else {
+						if (enemyArray[i].x >= widthCapa1) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x += 80*dt;
+						}
+					}
+				}
+				
+				enemyCollision();
+				
+				updateLifeUp(dt);
+				
 			}
-			
-			enemyCollision();
-			
-			updateLifeUp(dt);
+			else {
+				game1overDelay -= dt;
+				if (game1overDelay <= 0) {
+					game1overDelay = 2;
+					game1Running = false;
+					game1over = false;
+					shutdownGame1();
+					initGame1();
+				}
+			}
 			
 		}
 		
 		private function addEnemy():void {
-			newEnemy = new Sprite();
-			var i:Image = new Image(Assets.getTexture("enemy"));
-			newEnemy.addChild(i);
+			newEnemy = new MovieClip(Assets.getAtlas().getTextures("SCA_bug_walk"), 6);
+			starling.core.Starling.juggler.add(newEnemy);
 			capa1.addChild(newEnemy);
 			newEnemy.pivotX = newEnemy.width / 2;
 			newEnemy.pivotY = newEnemy.height / 2;
-			newEnemy.scaleX = 0.05;
-			newEnemy.scaleY = 0.05;
 			
-			if (Math.round(Math.random()) == 0) newEnemy.x = 0;
-			else newEnemy.x = widthCapa1;
-			newEnemy.y = heightCapa1 / 2 + 75;
+			if (Math.round(Math.random()) == 0) {
+				newEnemy.x = 0;
+				newEnemy.scaleX *= -1;
+			}
+			else {
+				newEnemy.x = widthCapa1;
+			}
+			newEnemy.y = heightCapa1 / 2 + 60 + Math.random() * 60.0;
 			
 			enemyArray.push(newEnemy);
 		}
@@ -875,7 +1268,13 @@ package
 			}
 		}
 		
-		private function checkEnemyClick():void {
+		private function checkGame1Click():void {
+			laserTimer = 0.5;
+			fairy_laser.x = fairy.x;
+			fairy_laser.y = fairy.y;
+			fairy_laser.visible = true;
+			fairy.visible = false;
+			
 			var i:Number;
 			for (i = 0; i < enemyArray.length; i++) {
 				if ( Math.sqrt(Math.pow((enemyArray[i].x - (fairy.x)), 2) + Math.pow((enemyArray[i].y - (fairy.y)), 2)) < 25)  {
@@ -884,19 +1283,24 @@ package
 					enemyArray.splice(i, 1);
 				}
 			}
+			
+			if ( Math.sqrt(Math.pow((closeIcon.x - fairy.x+20), 2) + Math.pow((closeIcon.y - fairy.y), 2)) < closeIcon.width)  {
+				shutdownGame1();
+				initPC();
+			}
 		}
 		
 		private function spawnLife(x:Number, y:Number):void {
 			lifeUp = new Sprite();
-			var i:Image = new Image(Assets.getTexture("heart"));
+			var i:Image = new Image(Assets.getAtlas().getTexture("SCA_vida"));
 			lifeUp.addChild(i);
 			capa1.addChild(lifeUp);
 			lifeUp.x = x;
 			lifeUp.y = y;
 			lifeUp.pivotX = lifeUp.width / 2;
 			lifeUp.pivotY = lifeUp.height / 2;
-			lifeUp.scaleX = 0.03;
-			lifeUp.scaleY = 0.03;
+			lifeUp.scaleX = 0.75;
+			lifeUp.scaleY = 0.75;
 		}
 		
 		private function updateLifeUp(dt:Number):void {
@@ -926,7 +1330,31 @@ package
 		private function loseLife():void {
 			lifes -= 1;
 			drawLifes();
-			//if (lifes <= 0){has perdido joputa}
+			hurt = true;
+			character.visible = false;
+			characterWalk.visible = false;
+			characterJump.visible = false;
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.scaleX = character.scaleX;
+			characterHurt.scaleY = character.scaleY;
+			characterHurt.visible = true;
+			characterHurt.play();
+			
+			if (lifes <= 0) {
+				characterDeath.x = character.x;
+				characterDeath.y = character.y;
+				characterDeath.scaleX = character.scaleX;
+				characterDeath.scaleY = character.scaleY;
+				characterDeath.stop();
+				characterDeath.play();
+				characterDeath.visible = true;
+				characterJump.visible = false;
+				characterWalk.visible = false;
+				characterHurt.visible = false;
+				character.visible = false;
+				game1over = true;
+			}
 		}
 		
 		private function gainLife():void {
@@ -944,50 +1372,113 @@ package
 			
 			for (i = 0; i < lifes; i++) {
 				var life:Sprite = new Sprite();
-				var img:Image = new Image(Assets.getTexture("heart"));
+				var img:Image = new Image(Assets.getAtlas().getTexture("SCA_vida"));
 				life.addChild(img);
 				capa1.addChild(life);
-				life.scaleX = 0.05;
-				life.scaleY = 0.05;
-				life.x = life.width * i + 8;
+				life.x = (life.width-8) * i;
 				life.y = 0;
 				lifesArray.push(life);
 			}
 		}
 		
+		private function initGame0():void
+		{
+			secsPassed = 0;
+			currentTrack = 0;
+			genSecs = 0;
+			deathSecs = 0;
+			highScore = 0;
+			frogPoints = 0;
+			customDt = 0;
+			increasement = 0;
+			frogRunning = true;
+			drawCapa0();
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			initiated = true;
+			dead = false;
+			bombsAway = new Array();
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+			gameMatrix[3][1] = 2;
+			currentPos = 1;
+			
+			test = "Da Frog";
+			test += "\n";
+			test += "with TUPÉ";
+			
+			matrixText = new TextField(150, 180 ,test , "RetroFont", 36, 0x000000);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = false;
+			capa0.addChild(matrixText);
+			
+								
+			copyText = new TextField(150, 180 , "" , "RetroFont", 36, 0x8dab89);
+			copyText.x = 2;
+			copyText.y = 2;
+			capa0.addChild(copyText);
+		}
+		
+		private function shutdownGame1():void {
+			shutDownFrog();
+			capa1.removeChildren();
+			game1Running = false;
+		}
+		
+		// GAME 0
+		
 		private function updateCapa0(dt:Number):void
 		{	
-			
 			if (initiated)
 			{
+				if (secsPassed == 0) FrogIntro.play();;
+				
+				matrixText.visible = false;
+				
+				intro.visible = true;
 				secsPassed+= dt;
 				if (secsPassed >= 3)
 				{
 					secsPassed = 0;
 					initiated = false;
 					matrixText.visible = false;
+					intro.visible = false;
+					screen.visible = true;
+					character1.visible = true;
+					
 				}
 				
 			}
 			
 			else if(!dead)
 			{
+				//matrixText.visible = true;
 				//updateSprites0();
 				customDt = dt + increasement;
 				frogPoints += customDt;
 				
-				if (int(frogPoints) == 15) increasement = 0.012;
-				if (int(frogPoints) == 25) increasement = 0.016;
-				if (int(frogPoints) == 40) increasement = 0.024;
-				if (int(frogPoints) == 60) increasement = 0.035;
+				if (int(frogPoints) == 15) increasement = 0.005;
+				if (int(frogPoints) == 30) increasement = 0.01;
+				if (int(frogPoints) == 50) increasement = 0.015;
+				if (int(frogPoints) == 75) increasement = 0.025;
 				
 				
 				frogPoints += dt;
-				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				/*
 				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
-				else CAPA_1_BOTON_IZQ = false;*/
+				else CAPA_1_BOTON_IZQ = false;
+				*/
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
@@ -995,8 +1486,12 @@ package
 					gameMatrix[3][currentPos] = 0;
 					currentPos++;
 					changeSprite0();
-					if (gameMatrix[3][currentPos] == 1) dead = true;
+					if (gameMatrix[3][currentPos] == 1)
+					{
+						dead = true;
+					}
 					gameMatrix[3][currentPos] = 2;
+					FrogMove.play();
 				}
 				
 				if (CAPA_1_BOTON_IZQ && currentPos > 0)
@@ -1005,20 +1500,23 @@ package
 					gameMatrix[3][currentPos] = 0;
 					currentPos--;
 					changeSprite0();
-					if (gameMatrix[3][currentPos] == 1) dead = true;
+					if (gameMatrix[3][currentPos] == 1) 
+					{
+						dead = true;
+					}
 					gameMatrix[3][currentPos] = 2;
+					FrogMove.play();
 				}
 				
 				
 				if (generated)
 				{
 					secsPassed += customDt;
-
+				
 					if (secsPassed >= 1.2)
 					{	
-						updateSprites0();
-						
-						
+						FrogTick.play();
+							
 						for (var i:int = LEVELS_0-1; i >= 0; i--)
 						{
 							for (var j:int = TRACKS_0-1; j >=0 ; j--)
@@ -1028,13 +1526,16 @@ package
 									gameMatrix[i][j] = 0;
 									if (i + 1 <4)
 									{
-										if (gameMatrix[i + 1][j] == 2) dead = true;
+										if (gameMatrix[i + 1][j] == 2)
+										{
+											dead = true;
+										}
 										else 
 										{
 											gameMatrix[i + 1][j] = 1;
+											updateSprites0();
 											changeSprite0();
 										}
-
 									}
 								}
 							}
@@ -1046,14 +1547,18 @@ package
 				
 				genSecs += customDt;
 				
+				
 				if (genSecs >= 4&& secsPassed==0)
 				{
 					generateEnemy();
 					var probabilidad:Number = Math.random() * 10;
-					if (probabilidad <= 2 && frogPoints>25 && frogPoints<40) generateEnemy();
-					if (probabilidad <= 4 && frogPoints>40) generateEnemy();
+					if (probabilidad <= 1 && frogPoints>25 && frogPoints<40) generateEnemy();
+					if (probabilidad <= 3 && frogPoints>40) generateEnemy();
 					genSecs = 0;
 					generated = true;
+					
+					FrogTick.play();
+					
 				}
 				
 				test = "";
@@ -1066,13 +1571,16 @@ package
 					}
 					test += "\n";
 				}
-				matrixText.fontSize = 28;
+				//matrixText.fontSize = 48;
 				matrixText.text = test;
 			}	
 			
 			if (dead)
 			{
-				matrixText.visible = true;
+				var selectAni:Boolean = true;
+				deathSecs += dt;
+				
+				
 				character0.visible = false;
 				character1.visible = false;
 				character2.visible = false;
@@ -1086,33 +1594,69 @@ package
 					bombsAway.splice(i, 1);
 				}
 				
-				if (frogPoints > highScore) highScore = frogPoints;
-				matrixText.fontSize = 12;
-				deathSecs += dt;
-				genSecs = 0;
-				secsPassed = 0;
-				generated = false;
-				test = "Score: " + int(frogPoints);
-				test += "\n";
-				test += "High Score: " + int(highScore);
-				test += "\n";
-				test += "Try again in: " + int(3 - int(deathSecs));
-				
-				
-				for (t = 0; t < LEVELS_0; t++)
-				{	
-					for (u = 0; u < TRACKS_0; u++)
-					{
-						gameMatrix[t][u] = 0;
-					}
+				if (currentPos == 0 && selectAni)
+				{
+					death0.visible = true;
+					death0.play();
+					selectAni = false;
 				}
 				
-				gameMatrix[3][1] = 2;
-				
-				matrixText.text = test;
-				
-				if (deathSecs >= 3)
+				if (currentPos == 1 && selectAni)
 				{
+					death1.visible = true;
+					death1.play();
+					selectAni = false;
+				}
+				
+				if (currentPos == 2 && selectAni)
+				{
+					death2.visible = true;
+					death2.play();
+					selectAni = false;
+				}
+				
+				if(deathSecs >= 3.25)
+				{		
+					matrixText.visible = true;
+					death0.visible = false;
+					death0.stop();
+					death1.visible = false;
+					death1.stop();
+					death2.visible = false;
+					death2.stop();
+					
+					if (frogPoints > highScore) highScore = frogPoints;
+					secs -= dt;
+					genSecs = 0;
+					secsPassed = 0;
+					generated = false;
+					test = "Score: " + int(frogPoints);
+					test += "\n";
+					test += "Best: " + int(highScore);
+					test += "\n\n";
+					test += "Next in: " + int(secs);
+					
+
+					
+					copyText.text = test;
+					copyText.visible = true;
+					
+					
+					for (t = 0; t < LEVELS_0; t++)
+					{	
+						for (u = 0; u < TRACKS_0; u++)
+						{
+							gameMatrix[t][u] = 0;
+						}
+					}
+					
+					
+					matrixText.text = test;
+				}
+				
+				if (deathSecs >= 6.25)
+				{
+					gameMatrix[3][1] = 2;
 					currentPos = 1;
 					character1.visible = true;
 					dead = false;
@@ -1120,6 +1664,8 @@ package
 					frogPoints = 0;
 					increasement = 0;
 					matrixText.visible = false;
+					copyText.visible = false;
+					secs = 4;
 				}
 			}
 		}
@@ -1129,12 +1675,15 @@ package
 			currentTrack = Math.random() * 3;
 			while(gameMatrix[0][currentTrack] ==1) currentTrack = Math.random() * 3;
 			gameMatrix[0][currentTrack] = 1;
+			
+			updateSprites0();
 		}
 		
 		private function drawCapa0():void
 		{
-			//var screen:Image = new Image(Assets.getAtlas().getTexture("DETB_BG"));
-			//capa0.addChild(screen);
+			screen = new Image(Assets.getAtlas().getTexture("capa0"));
+			capa0.addChild(screen);
+			screen.visible = false;
 			
 			character0 = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
 			starling.core.Starling.juggler.add(character0);
@@ -1148,7 +1697,7 @@ package
 			capa0.addChild(character1);
 			character1.y = heightCapa0 - character1.height-3;
 			character1.x = 50;
-			character1.visible = true;
+			character1.visible = false;
 			
 			character2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_I"), 3);
 			starling.core.Starling.juggler.add(character2);
@@ -1174,23 +1723,52 @@ package
 			mouth2.y = heightCapa0 - mouth2.height-3;
 			mouth2.x = 100;
 			mouth2.visible = false;
+			
+			intro = new MovieClip(Assets.getAtlas().getTextures("DETB_Intro_"),3);
+			starling.core.Starling.juggler.add(intro);
+			capa0.addChild(intro);
+			intro.visible = false;
+			
+			death0 = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_Ex"), 2);
+			starling.core.Starling.juggler.add(death0);
+			capa0.addChild(death0);
+			death0.x = 0;
+			death0.y = heightCapa0 - death0.height-3;
+			death0.visible = false;
+			death0.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Left_Explosion_01"), null, 0.75);
+			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death0.stop();
+		
+			death1 = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Ex"), 2);
+			starling.core.Starling.juggler.add(death1);
+			capa0.addChild(death1);
+			death1.x = 50;
+			death1.y = heightCapa0 - death1.height-3;
+			death1.visible = false;
+			death1.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Front_Explosion_01"), null, 0.75);
+			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death1.stop();
+			
+			death2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Ex"), 2);
+			starling.core.Starling.juggler.add(death2);
+			capa0.addChild(death2);
+			death2.x = 100;
+			death2.y = heightCapa0 - death2.height-3;
+			death2.visible = false;
+			death2.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Right_Explosion_01"), null, 0.75);
+			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			
+			death2.stop();
 	
 		}
 		
 		private function changeSprite0():void
 		{	
-			/*
-					if (gameMatrix[t][u] == 2)
-					{
-						character0.visible = true; 
-						character0.x = u*50;
-					}
-					*/
-			
 			if (currentPos == 0)
 			{
-				if (gameMatrix[3][currentPos] == 1)
+				if (gameMatrix[2][currentPos] == 1)
 				{
+					trace("aquí");
 					
 					mouth0.visible = true;
 					character0.visible = false;
@@ -1209,12 +1787,11 @@ package
 					mouth2.visible = false;
 					
 				}
-				
 			}
 			
 			else if (currentPos == 1)
 			{
-				if (gameMatrix[3][currentPos] == 1) 
+				if (gameMatrix[2][currentPos] == 1) 
 				{
 					mouth1.visible = true;
 					character1.visible = false;
@@ -1232,12 +1809,11 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 				}
-
 			}
 			
 			else if (currentPos == 2)
 			{
-				if (gameMatrix[3][currentPos] == 1) 
+				if (gameMatrix[2][currentPos] == 1) 
 				{
 					mouth2.visible = true;
 					character2.visible = false;
@@ -1255,18 +1831,17 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 				}
-
 			}
-
 		}
 		
 		private function updateSprites0():void
 		{
 			for (var i:int = 0; i < bombsAway.length; i++)
-			{
+			{	
 				capa0.removeChild(bombsAway[i]);
-				bombsAway.splice(i, 1);
 			}
+			
+			bombsAway = new Array();
 			
 			for (var t:int = 0; t < LEVELS_0; t++)
 			{	
@@ -1275,14 +1850,26 @@ package
 					if (gameMatrix[t][u] == 1)
 					{
 						var bomb:MovieClip = new MovieClip(Assets.getAtlas().getTextures("DETB_Bomb"), 3);
-						starling.core.Starling.juggler.add(bomb);
-						capa0.addChild(bomb);
 						bomb.x = 50 * u +16;
 						bomb.y = 40 * t;
 						bombsAway.push(bomb);
 					}
 				}
 			}	
+			
+			for (i = 0; i < bombsAway.length; i++)
+			{	
+				starling.core.Starling.juggler.add(bombsAway[i]);
+				capa0.addChild(bombsAway[i]);
+			}
+		
+		}
+		
+		private function shutDownFrog():void
+		{
+			bombsAway = new Array();
+			capa0.removeChildren();
+			frogRunning = false;
 		}
 				
 		private function moveLeftHand(dt:Number):void {
@@ -1503,8 +2090,11 @@ package
 				}
 				
 			}
+<<<<<<< HEAD
 			
 
+=======
+>>>>>>> origin/master
 			
 		}
 		
