@@ -1416,7 +1416,6 @@ package
 					var probabilidad:Number = Math.random() * 10;
 					if (probabilidad <= 1 && frogPoints>25 && frogPoints<40) generateEnemy();
 					if (probabilidad <= 3 && frogPoints>40) generateEnemy();
-					if (probabilidad <= 3 && frogPoints>40) generateEnemy();
 					genSecs = 0;
 					generated = true;
 					
