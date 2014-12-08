@@ -153,6 +153,8 @@ package
 		public var umad3:Sound = new Assets.umad3() as Sound;
 		public var umad4:Sound = new Assets.umad4() as Sound;
 		
+		public var SnowmanExplodes:Sound = new Assets.SnowmanExplodes() as Sound;
+		
 		
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
@@ -319,6 +321,7 @@ package
 		private var snowmanCooldown:Number = 100;
 		private var snDeskWarning:Sprite;
 		private var snHandWarning:Sprite;
+		private var snowmanBroken:Boolean;
 		
 		
 		//Rubén, ratón
@@ -770,6 +773,8 @@ package
 			capa2.addChild(textTime);
 			textTime.x = 650;
 			textTime.y = 50;
+			
+			snowmanBroken = false;
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -1046,13 +1051,16 @@ package
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
-				snowmanCooldown += 0.1;
-			else
 			{
+				snowmanCooldown += 0.1;
+			}
+				
+			else if(snowmanCooldown<=0 && snowmanBroken == false)
+			{
+				trace("broken");
+				snowmanBroken = true;
 				//poner Sprite
-				//reproducir explosión
-				
-				
+				SnowmanExplodes.play();//reproducir explosion
 			}
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);

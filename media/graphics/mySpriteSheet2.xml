@@ -1,42 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:f7d11963c5fe8bf15c9ec8cc6501ec58:fd16d90f87097ac7ac08386a40365b9a:b3a9524a4e15645ce123ba396d883222$ -->
+<!-- $TexturePacker:SmartUpdate:07cab000746c98a5e8c92a7cac6fa100:7254ddd6a3c04c3d98ec718f83210a23:b3a9524a4e15645ce123ba396d883222$ -->
 <TextureAtlas imagePath="mySpriteSheet2.png">
-    <SubTexture name="OFFICE_computer" x="2" y="172" width="586" height="456" frameX="-98" frameY="-14" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_hand_annoyed" x="704" y="1012" width="260" height="316" frameX="-36" frameY="-120" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_click_01" x="423" y="1297" width="256" height="310" frameX="-40" frameY="-126" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_click_02" x="2" y="1563" width="256" height="300" frameX="-40" frameY="-136" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_fist" x="454" y="993" width="248" height="302" frameX="-48" frameY="-134" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_grab" x="729" y="360" width="262" height="332" frameX="-34" frameY="-104" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_mouse_01" x="710" y="694" width="262" height="316" frameX="-34" frameY="-120" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_mouse_02" x="2" y="1249" width="260" height="312" frameX="-36" frameY="-124" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_palm_01" x="730" y="2" width="276" height="356" frameX="-20" frameY="-80" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_hand_palm_02" x="724" y="1330" width="210" height="356" frameX="-86" frameY="-80" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_key_down" x="974" y="766" width="42" height="34" frameX="-439" frameY="-497" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_key_left" x="974" y="730" width="42" height="34" frameX="-397" frameY="-497" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_key_right" x="974" y="694" width="46" height="34" frameX="-478" frameY="-497" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_key_space" x="264" y="1249" width="188" height="34" frameX="-164" frameY="-497" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_key_up" x="974" y="802" width="38" height="28" frameX="-435" frameY="-470" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_keyboard" x="2" y="630" width="464" height="218" frameX="-114" frameY="-382" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_mouse" x="590" y="399" width="137" height="130"/>
-    <SubTexture name="OFFICE_shirt" x="2" y="850" width="450" height="397" frameX="-14" frameY="-22" frameWidth="464" frameHeight="427"/>
-    <SubTexture name="OFFICE_snowman" x="486" y="1609" width="202" height="214" frameX="-598" frameY="-212" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_snowman_hand" x="588" y="737" width="106" height="254" frameX="-44" frameY="-51" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_taza_01" x="504" y="1825" width="218" height="192" frameX="0" frameY="-354" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_taza_02" x="284" y="1845" width="218" height="192" frameX="0" frameY="-354" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_taza_03" x="260" y="1729" width="218" height="114" frameX="0" frameY="-432" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_taza_cerca" x="2" y="2" width="726" height="168" frameX="-41" frameY="-432" frameWidth="800" frameHeight="600"/>
-    <SubTexture name="OFFICE_taza_hand_01" x="260" y="1579" width="148" height="148" frameX="-232" frameY="-103" frameWidth="388" frameHeight="436"/>
-    <SubTexture name="OFFICE_taza_hand_02" x="264" y="1429" width="148" height="148" frameX="-232" frameY="-103" frameWidth="388" frameHeight="436"/>
-    <SubTexture name="OFFICE_taza_hand_03" x="410" y="1609" width="74" height="110" frameX="-231" frameY="-112" frameWidth="388" frameHeight="436"/>
-    <SubTexture name="OFFICE_telefone" x="95" y="1865" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
-    <SubTexture name="OFFICE_telefone_01" x="95" y="1865" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
-    <SubTexture name="OFFICE_telefone_02" x="2" y="1865" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
-    <SubTexture name="OFFICE_telefone_base" x="590" y="172" width="137" height="225" frameX="0" frameY="-4" frameWidth="137" frameHeight="233"/>
-    <SubTexture name="OFFICE_telefone_hand" x="468" y="630" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_telefone_hand_01" x="590" y="531" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="OFFICE_telefone_hand_02" x="468" y="630" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
-    <SubTexture name="lefthand" x="188" y="1865" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
-    <SubTexture name="mouse" x="264" y="1285" width="157" height="142" frameX="0" frameY="0" frameWidth="161" frameHeight="142"/>
-    <SubTexture name="righthand" x="468" y="836" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="OFFICE_bar" x="804" y="2" width="800" height="64" frameX="0" frameY="-278" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_button_dark" x="2008" y="66" width="34" height="32" frameX="-382" frameY="-373" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_button_light" x="2008" y="32" width="34" height="32" frameX="-382" frameY="-373" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_computer" x="2" y="604" width="586" height="456" frameX="-98" frameY="-14" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_hand_annoyed" x="266" y="1714" width="260" height="316" frameX="-36" frameY="-120" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_click_01" x="528" y="1562" width="256" height="310" frameX="-40" frameY="-126" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_click_02" x="1442" y="1714" width="256" height="300" frameX="-40" frameY="-136" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_fist" x="1192" y="1714" width="248" height="302" frameX="-48" frameY="-134" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_grab" x="1198" y="1380" width="262" height="332" frameX="-34" frameY="-104" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_mouse_01" x="2" y="1714" width="262" height="316" frameX="-34" frameY="-120" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_mouse_02" x="528" y="1248" width="260" height="312" frameX="-36" frameY="-124" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_palm_01" x="1204" y="1022" width="276" height="356" frameX="-20" frameY="-80" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_hand_palm_02" x="590" y="604" width="210" height="356" frameX="-86" frameY="-80" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_intro_01" x="790" y="1458" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_02" x="1482" y="1307" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_03" x="796" y="1156" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_04" x="802" y="854" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_05" x="1597" y="606" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_06" x="1600" y="304" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_07" x="1606" y="2" width="400" height="300"/>
+    <SubTexture name="OFFICE_intro_08" x="2" y="2" width="800" height="600"/>
+    <SubTexture name="OFFICE_key_down" x="1532" y="140" width="42" height="34" frameX="-439" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_left" x="1532" y="104" width="42" height="34" frameX="-397" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_right" x="1532" y="68" width="46" height="34" frameX="-478" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_space" x="528" y="2006" width="188" height="34" frameX="-164" frameY="-497" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_key_up" x="2008" y="2" width="38" height="28" frameX="-435" frameY="-470" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_keyboard" x="802" y="634" width="464" height="218" frameX="-114" frameY="-382" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_mouse" x="528" y="1874" width="137" height="130"/>
+    <SubTexture name="OFFICE_shirt" x="1596" y="908" width="450" height="397" frameX="-14" frameY="-22" frameWidth="464" frameHeight="427"/>
+    <SubTexture name="OFFICE_snowman" x="1839" y="1751" width="202" height="214" frameX="-598" frameY="-212" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_snowman_death" x="590" y="962" width="204" height="284" frameX="-5" frameY="-21" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_snowman_hand" x="1488" y="693" width="106" height="254" frameX="-44" frameY="-51" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_snowman_headless" x="2" y="1062" width="202" height="174" frameX="-598" frameY="-252" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_taza_01" x="1268" y="828" width="218" height="192" frameX="0" frameY="-354" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_taza_02" x="1268" y="634" width="218" height="192" frameX="0" frameY="-354" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_taza_03" x="667" y="1874" width="218" height="114" frameX="0" frameY="-432" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_taza_cerca" x="804" y="68" width="726" height="168" frameX="-41" frameY="-432" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="OFFICE_taza_hand_01" x="1884" y="1601" width="148" height="148" frameX="-232" frameY="-103" frameWidth="388" frameHeight="436"/>
+    <SubTexture name="OFFICE_taza_hand_02" x="1884" y="1451" width="148" height="148" frameX="-232" frameY="-103" frameWidth="388" frameHeight="436"/>
+    <SubTexture name="OFFICE_taza_hand_03" x="1482" y="1108" width="74" height="110" frameX="-231" frameY="-112" frameWidth="388" frameHeight="436"/>
+    <SubTexture name="OFFICE_telefone" x="1488" y="949" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_01" x="1488" y="949" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_02" x="1504" y="534" width="91" height="157" frameX="-4" frameY="-7" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_base" x="1700" y="1609" width="137" height="225" frameX="0" frameY="-4" frameWidth="137" frameHeight="233"/>
+    <SubTexture name="OFFICE_telefone_hand" x="887" y="1760" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_telefone_hand_01" x="1700" y="1836" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_telefone_hand_02" x="887" y="1760" width="118" height="204" frameX="-161" frameY="-39" frameWidth="296" frameHeight="436"/>
+    <SubTexture name="OFFICE_title" x="804" y="238" width="698" height="394" frameX="-71" frameY="-117" frameWidth="800" frameHeight="600"/>
+    <SubTexture name="lefthand" x="1504" y="386" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
+    <SubTexture name="mouse" x="1884" y="1307" width="157" height="142" frameX="0" frameY="0" frameWidth="161" frameHeight="142"/>
+    <SubTexture name="righthand" x="1504" y="238" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
 </TextureAtlas>
