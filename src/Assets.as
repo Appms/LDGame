@@ -63,6 +63,9 @@ package
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;
 		
+		[Embed(source = "../media/graphics/DETB_BG.png")]
+		public static const DETB_BG:Class;
+		
 
 		
 		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
@@ -131,6 +134,24 @@ package
 		
 		[Embed(source="../media/sounds/squeak20.mp3")]
 		public static const SoundSqueak20:Class;
+		
+		[Embed(source="../media/sounds/tick.mp3")]
+		public static const FrogTick:Class;
+		
+		[Embed(source="../media/sounds/death.mp3")]
+		public static const FrogDeath:Class;
+		
+		[Embed(source="../media/sounds/move.mp3")]
+		public static const FrogMove:Class;
+		
+		[Embed(source="../media/sounds/office.mp3")]
+		public static const OfficeSound:Class;
+		
+		[Embed(source="../media/sounds/frogIntro.mp3")]
+		public static const FrogIntro:Class;
+		
+		[Embed(source = "../media/graphics/retroFont.ttf", fontFamily ="RetroFont", embedAsCFF = false)]
+		public static const RetroFont:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {

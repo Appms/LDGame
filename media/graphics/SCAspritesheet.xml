@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:41890f0771b68da9895f0b13f603260b:079c378de67ef1ac2a36db0cbbe23e3e:3a0eac62f2700748783e75f6f0913672$ -->
+<TextureAtlas imagePath="SCAspritesheet.png">
+    <SubTexture name="SCA_hero_death_01" x="2" y="2" width="825" height="600"/>
+    <SubTexture name="SCA_hero_hurt_01" x="829" y="2" width="825" height="600"/>
+    <SubTexture name="SCA_hero_jump_01" x="2" y="604" width="825" height="600"/>
+    <SubTexture name="SCA_hero_jump_02" x="829" y="604" width="825" height="600"/>
+    <SubTexture name="SCA_hero_walk_01" x="2" y="1206" width="825" height="600"/>
+    <SubTexture name="SCA_hero_walk_02" x="829" y="1206" width="825" height="600"/>
+</TextureAtlas>

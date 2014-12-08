@@ -66,6 +66,12 @@ package
 		public const LEVELS_0:int = 4;
 		public const TRACKS_0:int  = 3;
 		
+		public var FrogDead:Sound = new Assets.FrogDeath() as Sound;
+		public var FrogMove:Sound = new Assets.FrogMove() as Sound;
+		public var FrogTick:Sound = new Assets.FrogTick() as Sound;
+		public var OfficeSound:Sound = new Assets.OfficeSound() as Sound;
+		private var FrogIntro:Sound = new Assets.FrogIntro() as Sound;
+		
 		private var gameMatrix:Array;
 		private var matrixText:TextField;
 		private var test:String;
@@ -84,12 +90,21 @@ package
 		private var character0:MovieClip;
 		private var character1:MovieClip;
 		private var character2:MovieClip;
+		private var intro:MovieClip;
 		private var bombsAway:Array;
 		private var widthCapa0:Number;
 		private var heightCapa0:Number;
 		private var mouth0:Image;
 		private var mouth1:Image;
 		private var mouth2:Image;
+		private var screen:Image;
+		private var death0:MovieClip;
+		private var death1:MovieClip;
+		private var death2:MovieClip;
+		private var secs:Number = 4;
+		private var initFrog:Boolean;
+		private var frogRunning:Boolean;
+		private var copyText:TextField;
 
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
@@ -185,6 +200,7 @@ package
 			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			//ch1 = SoundMenu.play(0, 9999);
+			OfficeSound.play(0, 9999);
 			
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
@@ -212,35 +228,9 @@ package
 			//**************** CAPA 0 ******************
 			widthCapa0 = capa0.width;
 			heightCapa0 = capa0.height;
-			drawCapa0();
-			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
-			test = new String();
-			initiated = true;
-			dead = false;
-			bombsAway = new Array();
 			
-			for (var t:int = 0; t < LEVELS_0; t++)
-			{	
-				gameMatrix[t] = new Array(TRACKS_0);
-				for (var u:int = 0; u < TRACKS_0; u++)
-				{	
-					gameMatrix[t][u] = 0;
-				}
-			}
-			
-			gameMatrix[3][1] = 2;
-			currentPos = 1;
-			
-			test = "Da Frog";
-			test += "\n";
-			test += "with TUPÉ";
-			
-			matrixText = new TextField(150, 180 ,test , "Arial", 28, 0xffffff);
-			matrixText.x = 0;
-			matrixText.y = 0;
-			matrixText.border = false;
-			capa0.addChild(matrixText);
-			
+			frogRunning = false;
+			initGame0();
 			
 			// ****************** CAPA 1 ******************
 			widthCapa1 = capa1.width;
@@ -482,14 +472,11 @@ package
 					trace("MANTAINED FLECHA DERECHA");
 				}
 			}
-			
-			
-			
-			updateCapa0(e.passedTime);
+						
+			if(frogRunning) updateCapa0(e.passedTime);
 			updateCapa1(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
-			
 
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
@@ -768,39 +755,96 @@ package
 			}
 		}
 		
+		private function initGame0():void
+		{
+			secsPassed = 0;
+			currentTrack = 0;
+			genSecs = 0;
+			deathSecs = 0;
+			highScore = 0;
+			frogPoints = 0;
+			customDt = 0;
+			increasement = 0;
+			frogRunning = true;
+			drawCapa0();
+			gameMatrix = new Array(LEVELS_0 * TRACKS_0);
+			test = new String();
+			initiated = true;
+			dead = false;
+			bombsAway = new Array();
+			
+			for (var t:int = 0; t < LEVELS_0; t++)
+			{	
+				gameMatrix[t] = new Array(TRACKS_0);
+				for (var u:int = 0; u < TRACKS_0; u++)
+				{	
+					gameMatrix[t][u] = 0;
+				}
+			}
+			
+			gameMatrix[3][1] = 2;
+			currentPos = 1;
+			
+			test = "Da Frog";
+			test += "\n";
+			test += "with TUPÉ";
+			
+			matrixText = new TextField(150, 180 ,test , "RetroFont", 36, 0x000000);
+			matrixText.x = 0;
+			matrixText.y = 0;
+			matrixText.border = false;
+			capa0.addChild(matrixText);
+			
+								
+			copyText = new TextField(150, 180 , "" , "RetroFont", 36, 0x8dab89);
+			copyText.x = 2;
+			copyText.y = 2;
+			capa0.addChild(copyText);
+		}
+		
 		private function updateCapa0(dt:Number):void
 		{	
 			
 			if (initiated)
 			{
+				if (secsPassed == 0) FrogIntro.play();;
+				
+				matrixText.visible = false;
+				
+				intro.visible = true;
 				secsPassed+= dt;
 				if (secsPassed >= 3)
 				{
 					secsPassed = 0;
 					initiated = false;
 					matrixText.visible = false;
+					intro.visible = false;
+					screen.visible = true;
+					character1.visible = true;
+					
 				}
 				
 			}
 			
 			else if(!dead)
 			{
+				//matrixText.visible = true;
 				//updateSprites0();
 				customDt = dt + increasement;
 				frogPoints += customDt;
 				
-				if (int(frogPoints) == 15) increasement = 0.012;
-				if (int(frogPoints) == 25) increasement = 0.016;
-				if (int(frogPoints) == 40) increasement = 0.024;
-				if (int(frogPoints) == 60) increasement = 0.035;
+				if (int(frogPoints) == 15) increasement = 0.005;
+				if (int(frogPoints) == 30) increasement = 0.01;
+				if (int(frogPoints) == 50) increasement = 0.015;
+				if (int(frogPoints) == 75) increasement = 0.025;
 				
 				
 				frogPoints += dt;
-				/*if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
-				else CAPA_1_BOTON_IZQ = false;*/
+				else CAPA_1_BOTON_IZQ = false;
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
@@ -808,8 +852,13 @@ package
 					gameMatrix[3][currentPos] = 0;
 					currentPos++;
 					changeSprite0();
-					if (gameMatrix[3][currentPos] == 1) dead = true;
+					if (gameMatrix[3][currentPos] == 1)
+					{
+						//FrogDead.play();
+						dead = true;
+					}
 					gameMatrix[3][currentPos] = 2;
+					FrogMove.play();
 				}
 				
 				if (CAPA_1_BOTON_IZQ && currentPos > 0)
@@ -818,8 +867,13 @@ package
 					gameMatrix[3][currentPos] = 0;
 					currentPos--;
 					changeSprite0();
-					if (gameMatrix[3][currentPos] == 1) dead = true;
+					if (gameMatrix[3][currentPos] == 1) 
+					{
+						//FrogDead.play();
+						dead = true;
+					}
 					gameMatrix[3][currentPos] = 2;
+					FrogMove.play();
 				}
 				
 				
@@ -829,7 +883,8 @@ package
 
 					if (secsPassed >= 1.2)
 					{	
-						updateSprites0();
+						FrogTick.play();
+						//updateSprites0();
 						
 						
 						for (var i:int = LEVELS_0-1; i >= 0; i--)
@@ -841,13 +896,17 @@ package
 									gameMatrix[i][j] = 0;
 									if (i + 1 <4)
 									{
-										if (gameMatrix[i + 1][j] == 2) dead = true;
+										if (gameMatrix[i + 1][j] == 2)
+										{
+											dead = true;
+											//FrogDead.play();
+										}
 										else 
 										{
 											gameMatrix[i + 1][j] = 1;
+											updateSprites0();
 											changeSprite0();
 										}
-
 									}
 								}
 							}
@@ -859,14 +918,19 @@ package
 				
 				genSecs += customDt;
 				
+				
 				if (genSecs >= 4&& secsPassed==0)
 				{
 					generateEnemy();
 					var probabilidad:Number = Math.random() * 10;
-					if (probabilidad <= 2 && frogPoints>25 && frogPoints<40) generateEnemy();
-					if (probabilidad <= 4 && frogPoints>40) generateEnemy();
+					if (probabilidad <= 1 && frogPoints>25 && frogPoints<40) generateEnemy();
+					if (probabilidad <= 3 && frogPoints>40) generateEnemy();
+					if (probabilidad <= 3 && frogPoints>40) generateEnemy();
 					genSecs = 0;
 					generated = true;
+					
+					FrogTick.play();
+					
 				}
 				
 				test = "";
@@ -879,13 +943,16 @@ package
 					}
 					test += "\n";
 				}
-				matrixText.fontSize = 28;
+				//matrixText.fontSize = 48;
 				matrixText.text = test;
 			}	
 			
 			if (dead)
 			{
-				matrixText.visible = true;
+				var selectAni:Boolean = true;
+				deathSecs += dt;
+				
+				
 				character0.visible = false;
 				character1.visible = false;
 				character2.visible = false;
@@ -899,33 +966,69 @@ package
 					bombsAway.splice(i, 1);
 				}
 				
-				if (frogPoints > highScore) highScore = frogPoints;
-				matrixText.fontSize = 12;
-				deathSecs += dt;
-				genSecs = 0;
-				secsPassed = 0;
-				generated = false;
-				test = "Score: " + int(frogPoints);
-				test += "\n";
-				test += "High Score: " + int(highScore);
-				test += "\n";
-				test += "Try again in: " + int(3 - int(deathSecs));
-				
-				
-				for (t = 0; t < LEVELS_0; t++)
-				{	
-					for (u = 0; u < TRACKS_0; u++)
-					{
-						gameMatrix[t][u] = 0;
-					}
+				if (currentPos == 0 && selectAni)
+				{
+					death0.visible = true;
+					death0.play();
+					selectAni = false;
 				}
 				
-				gameMatrix[3][1] = 2;
-				
-				matrixText.text = test;
-				
-				if (deathSecs >= 3)
+				if (currentPos == 1 && selectAni)
 				{
+					death1.visible = true;
+					death1.play();
+					selectAni = false;
+				}
+				
+				if (currentPos == 2 && selectAni)
+				{
+					death2.visible = true;
+					death2.play();
+					selectAni = false;
+				}
+				
+				if(deathSecs >= 3.25)
+				{		
+					matrixText.visible = true;
+					death0.visible = false;
+					death0.stop();
+					death1.visible = false;
+					death1.stop();
+					death2.visible = false;
+					death2.stop();
+					
+					if (frogPoints > highScore) highScore = frogPoints;
+					secs -= dt;
+					genSecs = 0;
+					secsPassed = 0;
+					generated = false;
+					test = "Score: " + int(frogPoints);
+					test += "\n";
+					test += "Best: " + int(highScore);
+					test += "\n\n";
+					test += "Next in: " + int(secs);
+					
+
+					
+					copyText.text = test;
+					copyText.visible = true;
+					
+					
+					for (t = 0; t < LEVELS_0; t++)
+					{	
+						for (u = 0; u < TRACKS_0; u++)
+						{
+							gameMatrix[t][u] = 0;
+						}
+					}
+					
+					
+					matrixText.text = test;
+				}
+				
+				if (deathSecs >= 6.25)
+				{
+					gameMatrix[3][1] = 2;
 					currentPos = 1;
 					character1.visible = true;
 					dead = false;
@@ -933,6 +1036,8 @@ package
 					frogPoints = 0;
 					increasement = 0;
 					matrixText.visible = false;
+					copyText.visible = false;
+					secs = 4;
 				}
 			}
 		}
@@ -942,12 +1047,15 @@ package
 			currentTrack = Math.random() * 3;
 			while(gameMatrix[0][currentTrack] ==1) currentTrack = Math.random() * 3;
 			gameMatrix[0][currentTrack] = 1;
+			
+			updateSprites0();
 		}
 		
 		private function drawCapa0():void
 		{
-			//var screen:Image = new Image(Assets.getAtlas().getTexture("DETB_BG"));
-			//capa0.addChild(screen);
+			screen = new Image(Assets.getTexture("DETB_BG"));
+			capa0.addChild(screen);
+			screen.visible = false;
 			
 			character0 = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
 			starling.core.Starling.juggler.add(character0);
@@ -961,7 +1069,7 @@ package
 			capa0.addChild(character1);
 			character1.y = heightCapa0 - character1.height-3;
 			character1.x = 50;
-			character1.visible = true;
+			character1.visible = false;
 			
 			character2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_I"), 3);
 			starling.core.Starling.juggler.add(character2);
@@ -987,23 +1095,52 @@ package
 			mouth2.y = heightCapa0 - mouth2.height-3;
 			mouth2.x = 100;
 			mouth2.visible = false;
+			
+			intro = new MovieClip(Assets.getAtlas().getTextures("DETB_Intro_"),3);
+			starling.core.Starling.juggler.add(intro);
+			capa0.addChild(intro);
+			intro.visible = false;
+			
+			death0 = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_Ex"), 2);
+			starling.core.Starling.juggler.add(death0);
+			capa0.addChild(death0);
+			death0.x = 0;
+			death0.y = heightCapa0 - death0.height-3;
+			death0.visible = false;
+			death0.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Left_Explosion_01"), null, 0.75);
+			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death0.stop();
+		
+			death1 = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Ex"), 2);
+			starling.core.Starling.juggler.add(death1);
+			capa0.addChild(death1);
+			death1.x = 50;
+			death1.y = heightCapa0 - death1.height-3;
+			death1.visible = false;
+			death1.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Front_Explosion_01"), null, 0.75);
+			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death1.stop();
+			
+			death2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Ex"), 2);
+			starling.core.Starling.juggler.add(death2);
+			capa0.addChild(death2);
+			death2.x = 100;
+			death2.y = heightCapa0 - death2.height-3;
+			death2.visible = false;
+			death2.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Right_Explosion_01"), null, 0.75);
+			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			
+			death2.stop();
 	
 		}
 		
 		private function changeSprite0():void
 		{	
-			/*
-					if (gameMatrix[t][u] == 2)
-					{
-						character0.visible = true; 
-						character0.x = u*50;
-					}
-					*/
-			
 			if (currentPos == 0)
 			{
-				if (gameMatrix[3][currentPos] == 1)
+				if (gameMatrix[2][currentPos] == 1)
 				{
+					trace("aquí");
 					
 					mouth0.visible = true;
 					character0.visible = false;
@@ -1022,12 +1159,11 @@ package
 					mouth2.visible = false;
 					
 				}
-				
 			}
 			
 			else if (currentPos == 1)
 			{
-				if (gameMatrix[3][currentPos] == 1) 
+				if (gameMatrix[2][currentPos] == 1) 
 				{
 					mouth1.visible = true;
 					character1.visible = false;
@@ -1045,12 +1181,11 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 				}
-
 			}
 			
 			else if (currentPos == 2)
 			{
-				if (gameMatrix[3][currentPos] == 1) 
+				if (gameMatrix[2][currentPos] == 1) 
 				{
 					mouth2.visible = true;
 					character2.visible = false;
@@ -1068,18 +1203,17 @@ package
 					mouth1.visible = false;
 					mouth2.visible = false;
 				}
-
 			}
-
 		}
 		
 		private function updateSprites0():void
 		{
 			for (var i:int = 0; i < bombsAway.length; i++)
-			{
+			{	
 				capa0.removeChild(bombsAway[i]);
-				bombsAway.splice(i, 1);
 			}
+			
+			bombsAway = new Array();
 			
 			for (var t:int = 0; t < LEVELS_0; t++)
 			{	
@@ -1088,14 +1222,26 @@ package
 					if (gameMatrix[t][u] == 1)
 					{
 						var bomb:MovieClip = new MovieClip(Assets.getAtlas().getTextures("DETB_Bomb"), 3);
-						starling.core.Starling.juggler.add(bomb);
-						capa0.addChild(bomb);
 						bomb.x = 50 * u +16;
 						bomb.y = 40 * t;
 						bombsAway.push(bomb);
 					}
 				}
 			}	
+			
+			for (i = 0; i < bombsAway.length; i++)
+			{	
+				starling.core.Starling.juggler.add(bombsAway[i]);
+				capa0.addChild(bombsAway[i]);
+			}
+		
+		}
+		
+		private function shutDownFrog():void
+		{
+			bombsAway = new Array();
+			capa0.removeChildren();
+			frogRunning = false;
 		}
 				
 		private function moveLeftHand(dt:Number):void {
