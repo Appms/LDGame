@@ -326,9 +326,14 @@ package
 		
 		
 		private var snowmanCooldown:Number = 100;
-		private var snDeskWarning:Sprite;
-		private var snHandWarning:Sprite;
 		private var snowmanBroken:Boolean;
+		
+		private var snDeskWarning:Sprite;
+		private var snDeskExplode:Sprite;
+		
+		private var snHandWarning:Sprite;
+		private var snHandExplode:Sprite;
+		
 
 		
 		//Rubén, ratón
@@ -536,12 +541,19 @@ package
 			//snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
 			
 			snDeskWarning = new Sprite();
-			i = new Image(Assets.getTexture("SNDeskWarning"));
+			i = new Image(Assets.getAtlas().getTexture("SNDeskWarning"));
 			i.blendMode = BlendMode.SCREEN;
 			snDeskWarning.addChild(i);
 			snDeskWarning.x = snowMan.x;
 			snDeskWarning.y = snowMan.y;
 			capa2.addChild(snDeskWarning);
+			
+			snDeskExplode = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman_headless"));
+			snDeskExplode.addChild(i);
+			snDeskExplode.x = snowMan.x;
+			snDeskExplode.y = snowMan.y;
+			capa2.addChild(snDeskExplode);
 			
 			areaPhone = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
@@ -784,13 +796,21 @@ package
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_palm_02"));
 			rightHandPalm2.addChild(i);
 			capa2.addChild(rightHandPalm2);
+			
 			snHandWarning = new Sprite();
-			i = new Image(Assets.getTexture("SNHandWarning"));
+			i = new Image(Assets.getAtlas().getTexture("SNHandWarning"));
 			i.blendMode = BlendMode.SCREEN;
 			snHandWarning.addChild(i);
 			snHandWarning.x = rightHandSnowMan.x;
 			snHandWarning.y = rightHandSnowMan.y;
 			capa2.addChild(snHandWarning);
+			
+			snHandExplode = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman_death"));
+			snHandExplode.addChild(i);
+			snHandExplode.x = rightHandSnowMan.x;
+			snHandExplode.y = rightHandSnowMan.y;
+			capa2.addChild(snHandExplode);
 			
 			rightShirt = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
@@ -1094,14 +1114,16 @@ package
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
 			{
 				snowmanCooldown += 0.1;
+				snDeskExplode.visible = false;
 			}
 				
 			else if(snowmanCooldown<=0 && snowmanBroken == false)
 			{
-				trace("broken");
 				snowmanBroken = true;
-				//poner Sprite
-				SnowmanExplodes.play();//reproducir explosion
+				snDeskExplode.visible = true;
+				snowMan.visible = false;
+				snDeskWarning.visible = false;
+				SnowmanExplodes.play(0,1, new SoundTransform(3,1));//reproducir explosion
 			}
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
@@ -1109,6 +1131,9 @@ package
 			
 			snHandWarning.x = rightHandSnowMan.x;
 			snHandWarning.y = rightHandSnowMan.y;
+			
+			snHandExplode.x = rightHandSnowMan.x;
+			snHandExplode.y = rightHandSnowMan.y;
 			
 			shakeHands(( -1.05 + Math.pow(1.05, ira)) / 4);
 			
@@ -2898,9 +2923,8 @@ package
 					snowManCatched = false;
 				}
 				
-				else if ( snowmanCooldown <= 0)
+				else if (snHandExplode.visible)
 					snowManCatched = false;
-					//CAMBIAR IMAGEN SNOWMAN
 				
 			}
 			else {
@@ -3094,8 +3118,21 @@ package
 			if (mouseCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandMouse2.visible = true;
-					snowMan.visible = true;
-					rightHandSnowMan.visible = true;
+					//snowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = false;
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3104,14 +3141,28 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
 				}
 				else {
 					rightHandMouse1.visible = true;
-					snowMan.visible = true;
-					rightHandSnowMan.visible = true;
+					//snowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						rightHandSnowMan.visible = false;
+						
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3120,6 +3171,7 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
@@ -3128,7 +3180,20 @@ package
 			else if (snowManCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandFist.visible = true;
-					rightHandSnowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						rightHandSnowMan.visible = false;
+						
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3143,8 +3208,19 @@ package
 				}
 				else {
 					rightHandAnnoyed.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snowMan.visible = false;
+						snDeskWarning.visible = false;
+						
+					}
+					
+					else 
+					{
+						snowMan.visible = true;
+						snDeskWarning.visible = true;
+					}
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -3152,6 +3228,7 @@ package
 					rightHandMouse2.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
@@ -3166,7 +3243,7 @@ package
 					rightHandPalm1.visible = true;
 					rightHandAnnoyed.visible = false;
 				}
-				snowMan.visible = true;
+				//snowMan.visible = true;
 				
 				rightHand1.visible = false;
 				rightHand2.visible = false;
@@ -3174,13 +3251,14 @@ package
 				rightHandMouse2.visible = false;
 				rightHandFist.visible = false;
 				rightHandSnowMan.visible = false;
+				snHandExplode.visible = false;
 				rightHandPalm2.visible = false;
 			}
 			else {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHand2.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					//snowMan.visible = true;
+					//snDeskWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHandMouse1.visible = false;
@@ -3188,14 +3266,15 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
 				}
 				else {
 					rightHand1.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					//snowMan.visible = true;
+					//snDeskWarning.visible = true;
 					
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
@@ -3203,6 +3282,7 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
