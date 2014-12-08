@@ -102,65 +102,77 @@ package
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;
 		
-		[Embed(source="../media/sounds/squeak1.mp3")]
-		public static const SoundSqueak1:Class;
+		[Embed(source="../media/sounds/squeak1_01.mp3")]
+		public static const SoundSqueak1_01:Class;
 		
-		[Embed(source="../media/sounds/squeak2.mp3")]
-		public static const SoundSqueak2:Class;
+		[Embed(source="../media/sounds/squeak1_02.mp3")]
+		public static const SoundSqueak1_02:Class;
 		
-		[Embed(source="../media/sounds/squeak3.mp3")]
-		public static const SoundSqueak3:Class;
+		[Embed(source="../media/sounds/squeak2_01.mp3")]
+		public static const SoundSqueak2_01:Class;
 		
-		[Embed(source="../media/sounds/squeak4.mp3")]
-		public static const SoundSqueak4:Class;
+		[Embed(source="../media/sounds/squeak2_02.mp3")]
+		public static const SoundSqueak2_02:Class;
 		
-		[Embed(source="../media/sounds/squeak5.mp3")]
-		public static const SoundSqueak5:Class;
+		[Embed(source="../media/sounds/squeak3_01.mp3")]
+		public static const SoundSqueak3_01:Class;
 		
-		[Embed(source="../media/sounds/squeak6.mp3")]
-		public static const SoundSqueak6:Class;
+		[Embed(source="../media/sounds/squeak3_02.mp3")]
+		public static const SoundSqueak3_02:Class;
 		
-		[Embed(source="../media/sounds/squeak7.mp3")]
-		public static const SoundSqueak7:Class;
+		[Embed(source="../media/sounds/squeak4_01.mp3")]
+		public static const SoundSqueak4_01:Class;
 		
-		[Embed(source="../media/sounds/squeak8.mp3")]
-		public static const SoundSqueak8:Class;
+		[Embed(source="../media/sounds/squeak4_02.mp3")]
+		public static const SoundSqueak4_02:Class;
 		
-		[Embed(source="../media/sounds/squeak9.mp3")]
-		public static const SoundSqueak9:Class;
+		[Embed(source="../media/sounds/squeak5_01.mp3")]
+		public static const SoundSqueak5_01:Class;
 		
-		[Embed(source="../media/sounds/squeak10.mp3")]
-		public static const SoundSqueak10:Class;
+		[Embed(source="../media/sounds/squeak5_02.mp3")]
+		public static const SoundSqueak5_02:Class;
 		
-		[Embed(source="../media/sounds/squeak11.mp3")]
-		public static const SoundSqueak11:Class;
+		[Embed(source="../media/sounds/squeak6_01.mp3")]
+		public static const SoundSqueak6_01:Class;
 		
-		[Embed(source="../media/sounds/squeak12.mp3")]
-		public static const SoundSqueak12:Class;
+		[Embed(source="../media/sounds/squeak6_02.mp3")]
+		public static const SoundSqueak6_02:Class;
 		
-		[Embed(source="../media/sounds/squeak13.mp3")]
-		public static const SoundSqueak13:Class;
+		[Embed(source="../media/sounds/squeak7_01.mp3")]
+		public static const SoundSqueak7_01:Class;
 		
-		[Embed(source="../media/sounds/squeak14.mp3")]
-		public static const SoundSqueak14:Class;
+		[Embed(source="../media/sounds/squeak7_02.mp3")]
+		public static const SoundSqueak7_02:Class;
 		
-		[Embed(source="../media/sounds/squeak15.mp3")]
-		public static const SoundSqueak15:Class;
+		[Embed(source="../media/sounds/squeak8_01.mp3")]
+		public static const SoundSqueak8_01:Class;
 		
-		[Embed(source="../media/sounds/squeak16.mp3")]
-		public static const SoundSqueak16:Class;
+		[Embed(source="../media/sounds/squeak8_02.mp3")]
+		public static const SoundSqueak8_02:Class;
 		
-		[Embed(source="../media/sounds/squeak17.mp3")]
-		public static const SoundSqueak17:Class;
+		[Embed(source="../media/sounds/squeak9_01.mp3")]
+		public static const SoundSqueak9_01:Class;
 		
-		[Embed(source="../media/sounds/squeak18.mp3")]
-		public static const SoundSqueak18:Class;
+		[Embed(source="../media/sounds/squeak9_02.mp3")]
+		public static const SoundSqueak9_02:Class;
 		
-		[Embed(source="../media/sounds/squeak19.mp3")]
-		public static const SoundSqueak19:Class;
+		[Embed(source="../media/sounds/squeak10_01.mp3")]
+		public static const SoundSqueak10_01:Class;
 		
-		[Embed(source="../media/sounds/squeak20.mp3")]
-		public static const SoundSqueak20:Class;
+		[Embed(source="../media/sounds/squeak10_02.mp3")]
+		public static const SoundSqueak10_02:Class;
+		
+		[Embed(source="../media/sounds/click.mp3")]
+		public static const SoundClick:Class;
+		
+		[Embed(source="../media/sounds/key.mp3")]
+		public static const SoundKey:Class;
+		
+		[Embed(source="../media/sounds/office.mp3")]
+		public static const SoundOffice:Class;
+		
+		[Embed(source="../media/sounds/phone_call.mp3")]
+		public static const SoundPhone:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
