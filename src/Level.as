@@ -20,6 +20,7 @@ package
 	import flash.media.SoundTransform;
 	import starling.events.Touch;
 	import starling.events.TouchPhase;
+	import flash.ui.Mouse;
 	/**
 	 * ...
 	 * @author Ruvipls
@@ -35,27 +36,34 @@ package
 		private var key_enter:int = 13;
 		
 		public var ch1:SoundChannel = new SoundChannel();
+		public var channel_phone:SoundChannel = new SoundChannel();
+		public var channel_office:SoundChannel = new SoundChannel();
+		
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
-		public var SoundSqueak1:Sound = new Assets.SoundSqueak1() as Sound;
-		public var SoundSqueak2:Sound = new Assets.SoundSqueak2() as Sound;
-		public var SoundSqueak3:Sound = new Assets.SoundSqueak3() as Sound;
-		public var SoundSqueak4:Sound = new Assets.SoundSqueak4() as Sound;
-		public var SoundSqueak5:Sound = new Assets.SoundSqueak5() as Sound;
-		public var SoundSqueak6:Sound = new Assets.SoundSqueak6() as Sound;
-		public var SoundSqueak7:Sound = new Assets.SoundSqueak7() as Sound;
-		public var SoundSqueak8:Sound = new Assets.SoundSqueak8() as Sound;
-		public var SoundSqueak9:Sound = new Assets.SoundSqueak9() as Sound;
-		public var SoundSqueak10:Sound = new Assets.SoundSqueak10() as Sound;
-		public var SoundSqueak11:Sound = new Assets.SoundSqueak11() as Sound;
-		public var SoundSqueak12:Sound = new Assets.SoundSqueak12() as Sound;
-		public var SoundSqueak13:Sound = new Assets.SoundSqueak13() as Sound;
-		public var SoundSqueak14:Sound = new Assets.SoundSqueak14() as Sound;
-		public var SoundSqueak15:Sound = new Assets.SoundSqueak15() as Sound;
-		public var SoundSqueak16:Sound = new Assets.SoundSqueak16() as Sound;
-		public var SoundSqueak17:Sound = new Assets.SoundSqueak17() as Sound;
-		public var SoundSqueak18:Sound = new Assets.SoundSqueak18() as Sound;
-		public var SoundSqueak19:Sound = new Assets.SoundSqueak19() as Sound;
-		public var SoundSqueak20:Sound = new Assets.SoundSqueak20() as Sound;
+		public var SoundSqueak1_01:Sound = new Assets.SoundSqueak1_01() as Sound;
+		public var SoundSqueak2_01:Sound = new Assets.SoundSqueak2_01() as Sound;
+		public var SoundSqueak3_01:Sound = new Assets.SoundSqueak3_01() as Sound;
+		public var SoundSqueak4_01:Sound = new Assets.SoundSqueak4_01() as Sound;
+		public var SoundSqueak5_01:Sound = new Assets.SoundSqueak5_01() as Sound;
+		public var SoundSqueak6_01:Sound = new Assets.SoundSqueak6_01() as Sound;
+		public var SoundSqueak7_01:Sound = new Assets.SoundSqueak7_01() as Sound;
+		public var SoundSqueak8_01:Sound = new Assets.SoundSqueak8_01() as Sound;
+		public var SoundSqueak9_01:Sound = new Assets.SoundSqueak9_01() as Sound;
+		public var SoundSqueak10_01:Sound = new Assets.SoundSqueak10_01() as Sound;
+		public var SoundSqueak1_02:Sound = new Assets.SoundSqueak1_02() as Sound;
+		public var SoundSqueak2_02:Sound = new Assets.SoundSqueak2_02() as Sound;
+		public var SoundSqueak3_02:Sound = new Assets.SoundSqueak3_02() as Sound;
+		public var SoundSqueak4_02:Sound = new Assets.SoundSqueak4_02() as Sound;
+		public var SoundSqueak5_02:Sound = new Assets.SoundSqueak5_02() as Sound;
+		public var SoundSqueak6_02:Sound = new Assets.SoundSqueak6_02() as Sound;
+		public var SoundSqueak7_02:Sound = new Assets.SoundSqueak7_02() as Sound;
+		public var SoundSqueak8_02:Sound = new Assets.SoundSqueak8_02() as Sound;
+		public var SoundSqueak9_02:Sound = new Assets.SoundSqueak9_02() as Sound;
+		public var SoundSqueak10_02:Sound = new Assets.SoundSqueak10_02() as Sound;
+		public var SoundPhone:Sound = new Assets.SoundPhone() as Sound;
+		public var SoundOffice:Sound = new Assets.SoundOffice() as Sound;
+		public var SoundKey:Sound = new Assets.SoundKey() as Sound;
+		public var SoundClick:Sound = new Assets.SoundClick() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -121,6 +129,9 @@ package
 		private var CAPA_2_BOTON_FLECHA_ABA:Boolean = false;
 		private var CAPA_2_MOUSE_CLICKED:Boolean = false;
 		
+		private var CAPA_2_LEFT_MOUSE_X:Number = 200;
+		private var CAPA_2_LEFT_MOUSE_Y:Number = 500;
+		
 		private var leftHand:Sprite;
 		private var rightHand:Sprite;
 		
@@ -133,13 +144,28 @@ package
 		private var snowMan:Sprite;
 		private var snowManCatched:Boolean = false;
 		
+		private var phone_base:Sprite;
+		private var areaPhone:Sprite;
+		private var phone:Sprite;
+		private var phoneCatched:Boolean = false;
+		
+		private var phoneEvent:Number = 0;
+		private var phoneBronca:Number = 1;
+		
+		private var areaCoffe:Sprite;
+		private var coffe:Sprite;
+		private var coffeCatched:Boolean = false;
+		
 		private var test_F_IZQ:Sprite;
 		private var test_F_DER:Sprite;
 		private var test_F_ARR:Sprite;
 		private var test_F_ABA:Sprite;
+		private var test_ESP:Sprite;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
+		private var debug:Boolean = true;
+		private var ira:Number = 0;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -149,6 +175,7 @@ package
 		private var GLOBAL_MOUSE_MANTAINED:Boolean = false;
 		private var GLOBAL_MOUSE_X:Number = 0;
 		private var GLOBAL_MOUSE_Y:Number = 0;
+		
 		
 		// FIN ATRIBUTOS
 		
@@ -164,6 +191,8 @@ package
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			//this.touchable = false;
+			//Mouse.hide();
+			
 
 		}
 		
@@ -178,6 +207,9 @@ package
 			
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			//ch1 = SoundMenu.play(0, 9999);
+			channel_office = SoundOffice.play(0, 999999);
+			channel_phone = SoundPhone.play(0, 9999);
+			channel_phone.soundTransform = new SoundTransform(0, -1);
 			
 			capa0 = new Sprite();
 			var i:Image = new Image(Assets.getAtlas().getTexture("capa0"));
@@ -312,12 +344,16 @@ package
 			areaMouse = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaMouse.addChild(i);
+			if (debug) areaMouse.alpha = 0.2;
+			else areaMouse.alpha = 0;
 			areaMouse.x = 570;
 			areaMouse.y = 425;
 			
 			areaNeutral = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_neutral"));
 			areaNeutral.addChild(i);
+			if (debug) areaNeutral.alpha = 0.2;
+			else areaNeutral.alpha = 0;
 			areaNeutral.x = areaMouse.x + areaMouse.width/2 - areaNeutral.width/2;
 			areaNeutral.y = areaMouse.y + areaMouse.height/2 - areaNeutral.height/2;
 			
@@ -335,54 +371,116 @@ package
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaSnowMan.addChild(i);
 			capa2.addChild(areaSnowMan);
+			if (debug) areaSnowMan.alpha = 0.2;
+			else areaSnowMan.alpha = 0;
 			areaSnowMan.x = 600;
 			areaSnowMan.y = 225;
 			
 			snowMan = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			i = new Image(Assets.getAtlas().getTexture("snowman"));
 			snowMan.addChild(i);
 			capa2.addChild(snowMan);
 			snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
 			snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
 			
+			areaPhone = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaPhone.addChild(i);
+			capa2.addChild(areaPhone);
+			if (debug) areaPhone.alpha = 0.2;
+			else areaPhone.alpha = 0;
+			areaPhone.x = 0;
+			areaPhone.y = 225;
+			
+			phone_base = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("phone_base"));
+			phone_base.addChild(i);
+			capa2.addChild(phone_base);
+			phone_base.x = areaPhone.x + areaPhone.width/2 - phone_base.width/2 -14;
+			phone_base.y = areaPhone.y + areaPhone.height / 2 - phone_base.height / 2;
+			
+			phone = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("phone"));
+			phone.addChild(i);
+			capa2.addChild(phone);
+			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -14;
+			phone.y = areaPhone.y + areaPhone.height / 2 - phone.height / 2;
+			
+			areaCoffe = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
+			areaCoffe.addChild(i);
+			capa2.addChild(areaCoffe);
+			if (debug) areaCoffe.alpha = 0.2;
+			else areaCoffe.alpha = 0;
+			areaCoffe.scaleX = 0.6;
+			areaCoffe.scaleY = 1.4;
+			areaCoffe.x = 0;
+			areaCoffe.y = 400;
+			
+			coffe = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			coffe.addChild(i);
+			capa2.addChild(coffe);
+			coffe.x = areaCoffe.x + areaCoffe.width/2 - coffe.width/2;
+			coffe.y = areaCoffe.y + areaCoffe.height / 2 - coffe.height / 2;
+			
 			test_F_ARR = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_ARR.addChild(i);
 			capa2.addChild(test_F_ARR);
+			if (debug) test_F_ARR.alpha = 0.4;
+			else test_F_ARR.alpha = 0;
 			test_F_ARR.x = 436;
-			test_F_ARR.y = 432;
+			test_F_ARR.y = 432 +32;
 			
 			test_F_ABA = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_ABA.addChild(i);
 			capa2.addChild(test_F_ABA);
+			if (debug) test_F_ABA.alpha = 0.4;
+			else test_F_ABA.alpha = 0;
 			test_F_ABA.x = 442;
-			test_F_ABA.y = 470;
+			test_F_ABA.y = 470 +30;
 			
 			test_F_IZQ = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_IZQ.addChild(i);
 			capa2.addChild(test_F_IZQ);
+			if (debug) test_F_IZQ.alpha = 0.4;
+			else test_F_IZQ.alpha = 0;
 			test_F_IZQ.x = 400;
-			test_F_IZQ.y = 470;
+			test_F_IZQ.y = 470 +30;
 			
 			test_F_DER = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
 			test_F_DER.addChild(i);
 			capa2.addChild(test_F_DER);
+			if (debug) test_F_DER.alpha = 0.4;
+			else test_F_DER.alpha = 0;
 			test_F_DER.x = 484;
-			test_F_DER.y = 470;
+			test_F_DER.y = 470 +30;
+			
+			test_ESP = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_ESP.addChild(i);
+			capa2.addChild(test_ESP);
+			if (debug) test_ESP.alpha = 0.4;
+			else test_ESP.alpha = 0;
+			test_ESP.scaleX = 5.027;
+			test_ESP.x = 165;
+			test_ESP.y = 470 +30;
 			
 			leftHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("lefthand"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
+			i.scaleX *= -1;
 			leftHand.addChild(i);
 			capa2.addChild(leftHand);
-			leftHand.x = GAME.true_width / 2 - GAME.true_width / 4;
-			leftHand.y = 500;
+			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
+			leftHand.y = CAPA_2_LEFT_MOUSE_Y;
 			
 
 			rightHand = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("righthand"));
+			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
 			rightHand.addChild(i);
 			capa2.addChild(rightHand);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
@@ -403,6 +501,7 @@ package
 				if (mouseCatched) { CAPA_2_MOUSE_CLICKED = true; }
 			}
 			if (touch && touch.phase == TouchPhase.ENDED) {
+				if (snowManCatched) { Squeaky2(); }
 				GLOBAL_MOUSE_MANTAINED = false;
 			}
 		}
@@ -426,27 +525,9 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) {
 				if (snowManCatched) {
-					var randi:Number = Math.random();
-					if (randi > 19/20) SoundSqueak1.play();
-					else if (randi > 18 / 20) SoundSqueak2.play();
-					else if (randi > 17 / 20) SoundSqueak3.play();
-					else if (randi > 16 / 20) SoundSqueak4.play();
-					else if (randi > 15 / 20) SoundSqueak5.play();
-					else if (randi > 14 / 20) SoundSqueak6.play();
-					else if (randi > 13 / 20) SoundSqueak7.play();
-					else if (randi > 12 / 20) SoundSqueak8.play();
-					else if (randi > 11 / 20) SoundSqueak9.play();
-					else if (randi > 10 / 20) SoundSqueak10.play();
-					else if (randi > 9 / 20) SoundSqueak11.play();
-					else if (randi > 8 / 20) SoundSqueak12.play();
-					else if (randi > 7 / 20) SoundSqueak13.play();
-					else if (randi > 6 / 20) SoundSqueak14.play();
-					else if (randi > 5 / 20) SoundSqueak15.play();
-					else if (randi > 4 / 20) SoundSqueak16.play();
-					else if (randi > 3 / 20) SoundSqueak17.play();
-					else if (randi > 2 / 20) SoundSqueak18.play();
-					else if (randi > 1 / 20) SoundSqueak19.play();
-					else SoundSqueak20.play();
+					ira -= 1;
+					if (ira < 0) { ira = 0; }
+					Squeaky();
 				}	
 
 			}
@@ -455,22 +536,40 @@ package
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
 				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
 					CAPA_2_BOTON_FLECHA_ARR = true;
-					trace("MANTAINED FLECHA ARRIBA");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_ABA.x && GLOBAL_MOUSE_X <= test_F_ABA.x + test_F_ABA.width &&
 				GLOBAL_MOUSE_Y >= test_F_ABA.y && GLOBAL_MOUSE_Y <= test_F_ABA.y + test_F_ABA.height) {
 					CAPA_2_BOTON_FLECHA_ABA = true;
-					trace("MANTAINED FLECHA ABAJO");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_IZQ.x && GLOBAL_MOUSE_X <= test_F_IZQ.x + test_F_IZQ.width &&
 				GLOBAL_MOUSE_Y >= test_F_IZQ.y && GLOBAL_MOUSE_Y <= test_F_IZQ.y + test_F_IZQ.height) {
 					CAPA_2_BOTON_FLECHA_IZQ = true;
-					trace("MANTAINED FLECHA IZQUIERDA");
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_DER.x && GLOBAL_MOUSE_X <= test_F_DER.x + test_F_DER.width &&
 				GLOBAL_MOUSE_Y >= test_F_DER.y && GLOBAL_MOUSE_Y <= test_F_DER.y + test_F_DER.height) {
 					CAPA_2_BOTON_FLECHA_DER = true;
-					trace("MANTAINED FLECHA DERECHA");
+				}
+			}
+			
+			if (Input.isPressed(Input.SPACE)) {
+				
+				
+				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
+				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
+					CAPA_2_BOTON_ESPACIO = true;
+				}
+				
+				if (phoneCatched && phoneEvent <= 0) {
+					
+					channel_phone.soundTransform = new SoundTransform(0, -1);
+					if (phoneBronca < 3) {
+						// SUENA LA SECRETARIA
+					}
+					else {
+						// SUENA EL BOSS
+					}
+					phoneEvent = 30 + Math.random() * 10;
+					phoneBronca = 1;
 				}
 			}
 			
@@ -481,11 +580,18 @@ package
 			
 			// ****************** CAPA 2 ******************
 			
+			phoneEvent -= e.passedTime;
+			checkPhoneEvent();
+			
 
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
 			checkMouse();
 			checkSnowMan();
+			checkPhone();
+			checkCoffe();
+			//ira += e.passedTime;
+			shakeHands(ira);
 			
 			if (CAPA_2_MOUSE_CLICKED) {
 				checkEnemyClick();
@@ -526,7 +632,7 @@ package
 			}
 			
 			// Salto Personaje
-			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
+			if (CAPA_2_BOTON_ESPACIO && !pisotoneando) {
 				pisotoneando = true;
 				character.removeChildren();
 				var img:Image = new Image(Assets.getTexture("character_jump"));
@@ -969,13 +1075,12 @@ package
 		private function moveLeftHand(dt:Number):void {
 			
 			// MOVE LEFT HAND
-			var new_x:Number = leftHand.x;
-			var new_y:Number = leftHand.y;
+			var new_x:Number = CAPA_2_LEFT_MOUSE_X;
+			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
 			if (GLOBAL_BOTON_W) {
 				new_y -= dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_y = capa1.y + heightCapa1; }
 			}
 			if (GLOBAL_BOTON_S) {
 				new_y += dt * speed_leftHand;
@@ -985,14 +1090,27 @@ package
 			}
 			if (GLOBAL_BOTON_D) {
 				new_x += dt * speed_leftHand;
-				if (new_x + leftHand.width > capa1.x && new_y < capa1.y + heightCapa1) { new_x = capa1.x - leftHand.width; }
 			}
 			
-			if ((new_x + leftHand.width) > GAME.true_width / 2) {
-				new_x = GAME.true_width / 2 - leftHand.width;
+			
+			if (new_x > capa1.x && new_y < capa1.y + heightCapa1) { 
+				var aux_desfase_x:int = new_x - capa1.x;
+				var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
+				if (aux_desfase_x > aux_desfase_y) {
+					new_y = capa1.y + heightCapa1;
+				}
+				else {
+					new_x = capa1.x;
+				}
 			}
-			if (new_x < -leftHand.width/2) {
-				new_x = -leftHand.width/2;
+			
+			
+			
+			if ((new_x) > GAME.true_width / 2) {
+				new_x = GAME.true_width / 2;
+			}
+			if (new_x - leftHand.width < -leftHand.width/2) {
+				new_x = -leftHand.width/2 +leftHand.width;
 			}
 			if (new_y > GAME.true_height - leftHand.height/2) {
 				new_y = GAME.true_height - leftHand.height/2;
@@ -1001,7 +1119,10 @@ package
 				new_y = 0;
 			}
 			
-			leftHand.x = new_x;
+			CAPA_2_LEFT_MOUSE_X = new_x;
+			CAPA_2_LEFT_MOUSE_Y = new_y;
+			
+			leftHand.x = CAPA_2_LEFT_MOUSE_X - leftHand.width;
 			leftHand.y = new_y;
 
 			// END MOVE LEFT HAND
@@ -1171,6 +1292,134 @@ package
 			}
 
 			
+		}
+		
+		private function checkPhone():void {
+			
+			if (phoneCatched) {
+
+				
+				if (CAPA_2_LEFT_MOUSE_X < areaPhone.x || CAPA_2_LEFT_MOUSE_X > areaPhone.x + areaPhone.width ||
+				CAPA_2_LEFT_MOUSE_Y < areaPhone.y || CAPA_2_LEFT_MOUSE_Y > areaPhone.y + areaPhone.height) {
+					phoneCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
+					var point_hand_y:Number = leftHand.y - 0;
+				
+					phone.x = point_hand_x;
+					phone.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (CAPA_2_LEFT_MOUSE_X >= areaPhone.x && CAPA_2_LEFT_MOUSE_X <= areaPhone.x + areaPhone.width &&
+				CAPA_2_LEFT_MOUSE_Y >= areaPhone.y && CAPA_2_LEFT_MOUSE_Y <= areaPhone.y + areaPhone.height) {
+					phoneCatched = true;
+				}
+				
+			}
+
+			
+		}
+		
+		private function checkCoffe():void {
+			
+			if (coffeCatched) {
+
+				
+				if (CAPA_2_LEFT_MOUSE_X < areaCoffe.x || CAPA_2_LEFT_MOUSE_X > areaCoffe.x + areaCoffe.width ||
+				CAPA_2_LEFT_MOUSE_Y < areaCoffe.y || CAPA_2_LEFT_MOUSE_Y > areaCoffe.y + areaCoffe.height) {
+					coffeCatched = false;
+				}
+				else {
+					
+					var point_hand_x:Number = leftHand.x + leftHand.width - 25;
+					var point_hand_y:Number = leftHand.y - 0;
+				
+					coffe.x = point_hand_x;
+					coffe.y = point_hand_y;	
+				}
+				
+			}
+			else {
+				
+				if (CAPA_2_LEFT_MOUSE_X >= areaCoffe.x && CAPA_2_LEFT_MOUSE_X <= areaCoffe.x + areaCoffe.width &&
+				CAPA_2_LEFT_MOUSE_Y >= areaCoffe.y && CAPA_2_LEFT_MOUSE_Y <= areaCoffe.y + areaCoffe.height) {
+					coffeCatched = true;
+				}
+				
+			}
+
+			
+		}
+		
+		private function shakeHands(intensity:Number):void {
+			
+			CAPA_2_LEFT_MOUSE_X += (Math.random() * 2 -1) *(intensity);
+			CAPA_2_LEFT_MOUSE_Y += (Math.random() * 2 -1) * (intensity);
+			
+			GLOBAL_MOUSE_X += (Math.random() * 2 -1) * (intensity);
+			GLOBAL_MOUSE_Y += (Math.random() * 2 -1) * (intensity);
+			
+		}
+		
+		private function checkPhoneEvent():void {
+			
+			if (phoneEvent <= 0) {
+				
+				if (channel_phone.soundTransform.volume == 0) {
+					channel_phone = SoundPhone.play(0, 9999);
+					channel_phone.soundTransform = new SoundTransform(1, -1);
+				}
+				
+				
+				if (phoneEvent <= -(3 + phoneBronca*3)) {
+					
+					phoneEvent = 30 + Math.random()*10;
+					channel_phone.soundTransform = new SoundTransform(0, -1);
+					phoneBronca++;
+					
+					if (phoneBronca > 3) {
+						
+						// ESTAS DESPEDIDO, MACHO
+						trace ("FIRED, HIJOPUTA");
+						
+					}
+					
+				}
+			}
+			
+		}
+		
+		private function Squeaky():void {
+			var randi:Number = Math.random();
+			if (randi > 9/10) SoundSqueak1_01.play();
+			else if (randi > 8 / 10) SoundSqueak2_01.play();
+			else if (randi > 7 / 10) SoundSqueak3_01.play();
+			else if (randi > 6 / 10) SoundSqueak4_01.play();
+			else if (randi > 5 / 10) SoundSqueak5_01.play();
+			else if (randi > 4 / 10) SoundSqueak6_01.play();
+			else if (randi > 3 / 10) SoundSqueak7_01.play();
+			else if (randi > 2 / 10) SoundSqueak8_01.play();
+			else if (randi > 1 / 10) SoundSqueak9_01.play();
+			else SoundSqueak10_01.play();
+		}
+		
+		private function Squeaky2():void {
+			var randi:Number = Math.random();
+			if (randi > 9/10) SoundSqueak1_02.play();
+			else if (randi > 8 / 10) SoundSqueak2_02.play();
+			else if (randi > 7 / 10) SoundSqueak3_02.play();
+			else if (randi > 6 / 10) SoundSqueak4_02.play();
+			else if (randi > 5 / 10) SoundSqueak5_02.play();
+			else if (randi > 4 / 10) SoundSqueak6_02.play();
+			else if (randi > 3 / 10) SoundSqueak7_02.play();
+			else if (randi > 2 / 10) SoundSqueak8_02.play();
+			else if (randi > 1 / 10) SoundSqueak9_02.play();
+			else SoundSqueak10_02.play();
 		}
 		
 	}
