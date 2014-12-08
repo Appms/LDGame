@@ -13,15 +13,8 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
-<<<<<<< HEAD
 		private static var gameTextures2:Dictionary = new Dictionary();
 		private static var gameTextureAtlas2:TextureAtlas;
-=======
-		
-		private static var gameTextures2:Dictionary = new Dictionary();
-		private static var gameTextureAtlas2:TextureAtlas;
-		
->>>>>>> origin/master
 		/*
 		private static var gameTextures3:Dictionary = new Dictionary();
 		private static var gameTextureAtlas3:TextureAtlas;
@@ -30,13 +23,8 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
-<<<<<<< HEAD
 		[Embed(source = "../media/graphics/mySpriteSheet2.png")]
 		public static const AtlasTextureGame2:Class;
-=======
-		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
-		public static const AtlasXmlGame:Class;
->>>>>>> origin/master
 		
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
@@ -104,9 +92,6 @@ package
 		
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;
-<<<<<<< HEAD
-		
-
 		
 		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
 		public static const AtlasXmlGame:Class;
@@ -114,9 +99,6 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet2.xml", mimeType = "application/octet-stream")]
 		public static const AtlasXmlGame2:Class;
 		
-		
-=======
->>>>>>> origin/master
 	
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;

@@ -237,13 +237,8 @@ package
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
 		
-<<<<<<< HEAD
-		private var changed_x_rotation:Number = 73;
-		private var changed_y_rotation:Number = 43;
-=======
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
->>>>>>> origin/master
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -608,17 +603,11 @@ package
 					CAPA_2_BOTON_FLECHA_DER = true;
 				}
 			}
-<<<<<<< HEAD
-			else {
-				
-			}
-=======
 						
 			if(frogRunning) updateCapa0(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 
->>>>>>> origin/master
 			
 			if (Input.isPressed(Input.SPACE)) {
 				
@@ -2090,11 +2079,6 @@ package
 				}
 				
 			}
-<<<<<<< HEAD
-			
-
-=======
->>>>>>> origin/master
 			
 		}
 		

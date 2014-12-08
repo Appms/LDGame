@@ -91,17 +91,6 @@
     <SubTexture name="capa0" x="606" y="818" width="152" height="180"/>
     <SubTexture name="capa1" x="1264" y="398" width="400" height="300"/>
     <SubTexture name="capa2" x="2" y="2" width="800" height="600"/>
-<<<<<<< HEAD
     <SubTexture name="snowman" x="1068" y="1234" width="100" height="210"/>
     <SubTexture name="test" x="1666" y="486" width="37" height="33"/>
 </TextureAtlas>
-=======
-    <SubTexture name="lefthand" x="706" y="981" width="94" height="146" frameX="-4" frameY="0" frameWidth="100" frameHeight="146"/>
-    <SubTexture name="mouse" x="1854" y="260" width="157" height="142" frameX="0" frameY="0" frameWidth="161" frameHeight="142"/>
-    <SubTexture name="phone" x="1256" y="666" width="115" height="224" frameX="-15" frameY="0" frameWidth="175" frameHeight="302"/>
-    <SubTexture name="phone_base" x="1858" y="38" width="175" height="220" frameX="0" frameY="-79" frameWidth="175" frameHeight="302"/>
-    <SubTexture name="righthand" x="706" y="833" width="94" height="146" frameX="-1" frameY="0" frameWidth="100" frameHeight="146"/>
-    <SubTexture name="snowman" x="666" y="1233" width="100" height="210"/>
-    <SubTexture name="test" x="2008" y="468" width="37" height="33"/>
-</TextureAtlas>
->>>>>>> origin/master
