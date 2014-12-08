@@ -2,6 +2,7 @@ package
 {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.utils.Timer;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.display.Sprite;
@@ -162,6 +163,9 @@ package
 		
 		private var closeIcon:Sprite;
 		
+		private var loadScreen:MovieClip;
+		private var loadStaticScreen:Image;
+		
 		// PC
 		private var wallpaper:Sprite;
 		private var txtIcon:Sprite;
@@ -169,6 +173,10 @@ package
 		private var txtClose:Sprite;
 		private var gameIcon:Sprite;
 		private var cursor:Sprite;
+		
+		//Sounds
+		
+		public var StartUp:Sound = new Assets.StartUp() as Sound;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 2
 		
@@ -211,6 +219,9 @@ package
 		private var test_F_ARR:Sprite;
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
+		
+		//Rubén, ratón
+		private var clickScreenButton:Boolean;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
@@ -297,9 +308,7 @@ package
 			pcRunning = false;
 			game1Running = false;
 			
-			loadPC();
-			
-			
+			//loadPC();
 			
 			// *********************** CAPA 2 ***********************
 			
@@ -470,7 +479,10 @@ package
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
-			if (Input.isPressed(Input.SPACE)) GLOBAL_BOTON_ESPACIO = true;
+			if (Input.isPressed(Input.SPACE))
+			{
+				GLOBAL_BOTON_ESPACIO = true;
+			}
 			else GLOBAL_BOTON_ESPACIO = false;
 			
 			if (Input.isDown(Input.UP)) GLOBAL_BOTON_W = true;
@@ -493,6 +505,9 @@ package
 				}	
 
 			}
+			
+			//temporal encender apagar PC
+			if(Input.isDown(Input.UP2)) clickScreenButton = true;
 			
 			if (GLOBAL_MOUSE_MANTAINED) {
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
@@ -548,6 +563,8 @@ package
 			if (pcRunning) updatePC(e.passedTime);
 			if (game1Running) updateGame1(e.passedTime);
 			
+		
+			
 			// ****************** CAPA 2 ******************
 			
 			phoneEvent -= e.passedTime;
@@ -580,12 +597,50 @@ package
 			CAPA_2_BOTON_FLECHA_DER = false;
 			CAPA_2_BOTON_ESPACIO = false;
 			CAPA_2_MOUSE_CLICKED = false;
+			
+			if (clickScreenButton)
+			{
+				if(!game1Running && !pcRunning) loadPC();
+				else
+				{
+					shutdownPC();
+					shutdownGame1();
+				}
+				clickScreenButton = false;
+			}
 		}
+		
+
 		
 		// PC
 		
 		private function loadPC():void {
-			// Cool animations
+			
+			StartUp.play();
+			loadStaticScreen = new Image(Assets.getTexture("LoadScreen"));
+			capa1.addChild(loadStaticScreen);
+			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 0.5);
+			loadScreen.play();
+			loadScreen.pivotX = loadScreen.width / 2;
+			loadScreen.pivotY = loadScreen.height / 2;
+			loadScreen.x = widthCapa1 / 2;
+			loadScreen.y = heightCapa1 / 2+55;
+			starling.core.Starling.juggler.add(loadScreen);
+			capa1.addChild(loadScreen);
+			loadScreen.loop = false;
+			
+			loadScreen.addEventListener(Event.COMPLETE, loadCompleted);
+
+			
+			//loadScreen.visible = false;
+			//initPC();
+		}
+		
+		private function loadCompleted(event:Event):void
+		{
+			loadStaticScreen.visible = false;
+			loadScreen.visible = false;
+			loadScreen.stop();
 			initPC();
 		}
 		
@@ -615,8 +670,8 @@ package
 			img = new Image(Assets.getTexture("textInfo2"));
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
-			txtInfo.x = widthCapa1 / 4;
-			txtInfo.y = heightCapa1 / 4;
+			txtInfo.x = widthCapa1 / 10;
+			txtInfo.y = heightCapa1 / 10;
 			txtInfo.scaleX = 0.5;
 			txtInfo.scaleY = 0.5;
 			txtInfo.visible = false;
@@ -1325,11 +1380,12 @@ package
 				
 				
 				frogPoints += dt;
-				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
+				/*
 				if (Input.isPressed(Input.RIGHT2)) CAPA_1_BOTON_DER = true;
 				else CAPA_1_BOTON_DER = false;
 				if (Input.isPressed(Input.LEFT2)) CAPA_1_BOTON_IZQ = true;
 				else CAPA_1_BOTON_IZQ = false;
+				*/
 				
 				if (CAPA_1_BOTON_DER && currentPos < 2)
 				{	
@@ -1339,7 +1395,6 @@ package
 					changeSprite0();
 					if (gameMatrix[3][currentPos] == 1)
 					{
-						//FrogDead.play();
 						dead = true;
 					}
 					gameMatrix[3][currentPos] = 2;
@@ -1354,7 +1409,6 @@ package
 					changeSprite0();
 					if (gameMatrix[3][currentPos] == 1) 
 					{
-						//FrogDead.play();
 						dead = true;
 					}
 					gameMatrix[3][currentPos] = 2;
@@ -1369,9 +1423,7 @@ package
 					if (secsPassed >= 1.2)
 					{	
 						FrogTick.play();
-						//updateSprites0();
-						
-						
+							
 						for (var i:int = LEVELS_0-1; i >= 0; i--)
 						{
 							for (var j:int = TRACKS_0-1; j >=0 ; j--)
@@ -1384,7 +1436,6 @@ package
 										if (gameMatrix[i + 1][j] == 2)
 										{
 											dead = true;
-											//FrogDead.play();
 										}
 										else 
 										{

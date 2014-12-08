@@ -82,6 +82,9 @@ package
 		[Embed(source = "../media/graphics/cursor.png")]
 		public static const cursor:Class;
 		
+		[Embed(source = "../media/graphics/loadScreen.jpg")]
+		public static const LoadScreen:Class;
+		
 		//[Embed(source = "../media/graphics/mosaic_ground.png")]
 		//public static const AtlasTextureGame2:Class;
 
@@ -189,6 +192,26 @@ package
 		
 		[Embed(source="../media/sounds/phone_call.mp3")]
 		public static const SoundPhone:Class;
+		
+		[Embed(source = "../media/sounds/startup.mp3")]
+		public static const StartUp:Class;
+
+		
+		//***************Sounds Capa 1****************
+		
+		[Embed(source = "../media/sounds/SCA_Main.mp3")]
+		public static const SCA_Main:Class;
+		
+		[Embed(source = "../media/sounds/powerUp.mp3")]
+		public static const PowerUp:Class;
+		
+		[Embed(source = "../media/sounds/button.mp3")]
+		public static const ButtonSound:Class;
+		
+		//[Embed(source = "../media/sounds/bug.mp3")]
+		//public static const BugSound:Class;
+		
+
 
 	
 		public static function getAtlas():TextureAtlas {
