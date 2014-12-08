@@ -209,6 +209,17 @@ package
 		
 		[Embed(source="../media/sounds/coffee.mp3")]
 		public static const SoundSlurp:Class;
+		
+		[Embed(source="../media/sounds/Mumble_01.mp3")]
+		public static const SoundMumble1:Class;
+		
+		[Embed(source="../media/sounds/Mumble_03.mp3")]
+		public static const SoundMumble3:Class;
+		
+		[Embed(source="../media/sounds/Mumble_04.mp3")]
+		public static const SoundMumble4:Class;
+		
+		
 
 		
 		//***************Sounds Capa 1****************
