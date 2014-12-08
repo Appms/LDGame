@@ -1144,14 +1144,14 @@ package
 			var img: Image;
 			
 			wallpaper = new Sprite();
-			img = new Image(Assets.getTexture("wallpaper"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_escritorio"));
 			wallpaper.addChild(img);
 			capa1.addChild(wallpaper);
 			wallpaper.scaleX = 0.21;
 			wallpaper.scaleY = 0.25;
 			
 			gameIcon = new Sprite();
-			img = new Image(Assets.getTexture("gameIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_game"));
 			gameIcon.addChild(img);
 			capa1.addChild(gameIcon);
 			gameIcon.x = 25;
@@ -1162,7 +1162,7 @@ package
 			gameIcon.scaleY = 0.65;
 			
 			txtIcon = new Sprite();
-			img = new Image(Assets.getTexture("txtIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_readme_icon"));
 			txtIcon.addChild(img);
 			capa1.addChild(txtIcon);
 			txtIcon.x = 25;
@@ -1174,7 +1174,7 @@ package
 			
 			
 			txtInfo = new Sprite();
-			img = new Image(Assets.getTexture("textInfo2"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_readme"));
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
 			txtInfo.x = 1;
