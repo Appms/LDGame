@@ -25,16 +25,8 @@ package
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
 		
-		[Embed(source = "../media/graphics/SCAspritesheet.png")]
-		public static const AtlasTextureGame2:Class;
-
 		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
 		public static const AtlasXmlGame:Class;
-		
-		[Embed(source = "../media/graphics/SCAspritesheet.xml", mimeType = "application/octet-stream")]
-		public static const AtlasXmlGame2:Class;
-		
-		
 		
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
@@ -78,6 +70,9 @@ package
 		[Embed(source = "../media/graphics/txtInfo.png")]
 		public static const txtInfo:Class;
 		
+		[Embed(source = "../media/graphics/txtInfo2.png")]
+		public static const textInfo2:Class;
+		
 		[Embed(source = "../media/graphics/txtClose.png")]
 		public static const txtClose:Class;
 		
@@ -96,8 +91,6 @@ package
 		
 		[Embed(source = "../media/graphics/bomb.png")]
 		public static const Bomb:Class;
-		
-		
 	
 		[Embed(source="../media/sounds/menu.mp3")]
 		public static const SoundMenu:Class;
@@ -159,6 +152,29 @@ package
 		[Embed(source="../media/sounds/squeak10_01.mp3")]
 		public static const SoundSqueak10_01:Class;
 		
+		/*
+		[Embed(source="../media/sounds/squeak20.mp3")]
+		public static const SoundSqueak20:Class;
+		*/
+		
+		[Embed(source="../media/sounds/tick.mp3")]
+		public static const FrogTick:Class;
+		
+		[Embed(source="../media/sounds/death.mp3")]
+		public static const FrogDeath:Class;
+		
+		[Embed(source="../media/sounds/move.mp3")]
+		public static const FrogMove:Class;
+		
+		[Embed(source="../media/sounds/office.mp3")]
+		public static const OfficeSound:Class;
+		
+		[Embed(source="../media/sounds/frogIntro.mp3")]
+		public static const FrogIntro:Class;
+		
+		[Embed(source = "../media/graphics/retroFont.ttf", fontFamily ="RetroFont", embedAsCFF = false)]
+		public static const RetroFont:Class;
+
 		[Embed(source="../media/sounds/squeak10_02.mp3")]
 		public static const SoundSqueak10_02:Class;
 		
@@ -173,6 +189,7 @@ package
 		
 		[Embed(source="../media/sounds/phone_call.mp3")]
 		public static const SoundPhone:Class;
+
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {
@@ -182,7 +199,7 @@ package
 			}
 			return gameTextureAtlas;
 		}
-		
+		/*
 		public static function getAtlas2():TextureAtlas {
 			if (gameTextureAtlas2 == null) {
 				var texture:Texture = getTexture("AtlasTextureGame2");
