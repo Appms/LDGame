@@ -253,8 +253,8 @@ package
 		public static const umad4:Class;
 		
 		
-		
-		
+		[Embed(source = "../media/sounds/snowmanExplodes.mp3")]
+		public static const SnowmanExplodes:Class;
 		
 		
 		[Embed(source = "../media/graphics/SNDeskWarning.png")]

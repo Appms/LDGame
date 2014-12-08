@@ -1047,6 +1047,13 @@ package
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
 				snowmanCooldown += 0.1;
+			else
+			{
+				//poner Sprite
+				//reproducir explosión
+				
+				
+			}
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
 			snHandWarning.alpha = 0 + ((100 - snowmanCooldown) / 100);
