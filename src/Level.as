@@ -778,7 +778,6 @@ package
 				
 				GLOBAL_MOUSE_X = touch.globalX;
 				GLOBAL_MOUSE_Y = touch.globalY;
-
 			}
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
@@ -3086,6 +3085,15 @@ package
 				}
 			}
 			
+		}
+		
+		private function gameOver():void {
+			shutDownFrog();
+			shutdownGame1();
+			shutdownPC();
+			capa0.removeChildren();
+			
+			onAddedToStage();
 		}
 		
 	}
