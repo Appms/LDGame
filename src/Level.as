@@ -108,20 +108,26 @@ package
 		private var lifeUp:Sprite;
 		private var lifeUpDt:Number;
 		
-		//private var character:Sprite;
 		private var character:MovieClip;
-		private var characterLeft:MovieClip;
-		private var characterRight:MovieClip;
+		private var characterWalk:MovieClip;
 		private var characterJump:MovieClip;
+		private var characterHurt:MovieClip;
+		private var characterDeath:MovieClip;
 		private var jumptimer:Number;
+		private var hurttimer:Number;
 		private var pisotoneando:Boolean;
+		private var hurt:Boolean;
+		private var game1over:Boolean;
+		private var game1overDelay:Number;
+		private var oversizeY:Number;
+		private var character_basescale:Number;
 		
 		private var fairy:Sprite;
 		private var fairy_displacement:Point;
 		
 		private var newEnemy:Sprite;
-		private var enemyArray:Array = new Array();
-		private var enemySpawner:Number = 0;
+		private var enemyArray:Array;
+		private var enemySpawner:Number;
 		
 		private var gamepad:Sprite;
 		private var LB:Sprite;
@@ -594,7 +600,16 @@ package
 			drawLifes();
 			lifeUpDt = 0;
 			
+			enemyArray = new Array();
+			
 			jumptimer = 0;
+			hurttimer = 0;
+			oversizeY = 0;
+			enemySpawner = 8 + Math.random()*5;
+			character_basescale = 1;
+			
+			game1over = false;
+			game1overDelay = 2;
 			
 			closeIcon = new Sprite();
 			img = new Image(Assets.getTexture("closeIcon"));
@@ -657,42 +672,76 @@ package
 			character.scaleX = 0.15;
 			character.scaleY = 0.15;*/
 			
-			character = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_I"), 3);
+			/*character = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle"), 6);
+			starling.core.Starling.juggler.add(character);
+			capa1.addChild(character);
+			character.addFrameAt(2, Assets.getAtlas().getTexture("SCA_hero_idle_01"), null, 1/6);
+			character.scaleX = character_basescale;
+			character.scaleY = character_basescale;
+			character.x = widthCapa1/2;
+			character.y = heightCapa1 - 50;
+			character.pivotX = character.width / 2;
+			character.pivotY = character.height / 2;
+			character.visible = true;*/
+			
+			character = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Idle"), 6);
 			starling.core.Starling.juggler.add(character);
 			capa1.addChild(character);
 			character.x = widthCapa1/2;
-			character.y = heightCapa1/2 + 100;
+			character.y = heightCapa1 - 50;
 			character.pivotX = character.width / 2;
-			character.pivotY = character.height / 2
+			character.pivotY = character.height / 2;
 			character.visible = true;
 			
-			characterLeft = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
-			starling.core.Starling.juggler.add(characterLeft);
-			capa1.addChild(characterLeft);
-			characterLeft.x = character.x;
-			characterLeft.y = character.y;
-			characterLeft.pivotX = characterLeft.width / 2;
-			characterLeft.pivotY = characterLeft.height / 2
-			characterLeft.scaleX *= -1;
-			characterLeft.visible = false;
 			
-			characterRight = new MovieClip(Assets.getAtlas().getTextures("DETB_Left_I"), 3);
-			starling.core.Starling.juggler.add(characterRight);
-			capa1.addChild(characterRight);
-			characterRight.x = character.x;
-			characterRight.y = character.y;
-			characterRight.pivotX = characterRight.width / 2;
-			characterRight.pivotY = characterRight.height / 2
-			characterLeft.visible = false;
+			/*characterWalk = new MovieClip(Assets.getAtlas2().getTextures("SCA_hero_walk"), 6);
+			starling.core.Starling.juggler.add(characterWalk);
+			capa1.addChild(characterWalk);
+			characterWalk.scaleX = character.scaleX;
+			characterWalk.scaleY = character.scaleY;
+			characterWalk.x = character.x;
+			characterWalk.y = character.y;
+			characterWalk.pivotX = characterWalk.width / 2;
+			characterWalk.pivotY = characterWalk.height / 2;
+			characterWalk.visible = false;*/
+			characterWalk = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Idle"), 6);
+			starling.core.Starling.juggler.add(characterWalk);
+			capa1.addChild(characterWalk);
+			characterWalk.x = character.x;
+			characterWalk.y = character.y;
+			characterWalk.pivotX = characterWalk.width / 2;
+			characterWalk.pivotY = characterWalk.height / 2;
+			characterWalk.visible = false;
 			
-			characterJump = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 3);
+			characterJump = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
 			starling.core.Starling.juggler.add(characterJump);
 			capa1.addChild(characterJump);
 			characterJump.x = character.x;
 			characterJump.y = character.y;
-			characterJump.pivotX = characterRight.width / 2;
-			characterJump.pivotY = characterRight.height / 2
+			characterJump.pivotX = character.width / 2;
+			characterJump.pivotY = character.height / 2;
 			characterJump.visible = false;
+			characterJump.stop();
+			
+			characterHurt = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Open"), 6);
+			starling.core.Starling.juggler.add(characterHurt);
+			capa1.addChild(characterHurt);
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.pivotX = character.width / 2;
+			characterHurt.pivotY = character.height / 2;
+			characterHurt.visible = false;
+			characterHurt.stop();
+			
+			characterDeath = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Explosion"), 6);
+			starling.core.Starling.juggler.add(characterDeath);
+			capa1.addChild(characterDeath);
+			characterDeath.x = character.x;
+			characterDeath.y = character.y;
+			characterDeath.pivotX = character.width / 2;
+			characterDeath.pivotY = character.height / 2;
+			characterDeath.visible = false;
+			characterDeath.stop();
 			
 			
 			fairy = new Sprite();
@@ -711,144 +760,225 @@ package
 		
 		private function updateGame1(dt:Number):void {
 			
-			// Movimiento Personaje
-			if (!pisotoneando) {
-				
-				character.visible = true;
-				characterLeft.visible = false;
-				characterRight.visible = false;
-				
-				if (CAPA_2_BOTON_FLECHA_ARR && character.y > capa1.height/2 + 25) character.y -= 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_IZQ) {
-					character.x -= 80*dt;
-					if (characterLeft.visible == false) {
-						characterLeft.visible = true;
-						character.visible = false;
-					}
+			if (!game1over) {
+				// Movimiento Personaje
+				if (!pisotoneando && !hurt) {
 					
-					
-				}
-				else if (CAPA_2_BOTON_FLECHA_ABA) character.y += 60*dt;
-				else if (CAPA_2_BOTON_FLECHA_DER) {
-					character.x += 80*dt;
-					if (characterRight.visible == false) {
-						characterRight.visible = true;
-						character.visible = false;
-					}
-				}
-				
-				characterLeft.x = character.x;
-				characterLeft.y = character.y;
-				characterRight.x = character.x;
-				characterRight.y = character.y;
-			}
-			
-			// Salto Personaje
-			if (GLOBAL_BOTON_ESPACIO && !pisotoneando) {
-				pisotoneando = true;
-				var img:Image;
-				character.visible = false;
-				characterLeft.visible = false;
-				characterRight.visible = false;
-				characterJump.x = character.x;
-				characterJump.y = character.y;
-				characterJump.visible = true;
-				//characterJump.currentFrame = 0;
-				characterJump.stop();
-				characterJump.play();
-				
-				if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
-				{
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RBP"));
-					RB.addChild(img)
-					RBPressed = true;
-					CAPA_1_BOTON_DER = true;
-				}
-				else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
-				{
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LBP"));
-					LB.addChild(img);
-					LBPressed = true;
-					CAPA_1_BOTON_IZQ = true;
-				}
-			}
-			
-			if (pisotoneando) {
-				jumptimer += dt;
-				if (jumptimer >= 0.5) {
-					pisotoneando = false;
-					characterJump.visible = false;
 					character.visible = true;
-					jumptimer = 0;
+					characterWalk.visible = false;
+					
+					if (CAPA_2_BOTON_FLECHA_ARR) {
+						if (oversizeY <= 0) {
+							if ( character.y > capa1.height / 2 + 25) {
+								character.y -= 120 * dt;
+								character.scaleX = character_basescale + (character.y - 250) / 250;
+								character.scaleY = character_basescale + (character.y - 250) / 250;
+							}
+						}
+						else {
+							oversizeY -= 5 * dt;
+							character.scaleX = character_basescale + oversizeY;
+							character.scaleY = character_basescale + oversizeY;
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_IZQ) {
+						if (character.x > 0) {
+							character.x -= 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX < 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_ABA) {
+						if (character.y < heightCapa1+50) {
+							character.y += 120 * dt;
+							character.scaleX = character_basescale + (character.y - 250) / 250;
+							character.scaleY = character_basescale + (character.y - 250) / 250;
+						}
+						else if(oversizeY <= 8) {
+							oversizeY += 5 * dt;
+							character.scaleX = character_basescale + oversizeY;
+							character.scaleY = character_basescale + oversizeY;
+							if (character.x < widthCapa1 / 2) character.x += 80 * dt;
+							else if (character.x > widthCapa1 / 2) character.x -= 80 * dt;
+						}
+						
+						characterWalk.scaleX = character.scaleX;
+						characterWalk.scaleY = character.scaleY;
+					}
+					
+					else if (CAPA_2_BOTON_FLECHA_DER) {
+						if (character.x < widthCapa1) {
+							character.x += 160*dt;
+							if (characterWalk.visible == false) {
+								characterWalk.visible = true;
+								character.visible = false;
+							}
+							if (character.scaleX > 0) character.scaleX *= -1;
+							characterWalk.scaleX = character.scaleX;
+						}
+					}
+					
+					characterWalk.x = character.x;
+					characterWalk.y = character.y;
+				}
+				
+				// Salto Personaje
+				if (GLOBAL_BOTON_ESPACIO && !pisotoneando && !hurt) {
+					pisotoneando = true;
+					character.visible = false;
+					characterWalk.visible = false;
+					characterJump.x = character.x;
+					characterJump.y = character.y;
+					characterJump.scaleX = character.scaleX;
+					characterJump.scaleY = character.scaleY;
+					characterJump.visible = true;
+					
+					characterJump.play();
+					var img:Image;
+					if (Math.sqrt(Math.pow((RB.x - character.x), 2) + Math.pow((RB.y - character.y - 23), 2)) < 15)
+					{
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RBP"));
+						RB.addChild(img)
+						RBPressed = true;
+						CAPA_1_BOTON_DER = true;
+					}
+					else if (Math.sqrt(Math.pow((LB.x - character.x), 2) + Math.pow((LB.y - character.y - 23), 2)) < 15)
+					{
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LBP"));
+						LB.addChild(img);
+						LBPressed = true;
+						CAPA_1_BOTON_IZQ = true;
+					}
+				}
+				
+				if (pisotoneando) {
+					jumptimer += dt;
+					if (jumptimer >= 0.5) {
+						pisotoneando = false;
+						characterJump.stop();
+						characterJump.visible = false;
+						character.visible = true;
+						jumptimer = 0;
+					}
+				}
+				if (hurt) {
+					hurttimer += dt;
+					if (hurttimer >= 0.5) {
+						hurt = false;
+						characterHurt.stop();
+						characterHurt.visible = false;
+						character.visible = true;
+						hurttimer = 0;
+					}
+				}
+				
+				if (RBPressed) {
+					RBdt += dt;
+					if (RBdt >= 0.5) {
+						RBPressed = false;
+						RB.removeChildren();
+						img = new Image(Assets.getTexture("RB"));
+						RB.addChild(img);
+						RBdt = 0;
+					}
+				}
+				
+				if (LBPressed) {
+					LBdt += dt;
+					if (LBdt >= 0.5) {
+						LBPressed = false;
+						LB.removeChildren();
+						img = new Image(Assets.getTexture("LB"));
+						LB.addChild(img);
+						LBdt = 0;
+					}
+				}
+				
+				
+				// Movimiento Hadita/Cursor
+				
+				//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
+				//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
+				
+				if (mouseCatched) {
+					fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
+					fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
+				}
+				
+				
+				if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
+				if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
+				if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
+				if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
+				
+				// Spawnear Enemigos
+				enemySpawner -= dt;
+				if (enemySpawner <= 0) {
+					addEnemy();
+					enemySpawner = 8 + Math.round(Math.random()*5);
+				}
+				
+				// Movimiento Enemigos
+				var i:Number;
+				for (i = 0; i < enemyArray.length; i++) {
+					/*if (enemyArray[i].x < character.x) {
+						enemyArray[i].x += 80*dt;
+						if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
+					}
+					if (enemyArray[i].x > character.x) {
+						enemyArray[i].x -= 80*dt;
+						if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
+					}*/
+					//if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
+					//if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
+					if (enemyArray[i].scaleX > 0) {
+						if (enemyArray[i].x <= 0) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x -= 80 * dt;
+						}
+					}
+					else {
+						if (enemyArray[i].x >= widthCapa1) {
+							capa1.removeChild(enemyArray[i]);
+							enemyArray.splice(i, 1);
+							if (i>0) i--;
+						}
+						else {
+							enemyArray[i].x += 80*dt;
+						}
+					}
+				}
+				
+				enemyCollision();
+				
+				updateLifeUp(dt);
+				
+			}
+			else {
+				game1overDelay -= dt;
+				if (game1overDelay <= 0) {
+					game1overDelay = 2;
+					game1Running = false;
+					game1over = false;
+					shutdownGame1();
+					initGame1();
 				}
 			}
-			
-			if (RBPressed) {
-				RBdt += dt;
-				if (RBdt >= 0.5) {
-					RBPressed = false;
-					RB.removeChildren();
-					img = new Image(Assets.getTexture("RB"));
-					RB.addChild(img);
-					RBdt = 0;
-				}
-			}
-			
-			if (LBPressed) {
-				LBdt += dt;
-				if (LBdt >= 0.5) {
-					LBPressed = false;
-					LB.removeChildren();
-					img = new Image(Assets.getTexture("LB"));
-					LB.addChild(img);
-					LBdt = 0;
-				}
-			}
-			
-			
-			// Movimiento Hadita/Cursor
-			
-			//fairy.x += (GLOBAL_MOUSE_X - capa1.x - fairy.x) / 3;
-			//fairy.y += (GLOBAL_MOUSE_Y - capa1.y - fairy.y) / 3;
-
-			if (mouseCatched) {
-				fairy.x = (GLOBAL_MOUSE_X - areaMouse.x)*2;
-				fairy.y = (GLOBAL_MOUSE_Y - areaMouse.y)*2;
-			}
-			
-			
-			if (fairy.x+fairy.width/2 > widthCapa1) fairy.x = widthCapa1-fairy.width/2;
-			if (fairy.x-fairy.width/2 < 0) fairy.x = 0+fairy.width/2;
-			if (fairy.y+fairy.height/2 > heightCapa1) fairy.y = heightCapa1-fairy.height/2;
-			if (fairy.y-fairy.height/2 < 0) fairy.y = 0+fairy.height/2;
-			
-			// Spawnear Enemigos
-			enemySpawner += dt;
-			if (enemySpawner >= 3) {
-				addEnemy();
-				enemySpawner = 0;
-			}
-			
-			// Movimiento Enemigos
-			var i:Number;
-			for (i = 0; i < enemyArray.length; i++) {
-				if (enemyArray[i].x < character.x) {
-					enemyArray[i].x += 80*dt;
-					if (enemyArray[i].scaleX < 0) enemyArray[i].scaleX *= -1;
-				}
-				if (enemyArray[i].x > character.x) {
-					enemyArray[i].x -= 80*dt;
-					if (enemyArray[i].scaleX > 0) enemyArray[i].scaleX *= -1;
-				}
-				if (enemyArray[i].y < character.y) enemyArray[i].y += 20*dt;
-				if (enemyArray[i].y > character.y) enemyArray[i].y -= 20*dt;
-			}
-			
-			enemyCollision();
-			
-			updateLifeUp(dt);
 			
 		}
 		
@@ -862,9 +992,17 @@ package
 			newEnemy.scaleX = 0.05;
 			newEnemy.scaleY = 0.05;
 			
-			if (Math.round(Math.random()) == 0) newEnemy.x = 0;
+			/*if (Math.round(Math.random()) == 0) newEnemy.x = 0;
 			else newEnemy.x = widthCapa1;
-			newEnemy.y = heightCapa1 / 2 + 75;
+			newEnemy.y = heightCapa1 / 2 + 75;*/
+			if (Math.round(Math.random()) == 0) {
+				newEnemy.x = 0;
+				newEnemy.scaleX *= -1;
+			}
+			else {
+				newEnemy.x = widthCapa1;
+			}
+			newEnemy.y = heightCapa1 / 2 + 60 + Math.random() * 60.0;
 			
 			enemyArray.push(newEnemy);
 		}
@@ -938,7 +1076,31 @@ package
 		private function loseLife():void {
 			lifes -= 1;
 			drawLifes();
-			//if (lifes <= 0){has perdido joputa}
+			hurt = true;
+			character.visible = false;
+			characterWalk.visible = false;
+			characterJump.visible = false;
+			characterHurt.x = character.x;
+			characterHurt.y = character.y;
+			characterHurt.scaleX = character.scaleX;
+			characterHurt.scaleY = character.scaleY;
+			characterHurt.visible = true;
+			characterHurt.play();
+			
+			if (lifes <= 0) {
+				characterDeath.x = character.x;
+				characterDeath.y = character.y;
+				characterDeath.scaleX = character.scaleX;
+				characterDeath.scaleY = character.scaleY;
+				characterDeath.stop();
+				characterDeath.play();
+				characterDeath.visible = true;
+				characterJump.visible = false;
+				characterWalk.visible = false;
+				characterHurt.visible = false;
+				character.visible = false;
+				game1over = true;
+			}
 		}
 		
 		private function gainLife():void {
@@ -969,7 +1131,6 @@ package
 		
 		private function shutdownGame1():void {
 			capa1.removeChildren();
-			enemyArray = new Array();
 			game1Running = false;
 		}
 		
@@ -1033,7 +1194,7 @@ package
 				if (generated)
 				{
 					secsPassed += customDt;
-
+				
 					if (secsPassed >= 1.2)
 					{	
 						updateSprites0();
@@ -1508,7 +1669,6 @@ package
 				}
 				
 			}
-
 			
 		}
 		
