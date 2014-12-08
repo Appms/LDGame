@@ -13,15 +13,18 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
-		/*
 		private static var gameTextures2:Dictionary = new Dictionary();
 		private static var gameTextureAtlas2:TextureAtlas;
+		/*
 		private static var gameTextures3:Dictionary = new Dictionary();
 		private static var gameTextureAtlas3:TextureAtlas;
 		*/
 		
 		[Embed(source = "../media/graphics/mySpriteSheet.png")]
 		public static const AtlasTextureGame:Class;
+		
+		[Embed(source = "../media/graphics/mySpriteSheet2.png")]
+		public static const AtlasTextureGame2:Class;
 		
 		[Embed(source = "../media/graphics/screen.jpg")]
 		public static const Screen:Class;
@@ -67,6 +70,10 @@ package
 		
 		[Embed(source = "../media/graphics/mySpriteSheet.xml", mimeType = "application/octet-stream")]
 		public static const AtlasXmlGame:Class;
+		
+		[Embed(source = "../media/graphics/mySpriteSheet2.xml", mimeType = "application/octet-stream")]
+		public static const AtlasXmlGame2:Class;
+		
 		
 	
 		[Embed(source="../media/sounds/menu.mp3")]
@@ -152,7 +159,7 @@ package
 			}
 			return gameTextureAtlas;
 		}
-		/*
+		
 		public static function getAtlas2():TextureAtlas {
 			if (gameTextureAtlas2 == null) {
 				var texture:Texture = getTexture("AtlasTextureGame2");
@@ -161,7 +168,7 @@ package
 			}
 			return gameTextureAtlas2;
 		}
-		*/
+		
 		
 		/*
 		public static function getAtlas3():TextureAtlas {
@@ -181,7 +188,7 @@ package
 			}
 			return gameTextures[name];
 		}
-		/*
+		
 		public static function getTexture2(name:String):Texture {
 			if (gameTextures2[name] == undefined) {
 				var bitmap:Bitmap = new Assets[name]();
@@ -189,7 +196,7 @@ package
 			}
 			return gameTextures2[name];
 		}
-		
+		/*
 		public static function getTexture3(name:String):Texture {
 			if (gameTextures3[name] == undefined) {
 				var bitmap:Bitmap = new Assets[name]();

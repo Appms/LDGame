@@ -143,12 +143,14 @@ package
 		private var leftHand2:Sprite;
 		private var leftHandMouse1:Sprite;
 		private var leftHandMouse2:Sprite;
+		private var leftHandAnnoyed:Sprite;
 		private var leftShirt:Sprite;
 		
 		private var rightHand1:Sprite;
 		private var rightHand2:Sprite;
 		private var rightHandMouse1:Sprite;
 		private var rightHandMouse2:Sprite;
+		private var rightHandAnnoyed:Sprite;
 		private var rightShirt:Sprite;
 		
 		private var computer:Sprite;
@@ -213,7 +215,7 @@ package
 			addEventListener(EnterFrameEvent.ENTER_FRAME, onEnterFrame);
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			//this.touchable = false;
-			//Mouse.hide();
+			Mouse.hide();
 			
 
 		}
@@ -366,12 +368,12 @@ package
 			// *********************** CAPA 2 ***********************
 			
 			computer = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_computer"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_computer"));
 			computer.addChild(i);
 			capa2.addChild(computer);
 			
 			keyboard = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_keyboard"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_keyboard"));
 			keyboard.addChild(i);
 			capa2.addChild(keyboard);
 			
@@ -395,7 +397,7 @@ package
 			capa2.addChild(areaMouse);
 			
 			mouse = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			i = new Image(Assets.getAtlas2().getTexture("mouse"));
 			mouse.addChild(i);
 			capa2.addChild(mouse);
 			mouse.x = areaMouse.x + areaMouse.width/2 - mouse.width/2;
@@ -411,11 +413,11 @@ package
 			areaSnowMan.y = 225;
 			
 			snowMan = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("snowman"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman"));
 			snowMan.addChild(i);
 			capa2.addChild(snowMan);
-			snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
-			snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
+			//snowMan.x = areaSnowMan.x + areaSnowMan.width/2 - snowMan.width/2;
+			//snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
 			
 			areaPhone = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
@@ -427,14 +429,14 @@ package
 			areaPhone.y = 225;
 			
 			phone_base = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_telefone_base"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone_base"));
 			phone_base.addChild(i);
 			capa2.addChild(phone_base);
 			phone_base.x = areaPhone.x + areaPhone.width/2 - phone_base.width/2 -32;
 			phone_base.y = areaPhone.y + areaPhone.height / 2 - phone_base.height / 2;
 			
 			phone = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_telefone"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone"));
 			phone.addChild(i);
 			capa2.addChild(phone);
 			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -32;
@@ -452,7 +454,7 @@ package
 			areaCoffe.y = 400;
 			
 			coffe = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("mouse"));
+			i = new Image(Assets.getAtlas2().getTexture("mouse"));
 			coffe.addChild(i);
 			capa2.addChild(coffe);
 			coffe.x = areaCoffe.x + areaCoffe.width/2 - coffe.width/2;
@@ -505,7 +507,7 @@ package
 			test_ESP.y = 470 +30;
 			
 			leftHand1 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_01"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_01"));
 			i.scaleX *= -1;
 			leftHand1.addChild(i);
 			capa2.addChild(leftHand1);
@@ -513,32 +515,38 @@ package
 			leftHand1.y = CAPA_2_LEFT_MOUSE_Y;
 			
 			leftHand2 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_02"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_02"));
 			i.scaleX *= -1;
 			leftHand2.addChild(i);
 			capa2.addChild(leftHand2);
+			
+			leftHandAnnoyed = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_annoyed"));
+			i.scaleX *= -1;
+			leftHandAnnoyed.addChild(i);
+			capa2.addChild(leftHandAnnoyed);
 				
 			leftShirt = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_shirt"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
 			i.scaleX *= -1;
 			leftShirt.addChild(i);
 			capa2.addChild(leftShirt);
 			
 
 			rightHand1 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_01"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_01"));
 			rightHand1.addChild(i);
 			capa2.addChild(rightHand1);
 			GLOBAL_MOUSE_X = GAME.true_width / 2 + GAME.true_width / 4;
 			GLOBAL_MOUSE_Y = 500;
 			
 			rightHand2 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_click_02"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_02"));
 			rightHand2.addChild(i);
 			capa2.addChild(rightHand2);
 			
 			rightHandMouse1 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_01"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_mouse_01"));
 			rightHandMouse1.addChild(i);
 			rightHandMouse1.rotation = ( -30) * Math.PI / 180;
 			capa2.addChild(rightHandMouse1);
@@ -546,15 +554,20 @@ package
 			rightHandMouse1.y = GLOBAL_MOUSE_Y;
 			
 			rightHandMouse2 = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_hand_mouse_02"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_mouse_02"));
 			rightHandMouse2.addChild(i);
 			rightHandMouse2.rotation = ( -30) * Math.PI / 180;
 			capa2.addChild(rightHandMouse2);
 			rightHandMouse2.x = rightHandMouse1.x;
 			rightHandMouse2.y = rightHandMouse1.y;
 			
+			rightHandAnnoyed = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_annoyed"));
+			rightHandAnnoyed.addChild(i);
+			capa2.addChild(rightHandAnnoyed);
+			
 			rightShirt = new Sprite();
-			i = new Image(Assets.getAtlas().getTexture("OFFICE_shirt"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
 			rightShirt.addChild(i);
 			capa2.addChild(rightShirt);
 		}
@@ -1328,6 +1341,8 @@ package
 			leftHand1.y = CAPA_2_LEFT_MOUSE_Y -130 -55;
 			leftHand2.x = leftHand1.x;
 			leftHand2.y = leftHand1.y;
+			leftHandAnnoyed.x = leftHand1.x;
+			leftHandAnnoyed.y = leftHand1.y;
 			
 			//trace("X: " + CAPA_2_LEFT_MOUSE_X +"// Y: " + CAPA_2_LEFT_MOUSE_Y);
 			
@@ -1416,6 +1431,8 @@ package
 			rightHand1.y = new_y -185;
 			rightHand2.x = rightHand1.x;
 			rightHand2.y = rightHand1.y;
+			rightHandAnnoyed.x = rightHand1.x;
+			rightHandAnnoyed.y = rightHand1.y;
 			
 			rightShirt.x = rightHand1.x +120;
 			rightShirt.y = rightHand1.y +310;
@@ -1468,20 +1485,13 @@ package
 		
 		private function checkSnowMan():void {
 			
+			
 			if (snowManCatched) {
 
 				
 				if (GLOBAL_MOUSE_X < areaSnowMan.x || GLOBAL_MOUSE_X > areaSnowMan.x + areaSnowMan.width ||
 				GLOBAL_MOUSE_Y < areaSnowMan.y || GLOBAL_MOUSE_Y > areaSnowMan.y + areaSnowMan.height) {
 					snowManCatched = false;
-				}
-				else {
-					
-					var point_hand_x:Number = rightHand1.x + 25;
-					var point_hand_y:Number = rightHand1.y - 0;
-				
-					snowMan.x = point_hand_x;
-					snowMan.y = point_hand_y;	
 				}
 				
 			}
@@ -1493,11 +1503,13 @@ package
 				}
 				
 			}
+			
 
 			
 		}
 		
 		private function checkPhone():void {
+			
 			
 			if (phoneCatched) {
 
@@ -1505,14 +1517,6 @@ package
 				if (CAPA_2_LEFT_MOUSE_X < areaPhone.x || CAPA_2_LEFT_MOUSE_X > areaPhone.x + areaPhone.width ||
 				CAPA_2_LEFT_MOUSE_Y < areaPhone.y || CAPA_2_LEFT_MOUSE_Y > areaPhone.y + areaPhone.height) {
 					phoneCatched = false;
-				}
-				else {
-					
-					var point_hand_x:Number = leftHand1.x + leftHand1.width - 25;
-					var point_hand_y:Number = leftHand1.y - 0;
-				
-					phone.x = point_hand_x;
-					phone.y = point_hand_y;	
 				}
 				
 			}
@@ -1524,6 +1528,7 @@ package
 				}
 				
 			}
+			
 
 			
 		}
@@ -1537,14 +1542,6 @@ package
 				CAPA_2_LEFT_MOUSE_Y < areaCoffe.y || CAPA_2_LEFT_MOUSE_Y > areaCoffe.y + areaCoffe.height) {
 					coffeCatched = false;
 				}
-				else {
-					
-					var point_hand_x:Number = leftHand1.x + leftHand1.width - 25;
-					var point_hand_y:Number = leftHand1.y - 0;
-				
-					coffe.x = point_hand_x;
-					coffe.y = point_hand_y;	
-				}
 				
 			}
 			else {
@@ -1555,7 +1552,7 @@ package
 				}
 				
 			}
-
+			
 			
 		}
 		
@@ -1634,6 +1631,7 @@ package
 					rightHand1.visible = false;
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
+					rightHandAnnoyed.visible = false;
 				}
 				else {
 					rightHandMouse1.visible = true;
@@ -1641,10 +1639,16 @@ package
 					rightHand1.visible = false;
 					rightHand2.visible = false;
 					rightHandMouse2.visible = false;
+					rightHandAnnoyed.visible = false;
 				}
 			}
 			else if (snowManCatched) {
+				rightHandAnnoyed.visible = true;
 				
+				rightHand1.visible = false;
+				rightHand2.visible = false;
+				rightHandMouse1.visible = false;
+				rightHandMouse2.visible = false;
 			}
 			else {
 				if (GLOBAL_MOUSE_MANTAINED) {
@@ -1653,6 +1657,7 @@ package
 					rightHand1.visible = false;
 					rightHandMouse1.visible = false;
 					rightHandMouse2.visible = false;
+					rightHandAnnoyed.visible = false;
 				}
 				else {
 					rightHand1.visible = true;
@@ -1660,6 +1665,7 @@ package
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
 					rightHandMouse2.visible = false;
+					rightHandAnnoyed.visible = false;
 				}
 			}
 			
@@ -1667,19 +1673,30 @@ package
 		
 		private function checkLeftVisibility():void {
 			
-			if (false) {
+			if (phoneCatched) {
+				leftHandAnnoyed.visible = true;
 				
+				leftHand1.visible = false;
+				leftHand2.visible = false;
+			}
+			else if (coffeCatched) {
+				leftHandAnnoyed.visible = true;
+				
+				leftHand1.visible = false;
+				leftHand2.visible = false;
 			}
 			else {
 				if (Input.isDown(Input.SPACE)) {
 					leftHand2.visible = true;
 					
 					leftHand1.visible = false;
+					leftHandAnnoyed.visible = false;
 				}
 				else {
 					leftHand1.visible = true;
 					
 					leftHand2.visible = false;
+					leftHandAnnoyed.visible = false;
 				}
 			}
 			
