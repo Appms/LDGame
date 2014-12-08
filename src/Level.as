@@ -63,8 +63,11 @@ package
 		public var SoundSqueak10_02:Sound = new Assets.SoundSqueak10_02() as Sound;
 		public var SoundPhone:Sound = new Assets.SoundPhone() as Sound;
 		public var SoundOffice:Sound = new Assets.SoundOffice() as Sound;
+		public var SoundSecretary:Sound = new Assets.SoundSecretary() as Sound;
+		public var SoundBoss:Sound = new Assets.SoundBoss() as Sound;
 		public var SoundKey:Sound = new Assets.SoundKey() as Sound;
 		public var SoundClick:Sound = new Assets.SoundClick() as Sound;
+		public var SoundSlurp:Sound = new Assets.SoundSlurp() as Sound;
 		
 		private var capa0:Sprite;
 		private var capa1:Sprite;
@@ -198,6 +201,14 @@ package
 		private var leftHandMouse1:Sprite;
 		private var leftHandMouse2:Sprite;
 		private var leftHandAnnoyed:Sprite;
+		private var leftHandFist:Sprite;
+		private var leftHandGrab:Sprite;
+		private var leftHandPhoneCall:Sprite;
+		private var leftHandPhone:Sprite;
+		private var leftHandTaza1:Sprite;
+		private var leftHandTaza2:Sprite;
+		private var leftHandTaza3:Sprite;
+		private var cercaTaza:Sprite;
 		private var leftShirt:Sprite;
 		
 		private var rightHand1:Sprite;
@@ -205,10 +216,17 @@ package
 		private var rightHandMouse1:Sprite;
 		private var rightHandMouse2:Sprite;
 		private var rightHandAnnoyed:Sprite;
+		private var rightHandFist:Sprite;
+		private var rightHandSnowMan:Sprite;
 		private var rightShirt:Sprite;
 		
 		private var computer:Sprite;
 		private var keyboard:Sprite;
+		private var keyboard_down:Sprite;
+		private var keyboard_left:Sprite;
+		private var keyboard_right:Sprite;
+		private var keyboard_up:Sprite;
+		private var keyboard_space:Sprite;
 		
 		private var areaMouse:Sprite;
 		private var areaNeutral:Sprite;
@@ -222,27 +240,37 @@ package
 		private var phone_base:Sprite;
 		private var areaPhone:Sprite;
 		private var phone:Sprite;
+		private var phoneCall:Sprite;
 		private var phoneCatched:Boolean = false;
 		
 		private var phoneEvent:Number = 0;
 		private var phoneBronca:Number = 1;
+		private var phoneTalking:Number = 0;
+		private var leftHandMovingX:Number = 0;
+		private var leftHandMovingY:Number = 0;
 		
 		private var areaCoffe:Sprite;
 		private var coffe:Sprite;
+		private var coffe2:Sprite;
+		private var coffe3:Sprite;
 		private var coffeCatched:Boolean = false;
+		
+		private var coffeAmount:Number = 2;
+		private var coffeEvent:Number = 0;
 		
 		private var test_F_IZQ:Sprite;
 		private var test_F_DER:Sprite;
 		private var test_F_ARR:Sprite;
 		private var test_F_ABA:Sprite;
 		private var test_ESP:Sprite;
+		private var test_BOOT:Sprite;
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
 		
 		// ATRIBUTOS PROPORCIONADOS GLOBALMENTE
 		
-		private var debug:Boolean = true;
+		private var debug:Boolean = false;
 		private var ira:Number = 0;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
@@ -339,6 +367,32 @@ package
 			keyboard.addChild(i);
 			capa2.addChild(keyboard);
 			
+			keyboard_down = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_key_down"));
+			keyboard_down.addChild(i);
+			capa2.addChild(keyboard_down);
+			
+			keyboard_left = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_key_left"));
+			keyboard_left.addChild(i);
+			capa2.addChild(keyboard_left);
+			
+			keyboard_right = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_key_right"));
+			keyboard_right.addChild(i);
+			capa2.addChild(keyboard_right);
+			
+			keyboard_up = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_key_up"));
+			keyboard_up.addChild(i);
+			capa2.addChild(keyboard_up);
+			
+			keyboard_space = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_key_space"));
+			keyboard_space.addChild(i);
+			capa2.addChild(keyboard_space);
+			capa2.addChild(keyboard_space);
+			
 			areaMouse = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
 			areaMouse.addChild(i);
@@ -398,11 +452,18 @@ package
 			phone_base.y = areaPhone.y + areaPhone.height / 2 - phone_base.height / 2;
 			
 			phone = new Sprite();
-			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone_01"));
 			phone.addChild(i);
 			capa2.addChild(phone);
 			phone.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -32;
 			phone.y = areaPhone.y + areaPhone.height / 2 - phone.height / 2;
+			
+			phoneCall = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone_02"));
+			phoneCall.addChild(i);
+			capa2.addChild(phoneCall);
+			phoneCall.x = areaPhone.x + areaPhone.width/2 - phone.width/2 -32;
+			phoneCall.y = areaPhone.y + areaPhone.height / 2 - phone.height / 2;
 			
 			areaCoffe = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
@@ -416,11 +477,19 @@ package
 			areaCoffe.y = 400;
 			
 			coffe = new Sprite();
-			i = new Image(Assets.getAtlas2().getTexture("mouse"));
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_01"));
 			coffe.addChild(i);
 			capa2.addChild(coffe);
-			coffe.x = areaCoffe.x + areaCoffe.width/2 - coffe.width/2;
-			coffe.y = areaCoffe.y + areaCoffe.height / 2 - coffe.height / 2;
+			
+			coffe2 = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_02"));
+			coffe2.addChild(i);
+			capa2.addChild(coffe2);
+			
+			coffe3 = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_03"));
+			coffe3.addChild(i);
+			capa2.addChild(coffe3);
 			
 			test_F_ARR = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("test"));
@@ -465,8 +534,18 @@ package
 			if (debug) test_ESP.alpha = 0.4;
 			else test_ESP.alpha = 0;
 			test_ESP.scaleX = 5.027;
+			test_ESP.scaleY = 1.3;
 			test_ESP.x = 165;
-			test_ESP.y = 470 +30;
+			test_ESP.y = 470 +30 +33 / 2 -test_ESP.height / 2;
+			
+			test_BOOT = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("test"));
+			test_BOOT.addChild(i);
+			capa2.addChild(test_BOOT);
+			if (debug) test_BOOT.alpha = 0.4;
+			else test_BOOT.alpha = 0;
+			test_BOOT.x = 563;
+			test_BOOT.y = 375;
 			
 			leftHand1 = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_click_01"));
@@ -487,6 +566,43 @@ package
 			i.scaleX *= -1;
 			leftHandAnnoyed.addChild(i);
 			capa2.addChild(leftHandAnnoyed);
+			
+			leftHandFist = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_fist"));
+			i.scaleX *= -1;
+			leftHandFist.addChild(i);
+			capa2.addChild(leftHandFist);
+			
+			leftHandGrab = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_grab"));
+			i.scaleX *= -1;
+			leftHandGrab.addChild(i);
+			capa2.addChild(leftHandGrab);
+			
+			leftHandPhoneCall = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone_hand_01"));
+			leftHandPhoneCall.addChild(i);
+			capa2.addChild(leftHandPhoneCall);
+			
+			leftHandPhone = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_telefone_hand_02"));
+			leftHandPhone.addChild(i);
+			capa2.addChild(leftHandPhone);
+			
+			leftHandTaza1 = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_hand_01"));
+			leftHandTaza1.addChild(i);
+			capa2.addChild(leftHandTaza1);
+			
+			leftHandTaza2 = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_hand_02"));
+			leftHandTaza2.addChild(i);
+			capa2.addChild(leftHandTaza2);
+			
+			leftHandTaza3 = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_hand_03"));
+			leftHandTaza3.addChild(i);
+			capa2.addChild(leftHandTaza3);
 				
 			leftShirt = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
@@ -528,10 +644,26 @@ package
 			rightHandAnnoyed.addChild(i);
 			capa2.addChild(rightHandAnnoyed);
 			
+			rightHandFist = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_fist"));
+			rightHandFist.addChild(i);
+			capa2.addChild(rightHandFist);
+			
+			rightHandSnowMan = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman_hand"));
+			rightHandSnowMan.addChild(i);
+			capa2.addChild(rightHandSnowMan);
+			
 			rightShirt = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
 			rightShirt.addChild(i);
 			capa2.addChild(rightShirt);
+			
+			cercaTaza = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_taza_cerca"));
+			cercaTaza.addChild(i);
+			cercaTaza.y = 200;
+			capa2.addChild(cercaTaza);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -545,7 +677,10 @@ package
 			if (touch && touch.phase == TouchPhase.BEGAN) {
 				GLOBAL_MOUSE_CLICKED = true;
 				GLOBAL_MOUSE_MANTAINED = true;
-				if (mouseCatched) { CAPA_2_MOUSE_CLICKED = true; }
+				if (mouseCatched) { 
+					CAPA_2_MOUSE_CLICKED = true; 
+					SoundClick.play(0, 0, new SoundTransform(1, 1));
+					}
 			}
 			if (touch && touch.phase == TouchPhase.ENDED) {
 				if (snowManCatched) { Squeaky2(); }
@@ -578,36 +713,108 @@ package
 					ira -= 1;
 					if (ira < 0) { ira = 0; }
 					Squeaky();
-				}	
-
+				}
+				var point_handX:Number = rightHand1.x +50;
+				var point_handY:Number = rightHand1.y +185;
+				if (point_handX >= test_BOOT.x && point_handX <= test_BOOT.x + test_BOOT.width &&
+				point_handY >= test_BOOT.y && point_handY <= test_BOOT.y + test_BOOT.height) {
+					clickScreenButton = true;
+				}
 			}
 			
-			//temporal encender apagar PC
-			if(Input.isDown(Input.UP2)) clickScreenButton = true;
+			
+			keyboard_space.visible = true;
 			
 			if (GLOBAL_MOUSE_MANTAINED) {
 				if (GLOBAL_MOUSE_X >= test_F_ARR.x && GLOBAL_MOUSE_X <= test_F_ARR.x + test_F_ARR.width &&
 				GLOBAL_MOUSE_Y >= test_F_ARR.y && GLOBAL_MOUSE_Y <= test_F_ARR.y + test_F_ARR.height) {
 					CAPA_2_BOTON_FLECHA_ARR = true;
+					
+					if (keyboard_up.visible) { SoundKey.play(0, 0, new SoundTransform(1, 0)); }
+					
+					keyboard_up.visible = false;
+					
+					keyboard_down.visible = true;
+					keyboard_left.visible = true;
+					keyboard_right.visible = true;
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_ABA.x && GLOBAL_MOUSE_X <= test_F_ABA.x + test_F_ABA.width &&
 				GLOBAL_MOUSE_Y >= test_F_ABA.y && GLOBAL_MOUSE_Y <= test_F_ABA.y + test_F_ABA.height) {
 					CAPA_2_BOTON_FLECHA_ABA = true;
+					
+					if (keyboard_down.visible) { SoundKey.play(0, 0, new SoundTransform(1, 0)); }
+					
+					keyboard_down.visible = false;
+					
+					keyboard_left.visible = true;
+					keyboard_right.visible = true;
+					keyboard_up.visible = true;
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_IZQ.x && GLOBAL_MOUSE_X <= test_F_IZQ.x + test_F_IZQ.width &&
 				GLOBAL_MOUSE_Y >= test_F_IZQ.y && GLOBAL_MOUSE_Y <= test_F_IZQ.y + test_F_IZQ.height) {
 					CAPA_2_BOTON_FLECHA_IZQ = true;
+					
+					if (keyboard_left.visible) { SoundKey.play(0, 0, new SoundTransform(1, 0)); }
+					
+					keyboard_left.visible = false;
+					
+					keyboard_down.visible = true;
+					keyboard_right.visible = true;
+					keyboard_up.visible = true;
 				}
 				else if (GLOBAL_MOUSE_X >= test_F_DER.x && GLOBAL_MOUSE_X <= test_F_DER.x + test_F_DER.width &&
 				GLOBAL_MOUSE_Y >= test_F_DER.y && GLOBAL_MOUSE_Y <= test_F_DER.y + test_F_DER.height) {
 					CAPA_2_BOTON_FLECHA_DER = true;
+					
+					if (keyboard_right.visible) { SoundKey.play(0, 0, new SoundTransform(1, 0)); }
+					
+					keyboard_right.visible = false;
+					
+					keyboard_down.visible = true;
+					keyboard_left.visible = true;
+					keyboard_up.visible = true;
 				}
+
+			}
+			else {
+				keyboard_down.visible = true;
+				keyboard_right.visible = true;
+				keyboard_up.visible = true;
+				keyboard_left.visible = true;
 			}
 						
 			if(frogRunning) updateCapa0(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 
+			if (Input.isDown(Input.SPACE)) {
+				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
+				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
+					keyboard_space.visible = false;
+				}
+				if (phoneCatched && phoneEvent < 0) {
+					phoneEvent = 30 + Math.random()*10;
+					channel_phone.soundTransform = new SoundTransform(0, -1);
+					if (phoneBronca < 3) {
+						//HABLA LA SECRETARIA
+						phoneTalking = 10;
+						SoundSecretary.play(0, 0, new SoundTransform(2, -1));
+					}
+					else {
+						//HABLA EL BOSS
+						phoneTalking = 12;
+						SoundBoss.play(0, 0, new SoundTransform(2, -1));
+					}
+					phoneBronca = 1;
+				}
+				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0) {
+					coffeAmount--;
+					coffeEvent = 3;
+					SoundSlurp.play(0, 0, new SoundTransform(1, -1));
+				}
+				
+			}
+			
 			
 			if (Input.isPressed(Input.SPACE)) {
 				
@@ -615,6 +822,7 @@ package
 				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
 				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
 					CAPA_2_BOTON_ESPACIO = true;
+					SoundKey.play(0, 0, new SoundTransform(1, 0));
 				}
 				
 				if (phoneCatched && phoneEvent <= 0) {
@@ -643,8 +851,68 @@ package
 			
 			// ****************** CAPA 2 ******************
 			
-			phoneEvent -= e.passedTime;
+			if (coffeEvent >= 0) {
+				coffeEvent -= e.passedTime;
+				if (coffeEvent > 1) {
+					leftHandMovingX -= e.passedTime * 400;
+					leftHandMovingY += e.passedTime * 200;
+					if (leftHandMovingX < -400) leftHandMovingX = -400;
+					if (leftHandMovingY > 200) leftHandMovingY = 200;
+					
+					if (coffeEvent <= 2 && coffeEvent >= 1.5) {
+						cercaTaza.y -= e.passedTime * 400;
+					}
+					else if (coffeEvent <= 1.5) {
+						cercaTaza.y += e.passedTime * 400;
+					}
+					
+				}
+				else {
+					leftHandMovingX += e.passedTime * 400;
+					leftHandMovingY -= e.passedTime * 200;
+					cercaTaza.y = 200;
+				}
+			}
+			
+			phoneTalking -= e.passedTime;
+			if (phoneTalking <= 0) {
+				phoneEvent -= e.passedTime;
+				if (coffeEvent <= 0) {
+					leftHandMovingX = 0;
+					leftHandMovingY = 0;
+				}
+			}
+			else {
+				if (phoneTalking > 2) {
+					leftHandMovingX -= e.passedTime * 200;
+					leftHandMovingY += e.passedTime * 100;
+					if (leftHandMovingX < -400) leftHandMovingX = -400;
+					if (leftHandMovingY > 200) leftHandMovingY = 200;
+				}
+				else {
+					leftHandMovingX += e.passedTime * 200;
+					leftHandMovingY -= e.passedTime * 100;
+				}
+				
+			}
 			checkPhoneEvent();
+			
+			if (coffeEvent <= 0) {
+				if (coffeAmount > 0) {
+					coffe.visible = true;
+					
+					coffe2.visible = false;
+					coffe3.visible = false;
+				}
+				else {
+					coffe2.visible = true;
+					
+					coffe.visible = false;
+					coffe3.visible = false;
+				}
+			}
+			
+			
 			
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
@@ -1757,7 +2025,7 @@ package
 			{
 				if (gameMatrix[2][currentPos] == 1)
 				{
-					trace("aquí");
+					//trace("aquí");
 					
 					mouth0.visible = true;
 					character0.visible = false;
@@ -1868,7 +2136,7 @@ package
 			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
-			if (!Input.isDown(Input.SPACE)) {
+			if (!Input.isDown(Input.SPACE) && phoneTalking <= 0 && coffeEvent <= 0) {
 				if (GLOBAL_BOTON_W) {
 					new_y -= dt * speed_leftHand;
 				}
@@ -1919,11 +2187,25 @@ package
 			leftHand2.y = leftHand1.y;
 			leftHandAnnoyed.x = leftHand1.x;
 			leftHandAnnoyed.y = leftHand1.y;
+			leftHandFist.x = leftHand1.x + leftHandMovingX;
+			leftHandFist.y = leftHand1.y + leftHandMovingY;
+			leftHandGrab.x = leftHand1.x + leftHandMovingX;
+			leftHandGrab.y = leftHand1.y + leftHandMovingY;
+			leftHandPhoneCall.x = leftHand1.x -leftHand1.width + leftHandMovingX;
+			leftHandPhoneCall.y = leftHand1.y + leftHandMovingY;
+			leftHandPhone.x = leftHand1.x -leftHand1.width + leftHandMovingX;
+			leftHandPhone.y = leftHand1.y +leftHandMovingY;
+			leftHandTaza1.x = leftHand1.x -leftHand1.width + leftHandMovingX -46;
+			leftHandTaza1.y = leftHand1.y +leftHandMovingY;
+			leftHandTaza2.x = leftHand1.x -leftHand1.width + leftHandMovingX -46;
+			leftHandTaza2.y = leftHand1.y +leftHandMovingY;
+			leftHandTaza3.x = leftHand1.x -leftHand1.width + leftHandMovingX -46;
+			leftHandTaza3.y = leftHand1.y +leftHandMovingY;
 			
 			//trace("X: " + CAPA_2_LEFT_MOUSE_X +"// Y: " + CAPA_2_LEFT_MOUSE_Y);
 			
-			leftShirt.x = leftHand1.x -120;
-			leftShirt.y = leftHand1.y +310;
+			leftShirt.x = leftHand1.x -120 + leftHandMovingX;
+			leftShirt.y = leftHand1.y +310 + leftHandMovingY;
 
 			// END MOVE LEFT HAND
 			
@@ -2009,6 +2291,10 @@ package
 			rightHand2.y = rightHand1.y;
 			rightHandAnnoyed.x = rightHand1.x;
 			rightHandAnnoyed.y = rightHand1.y;
+			rightHandFist.x = rightHand1.x;
+			rightHandFist.y = rightHand1.y;
+			rightHandSnowMan.x = rightHand1.x;
+			rightHandSnowMan.y = rightHand1.y;
 			
 			rightShirt.x = rightHand1.x +120;
 			rightShirt.y = rightHand1.y +310;
@@ -2144,6 +2430,15 @@ package
 			
 			if (phoneEvent <= 0) {
 				
+				phone.visible = false;
+				phoneCall.visible = true;
+				if (phoneCall.rotation == 0) {
+					
+				}
+				else {
+					phoneCall.rotation = 0;
+				}
+				
 				if (channel_phone.soundTransform.volume == 0) {
 					channel_phone = SoundPhone.play(0, 9999);
 					channel_phone.soundTransform = new SoundTransform(1, -1);
@@ -2164,6 +2459,10 @@ package
 					}
 					
 				}
+			}
+			else {
+				phone.visible = true;
+				phoneCall.visible = false;
 			}
 			
 		}
@@ -2201,45 +2500,73 @@ package
 			if (mouseCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandMouse2.visible = true;
+					snowMan.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
 					rightHandAnnoyed.visible = false;
+					rightHandFist.visible = false;
+					rightHandSnowMan.visible = false;
 				}
 				else {
 					rightHandMouse1.visible = true;
+					snowMan.visible = true;
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
 					rightHandMouse2.visible = false;
 					rightHandAnnoyed.visible = false;
+					rightHandFist.visible = false;
+					rightHandSnowMan.visible = false;
 				}
 			}
 			else if (snowManCatched) {
-				rightHandAnnoyed.visible = true;
-				
-				rightHand1.visible = false;
-				rightHand2.visible = false;
-				rightHandMouse1.visible = false;
-				rightHandMouse2.visible = false;
+				if (GLOBAL_MOUSE_MANTAINED) {
+					rightHandFist.visible = true;
+					rightHandSnowMan.visible = true;
+					
+					rightHand1.visible = false;
+					rightHand2.visible = false;
+					rightHandMouse1.visible = false;
+					rightHandMouse2.visible = false;
+					rightHandAnnoyed.visible = false;
+					snowMan.visible = false;
+				}
+				else {
+					rightHandAnnoyed.visible = true;
+					snowMan.visible = true;
+					
+					rightHand1.visible = false;
+					rightHand2.visible = false;
+					rightHandMouse1.visible = false;
+					rightHandMouse2.visible = false;
+					rightHandFist.visible = false;
+					rightHandSnowMan.visible = false;
+				}
 			}
 			else {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHand2.visible = true;
+					snowMan.visible = true;
 					
 					rightHand1.visible = false;
 					rightHandMouse1.visible = false;
 					rightHandMouse2.visible = false;
 					rightHandAnnoyed.visible = false;
+					rightHandFist.visible = false;
+					rightHandSnowMan.visible = false;
 				}
 				else {
 					rightHand1.visible = true;
+					snowMan.visible = true;
 					
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
 					rightHandMouse2.visible = false;
 					rightHandAnnoyed.visible = false;
+					rightHandFist.visible = false;
+					rightHandSnowMan.visible = false;
 				}
 			}
 			
@@ -2247,30 +2574,126 @@ package
 		
 		private function checkLeftVisibility():void {
 			
-			if (phoneCatched) {
-				leftHandAnnoyed.visible = true;
+			if (coffeEvent > 0) {
+				
+				if (coffeAmount <= 0) {
+					if (coffeEvent >= 1.5) {
+						leftHandTaza1.visible = true;
+						
+						leftHandTaza2.visible = false;
+						leftHandTaza3.visible = false;
+					}
+					else {
+						leftHandTaza2.visible = true;
+						
+						leftHandTaza1.visible = false;
+						leftHandTaza3.visible = false;
+					}
+				}
+				else {
+					leftHandTaza1.visible = true;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
+				}
+				
+				leftHandFist.visible = true;
+				leftShirt.visible = true;
 				
 				leftHand1.visible = false;
 				leftHand2.visible = false;
+				leftHandAnnoyed.visible = false;
+				leftHandGrab.visible = false;
+				leftHandPhone.visible = false;
+				leftHandPhoneCall.visible = false;
+				coffe.visible = false;
 			}
-			else if (coffeCatched) {
-				leftHandAnnoyed.visible = true;
+			else if (phoneTalking > 0) {
+				leftHandGrab.visible = true;
+				leftHandPhoneCall.visible = true;
+				leftShirt.visible = true;
 				
 				leftHand1.visible = false;
 				leftHand2.visible = false;
+				leftHandAnnoyed.visible = false;
+				leftHandFist.visible = false;
+				phone.visible = false;
+				leftHandPhone.visible = false;
+				leftHandTaza1.visible = false;
+				leftHandTaza2.visible = false;
+				leftHandTaza3.visible = false;
+			}
+			else if (phoneCatched && phoneEvent < 0) {
+				leftHandAnnoyed.visible = true;
+				leftShirt.visible = true;
+				
+				leftHand1.visible = false;
+				leftHand2.visible = false;
+				leftHandFist.visible = false;
+				leftHandGrab.visible = false;
+				leftHandPhoneCall.visible = false;
+				leftHandPhone.visible = false;
+				leftHandTaza1.visible = false;
+				leftHandTaza2.visible = false;
+				leftHandTaza3.visible = false;
+			}
+			else if (coffeCatched && coffeAmount > 0) {
+				if (Input.isDown(Input.SPACE)) {
+					leftHandFist.visible = true;
+					leftShirt.visible = true;
+				
+					leftHand1.visible = false;
+					leftHand2.visible = false;
+					leftHandAnnoyed.visible = false;
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
+				}
+				else {
+					leftHandAnnoyed.visible = true;
+					leftShirt.visible = true;
+				
+					leftHand1.visible = false;
+					leftHand2.visible = false;
+					leftHandFist.visible = false;
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
+				}
 			}
 			else {
 				if (Input.isDown(Input.SPACE)) {
 					leftHand2.visible = true;
+					leftShirt.visible = true;
 					
 					leftHand1.visible = false;
 					leftHandAnnoyed.visible = false;
+					leftHandFist.visible = false;
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
 				}
 				else {
 					leftHand1.visible = true;
+					leftShirt.visible = true;
 					
 					leftHand2.visible = false;
 					leftHandAnnoyed.visible = false;
+					leftHandFist.visible = false;
+					leftHandGrab.visible = false;
+					leftHandPhoneCall.visible = false;
+					leftHandPhone.visible = false;
+					leftHandTaza1.visible = false;
+					leftHandTaza2.visible = false;
+					leftHandTaza3.visible = false;
 				}
 			}
 			

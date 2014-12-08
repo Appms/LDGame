@@ -200,6 +200,15 @@ package
 		
 		[Embed(source = "../media/sounds/startup.mp3")]
 		public static const StartUp:Class;
+		
+		[Embed(source="../media/sounds/SECRETARY.mp3")]
+		public static const SoundSecretary:Class;
+		
+		[Embed(source="../media/sounds/BOSS.mp3")]
+		public static const SoundBoss:Class;
+		
+		[Embed(source="../media/sounds/coffee.mp3")]
+		public static const SoundSlurp:Class;
 
 		
 		//***************Sounds Capa 1****************
