@@ -216,14 +216,46 @@ package
 		[Embed(source = "../media/sounds/SCA_Main.mp3")]
 		public static const SCA_Main:Class;
 		
+		[Embed(source = "../media/sounds/Step_01.mp3")]
+		public static const Step1:Class;
+		
+		[Embed(source = "../media/sounds/Step_01.mp3")]
+		public static const Step2:Class;
+		
 		[Embed(source = "../media/sounds/powerUp.mp3")]
 		public static const PowerUp:Class;
 		
 		[Embed(source = "../media/sounds/button_pushed.mp3")]
 		public static const ButtonSound:Class;
 		
-		//[Embed(source = "../media/sounds/bug.mp3")]
-		//public static const BugSound:Class;
+		[Embed(source = "../media/sounds/bug.mp3")]
+		public static const BugSound:Class;
+		
+		[Embed(source = "../media/sounds/Jump.mp3")]
+		public static const JumpSound:Class;
+		
+		[Embed(source = "../media/sounds/DwarfHurt.mp3")]
+		public static const HurtSound:Class;
+		
+		[Embed(source = "../media/sounds/DwarfDead.mp3")]
+		public static const DeathSound:Class;
+		
+		[Embed(source = "../media/sounds/laser.mp3")]
+		public static const LaserSound:Class;
+		
+		[Embed(source = "../media/sounds/GoKillYourself.mp3")]
+		public static const umad1:Class;
+		[Embed(source = "../media/sounds/YouSuck.mp3")]
+		public static const umad2:Class;
+		[Embed(source = "../media/sounds/YouMad.mp3")]
+		public static const umad3:Class;
+		[Embed(source = "../media/sounds/NOOB.mp3")]
+		public static const umad4:Class;
+		
+		
+		
+		
+		
 		
 
 
