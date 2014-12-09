@@ -1208,7 +1208,7 @@ package
 			
 			//IRA GLOBAL
 			if (!fired)
-				ira += e.passedTime / 4 * globalTime/7;
+				ira += e.passedTime / 4 * globalTime/10;
 			else 
 				ira += e.passedTime * 10;
 				
