@@ -1200,9 +1200,9 @@ package
 			else if (punchKeyboardTime) {
 				target_x = 200;
 				target_y= 500;
-				aux_speed = 1000;
+				aux_speed = 750;
 				
-				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 100 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 100) {
 					punchKeyboardTime = false;
 					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
 				}
@@ -2053,7 +2053,7 @@ package
 					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
-					ira -= 2;
+					ira -= 5;
 				}
 			}			
 		}
@@ -2367,7 +2367,7 @@ package
 									}
 									else {
 										numBombs++;
-										ira -= 1;
+										ira -= 7;
 									}
 								}
 							}
