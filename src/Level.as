@@ -843,11 +843,11 @@ package
 			cercaTaza.y = 200;
 			capa2.addChild(cercaTaza);
 
-			textIra = new TextField(200, 50, "", "Courier", 48);
+			textIra = new TextField(200, 50, "", "RetroFont", 48);
 			capa2.addChild(textIra);
 			textIra.x = 630;
 			textIra.hAlign = "left";
-			textTime = new TextField(200, 50, "", "Courier", 48);
+			textTime = new TextField(200, 50, "", "RetroFont", 48);
 			capa2.addChild(textTime);
 			textTime.x = 630;
 			textTime.y = 30;
@@ -1193,8 +1193,6 @@ package
 					coffe3.visible = false;
 				}
 			}
-			
-			
 			
 			moveLeftHand(e.passedTime);
 			moveRightHand(e.passedTime);
