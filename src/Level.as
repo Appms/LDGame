@@ -37,6 +37,8 @@ package
 		private var key_left:int = 65;
 		private var key_enter:int = 13;
 		
+		private var gitanada:Boolean = false;
+		
 		public var ch1:SoundChannel = new SoundChannel();
 		public var channel_phone:SoundChannel = new SoundChannel();
 		public var channel_office:SoundChannel = new SoundChannel();
@@ -927,10 +929,6 @@ package
 					CAPA_2_MOUSE_CLICKED = true; 
 					SoundClick.play(0, 0, new SoundTransform(1, 1));
 					}
-					
-				if (muertisimo) {
-					GAME.reset();
-				}
 			
 					
 			}
@@ -1106,17 +1104,21 @@ package
 			}
 			
 			
-			if (Input.isPressed(Input.SPACE)) {
-				
-				
+			
+			if (Input.isDown(Input.SPACE) && gitanada) {
+				gitanada = false;
 				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
 				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
 					CAPA_2_BOTON_ESPACIO = true;
 					SoundKey.play(0, 0, new SoundTransform(1, 0));
 				}
-				
-				
 			}
+			
+			if (!Input.isDown(Input.SPACE)) {
+				gitanada = true;
+			}
+
+
 			
 			// ****************** CAPA 0 ******************
 			
