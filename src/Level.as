@@ -132,7 +132,7 @@ package
 		private var pressText:TextField;
 		private var pressTextCopy:TextField;
 		
-
+	
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
 		
@@ -326,7 +326,13 @@ package
 		private var snowmanCooldown:Number = 100;
 		private var snDeskWarning:Sprite;
 		private var snHandWarning:Sprite;
-
+		
+		private var ojos:MovieClip;
+		private var title:MovieClip;
+		private var titleBackground:Sprite;
+		private var ojosEnd:MovieClip;
+		
+		private var SCORE:TextField;
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
@@ -805,6 +811,63 @@ package
 			capa2.addChild(textTime);
 			textTime.x = 650;
 			textTime.y = 50;
+			
+			
+			titleBackground = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_intro_01"));
+			titleBackground.addChild(i);
+			capa2.addChild(titleBackground);
+			titleBackground.x = 0;
+			titleBackground.y = 0;
+			titleBackground.scaleX = 2;
+			titleBackground.scaleY = 2;
+			
+			
+			title = new MovieClip(Assets.getAtlas2().getTextures("OFFICE_title"), 0.25);
+			Starling.juggler.add(title);
+			capa2.addChild(title);
+			title.loop = false;
+			
+			title.addEventListener(Event.COMPLETE, titleCompleted);
+			
+			ojosEnd = new MovieClip(Assets.getAtlas2().getTextures("OFFICE_intro_08"), 12);
+			Starling.juggler.add(ojosEnd);
+			capa2.addChild(ojosEnd);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_07"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_06"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_05"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_04"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_03"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_02"), null, 1 / 12);
+			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_01"), null, 1 / 12);
+			ojosEnd.stop();
+			ojosEnd.visible = false;
+			ojosEnd.loop = false;
+		}
+		
+		private function titleCompleted(event:Event):void {
+			title.stop();
+			title.visible = false;
+			titleBackground.visible = false;
+			capa2.removeChild(title);
+			capa2.removeChild(titleBackground);
+			
+			ojos = new MovieClip(Assets.getAtlas2().getTextures("OFFICE_intro"), 12);
+			Starling.juggler.add(ojos);
+			capa2.addChild(ojos);
+			ojos.x = 0;
+			ojos.y = 0;
+			ojos.scaleX = 2;
+			ojos.scaleY = 2;
+			ojos.loop = false;
+			
+			ojos.addEventListener(Event.COMPLETE, ojosCompleted);
+		}
+		
+		private function ojosCompleted(event:Event):void {
+			ojos.stop();
+			ojos.visible = false;
+			capa2.removeChild(ojos);
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -1376,7 +1439,6 @@ package
 			if ( txtInfo.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
 				shutdownPC();
 				loadGame1();
-				//initGame1();
 			}
 			if ( txtInfo.visible == false && Math.abs(txtIcon.x - cursor.x) < txtIcon.width/2 && Math.abs(txtIcon.y - cursor.y) < txtIcon.height/2)  {
 				txtInfo.visible = true;
@@ -3418,12 +3480,30 @@ package
 		}
 		
 		private function gameOver():void {
+			ojosEnd.visible = true;
+			ojosEnd.play();
+			ojosEnd.addEventListener(Event.COMPLETE, ojosEndCompleted);
+			
+			
+		}
+		
+		private function ojosEndCompleted(event:Event):void {
+			SCORE = new TextField(300, 200, "GAME OVER\nSCORE: " + int(globalTime), "RetroFont", 64, 0xFFFFFF, true);
+			SCORE.x = 250;
+			SCORE.y = 100;
+			this.addChild(SCORE);
+			
 			shutDownFrog();
 			shutdownGame1();
 			shutdownPC();
-			capa0.removeChildren();
+			capa1_ruido.removeFromParent();
+			capa0_ruido.removeFromParent();
+			capa2.removeChildren();
 			
-			onAddedToStage();
+			ch1.stop();
+			channel_phone.stop();
+			channel_office.stop();
+			channel_SCA_Main.stop();
 		}
 		
 	}
