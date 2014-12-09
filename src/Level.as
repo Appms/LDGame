@@ -872,10 +872,11 @@ package
 			
 			title.addEventListener(Event.COMPLETE, titleCompleted);
 			
-			ojosEnd = new MovieClip(Assets.getAtlas2().getTextures("OFFICE_intro_08"), 12);
+			ojosEnd = new MovieClip(Assets.getAtlas2().getTextures("OFFICE_intro_07"), 12);
 			Starling.juggler.add(ojosEnd);
 			capa2.addChild(ojosEnd);
-			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_07"), null, 1 / 12);
+			ojosEnd.scaleX = 2;
+			ojosEnd.scaleY = 2;
 			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_06"), null, 1 / 12);
 			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_05"), null, 1 / 12);
 			ojosEnd.addFrame(Assets.getAtlas2().getTexture("OFFICE_intro_04"), null, 1 / 12);
