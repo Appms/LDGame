@@ -158,6 +158,8 @@ package
 		public var umad3:Sound = new Assets.umad3() as Sound;
 		public var umad4:Sound = new Assets.umad4() as Sound;
 		
+		public var SnowmanExplodes:Sound = new Assets.SnowmanExplodes() as Sound;
+		
 		
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
@@ -327,8 +329,11 @@ package
 		private var snowmanCooldown:Number = 100;
 		private var snDeskWarning:Sprite;
 		private var snHandWarning:Sprite;
-		
+
 		private var raja:Sprite;
+
+		private var snowmanBroken:Boolean;
+
 
 		
 		//Rubén, ratón
@@ -428,6 +433,8 @@ package
 			starling.core.Starling.juggler.add(capa1_ruido);
 			capa1_ruido.x = capa1.x-2;
 			capa1_ruido.y = capa1.y;
+			capa1_ruido.scaleX = 4;
+			capa1_ruido.scaleY = 4;
 			addChild(capa1_ruido);
 			capa1_ruido.visible = false;
 			
@@ -817,6 +824,8 @@ package
 			capa2.addChild(textTime);
 			textTime.x = 650;
 			textTime.y = 50;
+			
+			snowmanBroken = false;
 		}
 		
 		private function onTouch(e:TouchEvent):void {		
@@ -1108,13 +1117,16 @@ package
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
-				snowmanCooldown += 0.1;
-			else
 			{
+				snowmanCooldown += 0.1;
+			}
+				
+			else if(snowmanCooldown<=0 && snowmanBroken == false)
+			{
+				trace("broken");
+				snowmanBroken = true;
 				//poner Sprite
-				//reproducir explosión
-				
-				
+				SnowmanExplodes.play();//reproducir explosion
 			}
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
@@ -1165,9 +1177,9 @@ package
 				}
 			}
 			else if (punchKeyboardTime) {
-				var target_x:Number = 200;
-				var target_y:Number = 500;
-				var aux_speed:Number = 1000;
+				target_x = 200;
+				target_y= 500;
+				aux_speed = 1000;
 				
 				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
 					punchKeyboardTime = false;
@@ -1321,43 +1333,33 @@ package
 			var img: Image;
 			
 			wallpaper = new Sprite();
-			img = new Image(Assets.getTexture("wallpaper"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_escritorio"));
 			wallpaper.addChild(img);
 			capa1.addChild(wallpaper);
-			wallpaper.scaleX = 0.21;
-			wallpaper.scaleY = 0.25;
 			
 			gameIcon = new Sprite();
-			img = new Image(Assets.getTexture("gameIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_game"));
 			gameIcon.addChild(img);
 			capa1.addChild(gameIcon);
 			gameIcon.x = 25;
 			gameIcon.y = 100;
 			gameIcon.pivotX = gameIcon.width / 2;
 			gameIcon.pivotY = gameIcon.height / 2;
-			gameIcon.scaleX = 0.65;
-			gameIcon.scaleY = 0.65;
 			
 			txtIcon = new Sprite();
-			img = new Image(Assets.getTexture("txtIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_readme"));
 			txtIcon.addChild(img);
 			capa1.addChild(txtIcon);
 			txtIcon.x = 25;
 			txtIcon.y = 25;
 			txtIcon.pivotX = txtIcon.width / 2;
 			txtIcon.pivotY = txtIcon.height / 2;
-			txtIcon.scaleX = 0.25;
-			txtIcon.scaleY = 0.25;
 			
 			
 			txtInfo = new Sprite();
-			img = new Image(Assets.getTexture("textInfo2"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_readme"));
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
-			txtInfo.x = 1;
-			txtInfo.y = 10;
-			txtInfo.scaleX = 0.5;
-			txtInfo.scaleY = 0.5;
 			txtInfo.visible = false;
 			
 			txtClose = new Sprite();
@@ -3106,7 +3108,7 @@ package
 				if (Math.random() > 0) {
 					rageHard = true;
 					timeRageHard = 0.5;
-					var aux_whatever:Number = Math.random();
+					aux_whatever = Math.random();
 					if (aux_whatever > 0.66) {
 						SoundMumble1.play(0, 0, new SoundTransform(aux_volumen, 0));
 					}
