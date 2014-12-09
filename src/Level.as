@@ -941,13 +941,6 @@ package
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
-			if (muertisimo) {
-				if (Input.isDown(Input.SPACE) || Input.isDown(Input.ENTER) || 
-				Input.isDown(Input.UP) || Input.isDown(Input.DOWN) || Input.isDown(Input.LEFT) || Input.isDown(Input.RIGHT)) {
-					GAME.reset();
-				}
-			}
-			
 			globalTime+= e.passedTime;
 			textIra.text = "Stress: " + int(ira);
 			textTime.text = "Time:   " + int(globalTime);
@@ -1079,7 +1072,7 @@ package
 				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
 					keyboard_space.visible = false;
 				}
-				if (phoneCatched && phoneEvent < 0) {
+				if (phoneCatched && phoneEvent < 0 && !muertisimo) {
 					phoneEvent = 30 + Math.random()*10;
 					channel_phone.soundTransform = new SoundTransform(0, -1);
 					if (phoneBronca < 3) {
@@ -1096,7 +1089,7 @@ package
 					checkRage(false);
 					phoneBronca = 1;
 				}
-				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0) {
+				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0 && !muertisimo) {
 					coffeAmount--;
 					coffeEvent = 3;
 					SoundSlurp.play(0, 0, new SoundTransform(1, 0));
@@ -1108,6 +1101,19 @@ package
 			
 			if (Input.isDown(Input.SPACE) && gitanada) {
 				gitanada = false;
+				
+				if (muertisimo) {
+					ch1.stop();			
+					channel_SCA_Main.stop();
+					channel_office.stop();
+					channel_phone.stop();
+					//death0.stop();
+					//death1.stop();
+					//death2.stop();
+					
+					GAME.reset();
+				}
+				
 				if (CAPA_2_LEFT_MOUSE_X >= test_ESP.x && CAPA_2_LEFT_MOUSE_X <= test_ESP.x + test_ESP.width &&
 				CAPA_2_LEFT_MOUSE_Y >= test_ESP.y && CAPA_2_LEFT_MOUSE_Y <= test_ESP.y + test_ESP.height) {
 					CAPA_2_BOTON_ESPACIO = true;
@@ -1208,10 +1214,12 @@ package
 			checkRightVisibility();
 			
 			//IRA GLOBAL
-			if (!fired)
+			if (!fired) {
 				ira += e.passedTime / 4 * globalTime/10;
-			else 
+			}
+			else  {
 				ira += e.passedTime * 10;
+			}
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
@@ -3191,6 +3199,7 @@ package
 					
 					if (phoneBronca > 3) {
 						
+						phoneBronca = -999999;
 						SoundFired.play(0, 0, new SoundTransform(5, 0));
 						fired = true;
 						
@@ -3691,17 +3700,15 @@ package
 			capa1_raja.removeFromParent();
 			
 			ch1.stop();
-			channel_phone.stop();
-			channel_office.stop();
 			channel_SCA_Main.stop();
+			channel_office.stop();
+			channel_phone.stop();
+			//death0.stop();
+			//death1.stop();
+			//death2.stop();
 			
-			channel_SCA_Main.stop();
-			channel_office.stop();
-			channel_phone.stop();
-			death0.stop();
-			death1.stop();
-			death2.stop();
 			muertisimo = true;
+			//trace(muertisimo);
 		}
 		
 		private function breakScreen():void {
