@@ -79,6 +79,7 @@ package
 		private var capa1:Sprite;
 		private var capa1_careto:Sprite;
 		private var capa1_ruido:MovieClip;
+		private var capa1_raja:Sprite;
 		private var capa2:Sprite;
 		
 		
@@ -333,8 +334,8 @@ package
 		
 		private var snHandWarning:Sprite;
 		private var snHandExplode:Sprite;
-		
 
+		private var raja:Sprite;
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
@@ -351,6 +352,7 @@ package
 		private var punchTazaTime:Boolean = false;
 		private var punchKeyboardTime:Boolean = false;
 		private var punchScreenTime:Boolean = false;
+		private var brokenScreen:Number = 0;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -436,6 +438,11 @@ package
 			capa1_ruido.scaleY = 4;
 			addChild(capa1_ruido);
 			capa1_ruido.visible = false;
+			
+			capa1_raja = new Sprite();
+			addChild(capa1_raja);
+			capa1_raja.x = GAME.true_width/2 - capa1.width/2;
+			capa1_raja.y = 41;
 
 			
 			capa2 = new Sprite();
@@ -461,6 +468,9 @@ package
 			
 					
 			// *********************** CAPA 2 ***********************
+			raja = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("SCA_screen_broken_02"));
+			raja.addChild(i);
 			
 			computer = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_computer"));
@@ -861,6 +871,14 @@ package
 			globalTime+= e.passedTime;
 			textIra.text = "Ira: " + int(ira);
 			textTime.text = "Time: " + int(globalTime);
+			
+			if (brokenScreen == 0 && ira >= 75) {
+				punchScreenTime = true;
+			}
+			else if (brokenScreen == 1 && ira >= 100) {
+				punchScreenTime = true;
+			}
+			
 			if (timeRageSoft > 0) {
 				timeRageSoft -= e.passedTime;
 				if (timeRageSoft <= 0) {
@@ -986,16 +1004,16 @@ package
 					channel_phone.soundTransform = new SoundTransform(0, -1);
 					if (phoneBronca < 3) {
 						//HABLA LA SECRETARIA
-						phoneTalking = 10;
+						phoneTalking = 5;
 						SoundSecretary.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					else {
 						//HABLA EL BOSS
-						phoneTalking = 12;
+						phoneTalking = 5;
 						SoundBoss.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					ira += phoneBronca * 5 + phoneBronca * 2;
-					checkRage();
+					checkRage(false);
 					phoneBronca = 1;
 				}
 				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0) {
@@ -1031,7 +1049,7 @@ package
 			
 			// ****************** CAPA 2 ******************
 			
-			if (coffeEvent >= 0) {
+			if (coffeEvent > 0) {
 				coffeEvent -= e.passedTime;
 				if (coffeEvent > 1) {
 					leftHandMovingX -= e.passedTime * 400;
@@ -1051,6 +1069,9 @@ package
 					leftHandMovingX += e.passedTime * 400;
 					leftHandMovingY -= e.passedTime * 200;
 					cercaTaza.y = 200;
+				}
+				if (coffeEvent <= 0) {
+					ira -= 30;
 				}
 			}
 			
@@ -1217,13 +1238,16 @@ package
 				}
 			}
 			else if (punchScreenTime) {
-				target_x = 200;
-				target_y = 500;
-				aux_speed = 200;
+				var target_x:Number = GAME.true_width/2;
+				var target_y:Number = GAME.true_height/2 - 150;
+				var aux_speed:Number = 1500;
 				
-				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 10 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 10) {
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
 					punchScreenTime = false;
 					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
+					brokenScreen++;
+					if (brokenScreen >= 2) { gameOver(); }
+					else if (brokenScreen >= 1) { breakScreen(); }
 				}
 				else {
 					if (CAPA_2_LEFT_MOUSE_X != target_x) {
@@ -2074,7 +2098,7 @@ package
 		private function loseLife():void {
 			lifes -= 1;
 			ira += 5;
-			checkRage();
+			checkRage(true);
 			drawLifes();
 			hurt = true;
 			character.visible = false;
@@ -2102,7 +2126,7 @@ package
 				DeathSound.play(0,1,new SoundTransform(30,0));
 				game1over = true;
 				ira += 15;
-				checkRage();
+				checkRage(true);
 			}
 		}
 		
@@ -2288,7 +2312,7 @@ package
 					{
 						dead = true;
 						ira += 10;
-						checkRage();
+						checkRage(true);
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -2304,7 +2328,7 @@ package
 					{
 						dead = true;
 						ira += 10;
-						checkRage();
+						checkRage(true);
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -2332,7 +2356,7 @@ package
 										{
 											dead = true;
 											ira += 10;
-											checkRage();
+											checkRage(true);
 										}
 										else 
 										{
@@ -2695,7 +2719,7 @@ package
 			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
-			if (!Input.isDown(Input.SPACE) && phoneTalking <= 0 && coffeEvent <= 0) {
+			if (!Input.isDown(Input.SPACE) && phoneTalking <= 0 && coffeEvent <= 0 && !punchTazaTime && !punchKeyboardTime && !punchScreenTime) {
 				if (GLOBAL_BOTON_W) {
 					new_y -= dt * speed_leftHand;
 				}
@@ -2710,31 +2734,36 @@ package
 				}
 			}
 			
-			if (new_x > capa1.x +10 && new_y < capa1.y + heightCapa1 +55) { 
-				var aux_desfase_x:int = new_x - (capa1.x +10);
-				var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
-				if (aux_desfase_x > aux_desfase_y) {
-					new_y = capa1.y + heightCapa1 +55;
+			if (!punchScreenTime) {
+				if (new_x > capa1.x +10 && new_y < capa1.y + heightCapa1 +55) { 
+					var aux_desfase_x:int = new_x - (capa1.x +10);
+					var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
+					if (aux_desfase_x > aux_desfase_y) {
+						new_y = capa1.y + heightCapa1 +55;
+					}
+					else {
+						new_x = capa1.x +10;
+					}
 				}
-				else {
-					new_x = capa1.x +10;
+			}
+			
+			
+			if (!punchScreenTime) {
+				if ((new_x) > GAME.true_width / 2) {
+					new_x = GAME.true_width / 2;
+				}
+				if (new_x < leftHand1.width/2 -35) {
+					new_x = leftHand1.width/2 -35;
+				}
+				if (new_y > GAME.true_height - leftHand1.height/6 -16 +55) {
+					new_y = GAME.true_height - leftHand1.height/6 -16 +55;
+				}
+				if (new_y < 55) {
+					new_y = 55;
 				}
 			}
 			
 			
-			
-			if ((new_x) > GAME.true_width / 2) {
-				new_x = GAME.true_width / 2;
-			}
-			if (new_x < leftHand1.width/2 -35) {
-				new_x = leftHand1.width/2 -35;
-			}
-			if (new_y > GAME.true_height - leftHand1.height/6 -16 +55) {
-				new_y = GAME.true_height - leftHand1.height/6 -16 +55;
-			}
-			if (new_y < 55) {
-				new_y = 55;
-			}
 			
 			
 			CAPA_2_LEFT_MOUSE_X = new_x;
@@ -3025,8 +3054,6 @@ package
 					
 					if (phoneBronca > 3) {
 						
-						// ESTAS DESPEDIDO, MACHO
-						trace ("FIRED, HIJOPUTA");
 						fired = true;
 						
 					}
@@ -3068,14 +3095,16 @@ package
 			else SoundSqueak10_02.play(0, 1, new SoundTransform(0.7, 1));
 		}
 		
-		private function checkRage():void {
+		private function checkRage(canPunch:Boolean):void {
 			
 			/*
 			if (coffeAmount <= 0) {
 				punchTazaTime = 2;
 			}
 			*/
-			punchKeyboardTime = true;
+			if (canPunch && Math.random() > 0.8) {
+				punchKeyboardTime = true;
+			}
 			
 			var aux_volumen:Number = 2;
 			
@@ -3496,6 +3525,14 @@ package
 				}
 			}
 			
+		}
+		
+		private function breakScreen():void {
+			capa1_raja.addChild(raja);
+		}
+		
+		private function gameOver():void {
+			trace("HAS PERDIDO");
 		}
 		
 	}
