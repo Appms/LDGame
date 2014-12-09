@@ -836,13 +836,15 @@ package
 			cercaTaza.y = 200;
 			capa2.addChild(cercaTaza);
 
-			textIra = new TextField(150, 50, "", "Arial", 24);
+			textIra = new TextField(200, 50, "", "Courier", 48);
 			capa2.addChild(textIra);
-			textIra.x = 650;
-			textTime = new TextField(150, 50, "", "Arial", 24);
+			textIra.x = 630;
+			textIra.hAlign = "left";
+			textTime = new TextField(200, 50, "", "Courier", 48);
 			capa2.addChild(textTime);
-			textTime.x = 650;
-			textTime.y = 50;
+			textTime.x = 630;
+			textTime.y = 30;
+			textTime.hAlign = "left";
 			
 			snowmanBroken = false;
 		}
@@ -872,8 +874,8 @@ package
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
 			globalTime+= e.passedTime;
-			textIra.text = "Ira: " + int(ira);
-			textTime.text = "Time: " + int(globalTime);
+			textIra.text = "Stress: " + int(ira);
+			textTime.text = "Time:   " + int(globalTime);
 			
 			if (brokenScreen == 0 && ira >= 75) {
 				punchScreenTime = true;
@@ -1394,7 +1396,7 @@ package
 			internetIcon.addChild(img);
 			capa1.addChild(internetIcon);
 			internetIcon.x = 45;
-			internetIcon.y = 225;
+			internetIcon.y = 205;
 			internetIcon.pivotX = txtIcon.width / 2;
 			internetIcon.pivotY = txtIcon.height / 2;
 			
