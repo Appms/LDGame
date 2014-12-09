@@ -133,7 +133,7 @@ package
 		private var pressText:TextField;
 		private var pressTextCopy:TextField;
 		
-	
+		private var muertisimo:Boolean = false;
 		
 		// ATRIBUTOS PROPORCIONADOS POR CAPA 1
 		
@@ -926,6 +926,12 @@ package
 					CAPA_2_MOUSE_CLICKED = true; 
 					SoundClick.play(0, 0, new SoundTransform(1, 1));
 					}
+					
+				if (muertisimo) {
+					GAME.reset();
+				}
+			
+					
 			}
 			if (touch && touch.phase == TouchPhase.ENDED) {
 				if (snowManCatched) { Squeaky2(); }
@@ -934,6 +940,13 @@ package
 		}
 		
 		private function onEnterFrame(e:EnterFrameEvent):void {
+			
+			if (muertisimo) {
+				if (Input.isDown(Input.SPACE) || Input.isDown(Input.ENTER) || 
+				Input.isDown(Input.UP) || Input.isDown(Input.DOWN) || Input.isDown(Input.LEFT) || Input.isDown(Input.RIGHT)) {
+					GAME.reset();
+				}
+			}
 			
 			globalTime+= e.passedTime;
 			textIra.text = "Stress: " + int(ira);
@@ -3656,7 +3669,7 @@ package
 		}
 		
 		private function ojosEndCompleted(event:Event):void {
-			SCORE = new TextField(300, 200, "GAME OVER\nSCORE: " + int(globalTime), "RetroFont", 64, 0xFFFFFF, true);
+			SCORE = new TextField(300, 200, "GAME OVER\nSCORE: " + int(globalTime) + "\n\nPRESS SPACE", "RetroFont", 64, 0xFFFFFF, true);
 			SCORE.x = 250;
 			SCORE.y = 100;
 			this.addChild(SCORE);
@@ -3664,6 +3677,11 @@ package
 			shutDownFrog();
 			shutdownGame1();
 			shutdownPC();
+			capa0.removeFromParent();
+			capa1.removeFromParent();
+			pcLoading = false;
+			pcRunning = false;
+			game1Running = false;
 			capa1_ruido.removeFromParent();
 			capa0_ruido.removeFromParent();
 			capa2.removeChildren();
@@ -3673,6 +3691,8 @@ package
 			channel_phone.stop();
 			channel_office.stop();
 			channel_SCA_Main.stop();
+			
+			muertisimo = true;
 		}
 		
 		private function breakScreen():void {

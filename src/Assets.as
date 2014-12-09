@@ -270,12 +270,6 @@ package
 		[Embed(source = "../media/sounds/snowmanExplodes.mp3")]
 		public static const SnowmanExplodes:Class;
 		
-		
-		[Embed(source = "../media/graphics/SNDeskWarning.png")]
-		public static const SNDeskWarning:Class;
-		
-		[Embed(source = "../media/graphics/SNHandWarning.png")]
-		public static const SNHandWarning:Class;
 	
 		public static function getAtlas():TextureAtlas {
 			if (gameTextureAtlas == null) {

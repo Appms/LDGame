@@ -53,6 +53,11 @@ package
 			addChild(currentState).name = "actual";
 		}
 		
+		public function reset():void {
+			removeChildren();
+			addChild(new Level(this));
+		}
+		
 
 		
 	}
