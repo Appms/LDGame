@@ -1454,7 +1454,7 @@ package
 		
 		private function checkPCClick():void {
 			
-			if ( txtInfo.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+			if ( txtInfo.visible == false && theInternet.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
 				shutdownPC();
 				loadGame1();
 				//initGame1();
@@ -1469,7 +1469,7 @@ package
 				txtClose.visible = false;
 			}
 		
-			if (theInternet.visible == false && Math.abs(internetIcon.x - cursor.x) < internetIcon.width/2 && Math.abs(internetIcon.y - cursor.y) < internetIcon.height/2)  {
+			if (txtInfo.visible == false && theInternet.visible == false && Math.abs(internetIcon.x - cursor.x) < internetIcon.width/2 && Math.abs(internetIcon.y - cursor.y) < internetIcon.height/2)  {
 				theInternet.visible = true;
 				theInternet.play();
 				txtClose.visible = true;
