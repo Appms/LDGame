@@ -2572,21 +2572,21 @@ package
 					bombsAway.splice(i, 1);
 				}
 				
-				if (currentPos == 0 && selectAni)
+				if (currentPos == 0 && selectAni &&!muertisimo)
 				{
 					death0.visible = true;
 					death0.play();
 					selectAni = false;
 				}
 				
-				if (currentPos == 1 && selectAni)
+				if (currentPos == 1 && selectAni &&!muertisimo)
 				{
 					death1.visible = true;
 					death1.play();
 					selectAni = false;
 				}
 				
-				if (currentPos == 2 && selectAni)
+				if (currentPos == 2 && selectAni &&!muertisimo)
 				{
 					death2.visible = true;
 					death2.play();
