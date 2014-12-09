@@ -266,6 +266,9 @@ package
 		[Embed(source = "../media/sounds/NOOB.mp3")]
 		public static const umad4:Class;
 		
+		[Embed(source = "../media/sounds/fired.mp3")]
+		public static const SoundFired:Class;
+		
 		
 		[Embed(source = "../media/sounds/snowmanExplodes.mp3")]
 		public static const SnowmanExplodes:Class;

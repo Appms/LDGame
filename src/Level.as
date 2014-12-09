@@ -159,6 +159,7 @@ package
 		public var umad2:Sound = new Assets.umad2() as Sound;
 		public var umad3:Sound = new Assets.umad3() as Sound;
 		public var umad4:Sound = new Assets.umad4() as Sound;
+		public var SoundFired:Sound = new Assets.SoundFired() as Sound;
 		
 		public var SnowmanExplodes:Sound = new Assets.SnowmanExplodes() as Sound;
 		
@@ -993,8 +994,8 @@ package
 			
 			if (GLOBAL_MOUSE_CLICKED) {
 				if (snowManCatched && snowmanCooldown > 0) {
-					ira -= 5;
-					if (ira < 0) { ira = 0; }
+					
+					if (ira >= 5) { ira -= 5; }
 					Squeaky();
 					snowmanCooldown -= 10;
 				}
@@ -2187,7 +2188,7 @@ package
 					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
-					ira -= 5;
+					if (ira >= 5) { ira -= 5; }
 				}
 			}			
 		}
@@ -2501,7 +2502,7 @@ package
 									}
 									else {
 										numBombs++;
-										ira -= 7;
+										if (ira >= 7) { ira -= 7; }
 									}
 								}
 							}
@@ -3190,6 +3191,7 @@ package
 					
 					if (phoneBronca > 3) {
 						
+						SoundFired.play(0, 0, new SoundTransform(5, 0));
 						fired = true;
 						
 					}
@@ -3471,7 +3473,7 @@ package
 					leftHand1.visible = false;
 					leftHand2.visible = false;
 					leftHandAnnoyed.visible = false;
-					phone.visible = false;
+					phone.visible = true;
 					leftHandPhone.visible = false;
 					leftHandTaza1.visible = false;
 					leftHandTaza2.visible = false;
@@ -3488,7 +3490,7 @@ package
 					leftHand1.visible = false;
 					leftHand2.visible = false;
 					leftHandAnnoyed.visible = false;
-					phone.visible = false;
+					phone.visible = true;
 					leftHandPhone.visible = false;
 					leftHandTaza1.visible = false;
 					leftHandTaza2.visible = false;
@@ -3693,6 +3695,12 @@ package
 			channel_office.stop();
 			channel_SCA_Main.stop();
 			
+			channel_SCA_Main.stop();
+			channel_office.stop();
+			channel_phone.stop();
+			death0.stop();
+			death1.stop();
+			death2.stop();
 			muertisimo = true;
 		}
 		
