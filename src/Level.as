@@ -843,13 +843,15 @@ package
 			cercaTaza.y = 200;
 			capa2.addChild(cercaTaza);
 
-			textIra = new TextField(150, 50, "", "Arial", 24);
+			textIra = new TextField(200, 50, "", "Courier", 48);
 			capa2.addChild(textIra);
-			textIra.x = 650;
-			textTime = new TextField(150, 50, "", "Arial", 24);
+			textIra.x = 630;
+			textIra.hAlign = "left";
+			textTime = new TextField(200, 50, "", "Courier", 48);
 			capa2.addChild(textTime);
-			textTime.x = 650;
-			textTime.y = 50;
+			textTime.x = 630;
+			textTime.y = 30;
+			textTime.hAlign = "left";
 			
 			snowmanBroken = false;
 			
@@ -935,7 +937,7 @@ package
 			
 			globalTime+= e.passedTime;
 			textIra.text = "Stress: " + int(ira);
-			textTime.text = "Time: " + int(globalTime);
+			textTime.text = "Time:   " + int(globalTime);
 			
 			if (brokenScreen == 0 && ira >= 75) {
 				punchScreenTime = true;
@@ -1456,7 +1458,7 @@ package
 			internetIcon.addChild(img);
 			capa1.addChild(internetIcon);
 			internetIcon.x = 45;
-			internetIcon.y = 225;
+			internetIcon.y = 205;
 			internetIcon.pivotX = txtIcon.width / 2;
 			internetIcon.pivotY = txtIcon.height / 2;
 			
@@ -1476,14 +1478,16 @@ package
 			theInternet.stop();
 			
 			txtClose = new Sprite();
-			img = new Image(Assets.getTexture("txtClose"));
+			img = new Image(Assets.getTexture("closeIcon"));
 			txtClose.addChild(img);
 			capa1.addChild(txtClose);
-			txtClose.scaleX = 0.55;
-			txtClose.scaleY = 0.55;
-			txtClose.x = txtInfo.x + txtInfo.width - txtClose.width - 4;//504*txtClose.scaleX;
-			txtClose.y = txtInfo.y + 1//8*txtClose.scaleY;
-			txtClose.visible = false;	
+			txtClose.scaleX = 0.1;
+			txtClose.scaleY = 0.1;
+			txtClose.x = widthCapa1 - txtClose.width*1.25;
+			txtClose.y = txtClose.height/4;
+			txtClose.pivotX = txtClose.width / 2;
+			txtClose.pivotY = txtClose.height / 2;	
+			txtClose.visible = false;
 			
 			cursor = new Sprite();
 			img = new Image(Assets.getTexture("cursor"));
