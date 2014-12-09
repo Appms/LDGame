@@ -79,6 +79,7 @@ package
 		private var capa1:Sprite;
 		private var capa1_careto:Sprite;
 		private var capa1_ruido:MovieClip;
+		private var capa1_raja:Sprite;
 		private var capa2:Sprite;
 		
 		
@@ -157,6 +158,8 @@ package
 		public var umad3:Sound = new Assets.umad3() as Sound;
 		public var umad4:Sound = new Assets.umad4() as Sound;
 		
+		public var SnowmanExplodes:Sound = new Assets.SnowmanExplodes() as Sound;
+		
 		
 		private var CAPA_1_BOTON_IZQ:Boolean = false;
 		private var CAPA_1_BOTON_DER:Boolean = false;
@@ -220,13 +223,16 @@ package
 		
 		// PC
 		private var loadScreen:MovieClip;
+		private var visibleLoadScreen:MovieClip;
 		private var loadStaticScreen:Sprite;
 		private var wallpaper:Sprite;
 		private var txtIcon:Sprite;
 		private var txtInfo:Sprite;
+		private var theInternet:MovieClip;
 		private var txtClose:Sprite;
 		private var gameIcon:Sprite;
 		private var cursor:Sprite;
+		private var internetIcon:Sprite;
 		
 		//Sounds
 		
@@ -324,8 +330,13 @@ package
 		
 		
 		private var snowmanCooldown:Number = 100;
+		private var snowmanBroken:Boolean;
+		
 		private var snDeskWarning:Sprite;
+		private var snDeskExplode:Sprite;
+		
 		private var snHandWarning:Sprite;
+		private var snHandExplode:Sprite;
 		
 		private var ojos:MovieClip;
 		private var title:MovieClip;
@@ -333,6 +344,8 @@ package
 		private var ojosEnd:MovieClip;
 		
 		private var SCORE:TextField;
+		
+		private var raja:Sprite;
 		
 		//Rubén, ratón
 		private var clickScreenButton:Boolean;
@@ -349,6 +362,7 @@ package
 		private var punchTazaTime:Boolean = false;
 		private var punchKeyboardTime:Boolean = false;
 		private var punchScreenTime:Boolean = false;
+		private var brokenScreen:Number = 0;
 		private var GLOBAL_BOTON_ESPACIO:Boolean = false;
 		private var GLOBAL_BOTON_W:Boolean = false;
 		private var GLOBAL_BOTON_A:Boolean = false;
@@ -430,8 +444,15 @@ package
 			starling.core.Starling.juggler.add(capa1_ruido);
 			capa1_ruido.x = capa1.x-2;
 			capa1_ruido.y = capa1.y;
+			capa1_ruido.scaleX = 4;
+			capa1_ruido.scaleY = 4;
 			addChild(capa1_ruido);
 			capa1_ruido.visible = false;
+			
+			capa1_raja = new Sprite();
+			addChild(capa1_raja);
+			capa1_raja.x = GAME.true_width/2 - capa1.width/2;
+			capa1_raja.y = 41;
 
 			
 			capa2 = new Sprite();
@@ -457,6 +478,9 @@ package
 			
 					
 			// *********************** CAPA 2 ***********************
+			raja = new Sprite();
+			i = new Image(Assets.getAtlas().getTexture("SCA_screen_broken_02"));
+			raja.addChild(i);
 			
 			computer = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_computer"));
@@ -537,12 +561,19 @@ package
 			//snowMan.y = areaSnowMan.y + areaSnowMan.height / 2 - snowMan.height / 2;
 			
 			snDeskWarning = new Sprite();
-			i = new Image(Assets.getTexture("SNDeskWarning"));
+			i = new Image(Assets.getAtlas().getTexture("SNDeskWarning"));
 			i.blendMode = BlendMode.SCREEN;
 			snDeskWarning.addChild(i);
 			snDeskWarning.x = snowMan.x;
 			snDeskWarning.y = snowMan.y;
 			capa2.addChild(snDeskWarning);
+			
+			snDeskExplode = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman_headless"));
+			snDeskExplode.addChild(i);
+			snDeskExplode.x = snowMan.x;
+			snDeskExplode.y = snowMan.y;
+			capa2.addChild(snDeskExplode);
 			
 			areaPhone = new Sprite();
 			i = new Image(Assets.getAtlas().getTexture("area_mouse"));
@@ -785,13 +816,21 @@ package
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_hand_palm_02"));
 			rightHandPalm2.addChild(i);
 			capa2.addChild(rightHandPalm2);
+			
 			snHandWarning = new Sprite();
-			i = new Image(Assets.getTexture("SNHandWarning"));
+			i = new Image(Assets.getAtlas().getTexture("SNHandWarning"));
 			i.blendMode = BlendMode.SCREEN;
 			snHandWarning.addChild(i);
 			snHandWarning.x = rightHandSnowMan.x;
 			snHandWarning.y = rightHandSnowMan.y;
 			capa2.addChild(snHandWarning);
+			
+			snHandExplode = new Sprite();
+			i = new Image(Assets.getAtlas2().getTexture("OFFICE_snowman_death"));
+			snHandExplode.addChild(i);
+			snHandExplode.x = rightHandSnowMan.x;
+			snHandExplode.y = rightHandSnowMan.y;
+			capa2.addChild(snHandExplode);
 			
 			rightShirt = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_shirt"));
@@ -812,6 +851,7 @@ package
 			textTime.x = 650;
 			textTime.y = 50;
 			
+			snowmanBroken = false;
 			
 			titleBackground = new Sprite();
 			i = new Image(Assets.getAtlas2().getTexture("OFFICE_intro_01"));
@@ -894,8 +934,16 @@ package
 		private function onEnterFrame(e:EnterFrameEvent):void {
 			
 			globalTime+= e.passedTime;
-			textIra.text = "Ira: " + int(ira);
+			textIra.text = "Stress: " + int(ira);
 			textTime.text = "Time: " + int(globalTime);
+			
+			if (brokenScreen == 0 && ira >= 75) {
+				punchScreenTime = true;
+			}
+			else if (brokenScreen == 1 && ira >= 100) {
+				punchScreenTime = true;
+			}
+			
 			if (timeRageSoft > 0) {
 				timeRageSoft -= e.passedTime;
 				if (timeRageSoft <= 0) {
@@ -1021,16 +1069,16 @@ package
 					channel_phone.soundTransform = new SoundTransform(0, -1);
 					if (phoneBronca < 3) {
 						//HABLA LA SECRETARIA
-						phoneTalking = 10;
+						phoneTalking = 5;
 						SoundSecretary.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					else {
 						//HABLA EL BOSS
-						phoneTalking = 12;
+						phoneTalking = 5;
 						SoundBoss.play(0, 0, new SoundTransform(1.5, -1));
 					}
 					ira += phoneBronca * 5 + phoneBronca * 2;
-					checkRage();
+					checkRage(false);
 					phoneBronca = 1;
 				}
 				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0) {
@@ -1066,7 +1114,7 @@ package
 			
 			// ****************** CAPA 2 ******************
 			
-			if (coffeEvent >= 0) {
+			if (coffeEvent > 0) {
 				coffeEvent -= e.passedTime;
 				if (coffeEvent > 1) {
 					leftHandMovingX -= e.passedTime * 400;
@@ -1086,6 +1134,9 @@ package
 					leftHandMovingX += e.passedTime * 400;
 					leftHandMovingY -= e.passedTime * 200;
 					cercaTaza.y = 200;
+				}
+				if (coffeEvent <= 0) {
+					ira -= 30;
 				}
 			}
 			
@@ -1141,19 +1192,24 @@ package
 			
 			//IRA GLOBAL
 			if (!fired)
-				ira += e.passedTime / 4;
+				ira += e.passedTime / 4 * globalTime/7;
 			else 
 				ira += e.passedTime * 10;
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
-				snowmanCooldown += 0.1;
-			else
 			{
-				//poner Sprite
-				//reproducir explosión
+				snowmanCooldown += 0.1;
+				snDeskExplode.visible = false;
+			}
 				
-				
+			else if(snowmanCooldown<=0 && snowmanBroken == false)
+			{
+				snowmanBroken = true;
+				snDeskExplode.visible = true;
+				snowMan.visible = false;
+				snDeskWarning.visible = false;
+				SnowmanExplodes.play(0,1, new SoundTransform(3,1));//reproducir explosion
 			}
 				
 			snDeskWarning.alpha = 0 + ((100 - snowmanCooldown)/100);
@@ -1161,6 +1217,9 @@ package
 			
 			snHandWarning.x = rightHandSnowMan.x;
 			snHandWarning.y = rightHandSnowMan.y;
+			
+			snHandExplode.x = rightHandSnowMan.x;
+			snHandExplode.y = rightHandSnowMan.y;
 			
 			shakeHands(( -1.05 + Math.pow(1.05, ira)) / 4);
 			
@@ -1204,11 +1263,11 @@ package
 				}
 			}
 			else if (punchKeyboardTime) {
-				var target_x:Number = 200;
-				var target_y:Number = 500;
-				var aux_speed:Number = 1000;
+				target_x = 200;
+				target_y= 500;
+				aux_speed = 750;
 				
-				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 100 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 100) {
 					punchKeyboardTime = false;
 					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
 				}
@@ -1244,13 +1303,16 @@ package
 				}
 			}
 			else if (punchScreenTime) {
-				var target_x:Number = 200;
-				var target_y:Number = 500;
-				var aux_speed:Number = 200;
+				var target_x:Number = GAME.true_width/2;
+				var target_y:Number = GAME.true_height/2 - 150;
+				var aux_speed:Number = 1500;
 				
-				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 10 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 10) {
+				if (Math.abs(CAPA_2_LEFT_MOUSE_X - target_x) < 50 && Math.abs(CAPA_2_LEFT_MOUSE_Y - target_y) < 50) {
 					punchScreenTime = false;
 					SoundPunchKeyboard.play(0, 0, new SoundTransform(2, -0.5));
+					brokenScreen++;
+					if (brokenScreen >= 2) { gameOver(); }
+					else if (brokenScreen >= 1) { breakScreen(); }
 				}
 				else {
 					if (CAPA_2_LEFT_MOUSE_X != target_x) {
@@ -1323,26 +1385,36 @@ package
 			
 			
 			loadStaticScreen = new Sprite();
-			img = new Image(Assets.getTexture("LoadScreen"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_pc_loadscreen"));
 			loadStaticScreen.addChild(img);
 			capa1.addChild(loadStaticScreen);
 			loadStaticScreen.x = 0;
 			loadStaticScreen.y = 0;
-			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 1);
+			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle_"), 0.8);
 			loadScreen.play();
 			loadScreen.pivotX = loadScreen.width / 2;
 			loadScreen.pivotY = loadScreen.height / 2;
 			loadScreen.x = widthCapa1 / 2;
-			loadScreen.y = heightCapa1 / 2+55;
+			loadScreen.y = heightCapa1/2
 			starling.core.Starling.juggler.add(loadScreen);
 			capa1.addChild(loadScreen);
 			loadScreen.loop = false;
-			
+			loadScreen.visible = false;
 			loadScreen.addEventListener(Event.COMPLETE, loadCompleted);
+			
+			visibleLoadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_pc_loadicon_"), 4);
+			visibleLoadScreen.play();
+			starling.core.Starling.juggler.add(visibleLoadScreen);
+			loadScreen.x = widthCapa1 / 2;
+			loadScreen.y = heightCapa1 / 2
+			capa1.addChild(visibleLoadScreen);
+			
 		}
 		
 		private function loadCompleted(event:Event):void
 		{
+			visibleLoadScreen.stop();
+			visibleLoadScreen.visible = false;
 			pcLoading = false;
 			loadStaticScreen.visible = false;
 			loadScreen.visible = false;
@@ -1357,44 +1429,51 @@ package
 			var img: Image;
 			
 			wallpaper = new Sprite();
-			img = new Image(Assets.getTexture("wallpaper"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_escritorio"));
 			wallpaper.addChild(img);
 			capa1.addChild(wallpaper);
-			wallpaper.scaleX = 0.21;
-			wallpaper.scaleY = 0.25;
 			
 			gameIcon = new Sprite();
-			img = new Image(Assets.getTexture("gameIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_game"));
 			gameIcon.addChild(img);
 			capa1.addChild(gameIcon);
-			gameIcon.x = 25;
-			gameIcon.y = 100;
+			gameIcon.x = 45;
+			gameIcon.y = 125;
 			gameIcon.pivotX = gameIcon.width / 2;
 			gameIcon.pivotY = gameIcon.height / 2;
-			gameIcon.scaleX = 0.65;
-			gameIcon.scaleY = 0.65;
 			
 			txtIcon = new Sprite();
-			img = new Image(Assets.getTexture("txtIcon"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_readme"));
 			txtIcon.addChild(img);
 			capa1.addChild(txtIcon);
-			txtIcon.x = 25;
-			txtIcon.y = 25;
+			txtIcon.x = 45;
+			txtIcon.y = 45;
 			txtIcon.pivotX = txtIcon.width / 2;
 			txtIcon.pivotY = txtIcon.height / 2;
-			txtIcon.scaleX = 0.25;
-			txtIcon.scaleY = 0.25;
+			
+			internetIcon = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_internet"));
+			internetIcon.addChild(img);
+			capa1.addChild(internetIcon);
+			internetIcon.x = 45;
+			internetIcon.y = 225;
+			internetIcon.pivotX = txtIcon.width / 2;
+			internetIcon.pivotY = txtIcon.height / 2;
 			
 			
 			txtInfo = new Sprite();
-			img = new Image(Assets.getTexture("textInfo2"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_readme"));
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
-			txtInfo.x = 1;
-			txtInfo.y = 10;
-			txtInfo.scaleX = 0.5;
-			txtInfo.scaleY = 0.5;
 			txtInfo.visible = false;
+			
+			theInternet = new MovieClip(Assets.getAtlas().getTextures("Kittens"));
+			starling.core.Starling.juggler.add(theInternet);
+			capa1.addChild(theInternet);
+			theInternet.scaleX = 2;
+			theInternet.scaleY = 2;
+			theInternet.visible = false;
+			theInternet.stop();
 			
 			txtClose = new Sprite();
 			img = new Image(Assets.getTexture("txtClose"));
@@ -1436,7 +1515,8 @@ package
 		}
 		
 		private function checkPCClick():void {
-			if ( txtInfo.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
+			
+			if ( txtInfo.visible == false && theInternet.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
 				shutdownPC();
 				loadGame1();
 			}
@@ -1447,6 +1527,18 @@ package
 			
 			if ( txtInfo.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
 				txtInfo.visible = false;
+				txtClose.visible = false;
+			}
+		
+			if (txtInfo.visible == false && theInternet.visible == false && Math.abs(internetIcon.x - cursor.x) < internetIcon.width/2 && Math.abs(internetIcon.y - cursor.y) < internetIcon.height/2)  {
+				theInternet.visible = true;
+				theInternet.play();
+				txtClose.visible = true;
+			}
+			
+			if (theInternet.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
+				theInternet.visible = false;
+				theInternet.stop();
 				txtClose.visible = false;
 			}
 		}
@@ -1522,26 +1614,26 @@ package
 			
 			
 			RB = new Sprite();
-			img = new Image(Assets.getTexture("RB"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_button_right"));
 			RB.addChild(img);
 			capa1.addChild(RB);
 			RB.x = widthCapa1 / 2 + 30;
-			RB.y = heightCapa1 / 2 + 100 ;
+			RB.y = heightCapa1 / 2 + 100+6 ;
 			RB.pivotX = RB.width / 2;
 			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.2;
-			RB.scaleY = 0.1;
+			//RB.scaleX = 0.2;
+			//RB.scaleY = 0.1;
 			
 			LB = new Sprite();
-			img = new Image(Assets.getTexture("LB"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_button_left"));
 			LB.addChild(img);
 			capa1.addChild(LB);
 			LB.x = widthCapa1 / 2 - 49;
-			LB.y = heightCapa1 / 2 + 63;
+			LB.y = heightCapa1 / 2 + 63+6;
 			LB.pivotX = LB.width / 2;
 			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.15;
-			LB.scaleY = 0.08;
+			//LB.scaleX = 0.15;
+			//LB.scaleY = 0.08;
 			
 			RBdt = 0;
 			LBdt = 0;
@@ -1825,18 +1917,24 @@ package
 					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2+5)
 					{
 						buttonPushed.play();
+						/*
 						RB.removeChildren();
 						img = new Image(Assets.getTexture("RBP"));
 						RB.addChild(img)
+						*/
+						RB.visible = false;
 						RBPressed = true;
 						CAPA_1_BOTON_DER = true;
 					}
 					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2+1)
 					{
 						buttonPushed.play();
+						/*
 						LB.removeChildren();
 						img = new Image(Assets.getTexture("LBP"));
 						LB.addChild(img);
+						*/
+						LB.visible = false;
 						LBPressed = true;
 						CAPA_1_BOTON_IZQ = true;
 					}
@@ -1867,9 +1965,13 @@ package
 					RBdt += dt;
 					if (RBdt >= 0.5) {
 						RBPressed = false;
+						/*
 						RB.removeChildren();
-						img = new Image(Assets.getTexture("RB"));
+						img = new Image(Assets.getAtlas().getTexture("SCA_button_right"))
 						RB.addChild(img);
+						*/
+						RB.visible = true;
+						 
 						RBdt = 0;
 					}
 				}
@@ -1878,9 +1980,11 @@ package
 					LBdt += dt;
 					if (LBdt >= 0.5) {
 						LBPressed = false;
+						/*
 						LB.removeChildren();
-						img = new Image(Assets.getTexture("LB"));
-						LB.addChild(img);
+						img = new Image(Assets.getAtlas().getTexture("SCA_button_right"))
+						LB.addChild(img);*/
+						LB.visible = true;
 						LBdt = 0;
 					}
 				}
@@ -2065,7 +2169,7 @@ package
 					enemySplash.addEventListener(Event.COMPLETE, endEnemySplash);
 					capa1.removeChild(enemyArray[i]);
 					enemyArray.splice(i, 1);
-					ira -= 2;
+					ira -= 5;
 				}
 			}			
 		}
@@ -2110,7 +2214,7 @@ package
 		private function loseLife():void {
 			lifes -= 1;
 			ira += 5;
-			checkRage();
+			checkRage(true);
 			drawLifes();
 			hurt = true;
 			character.visible = false;
@@ -2138,7 +2242,7 @@ package
 				DeathSound.play(0,1,new SoundTransform(30,0));
 				game1over = true;
 				ira += 15;
-				checkRage();
+				checkRage(true);
 			}
 		}
 		
@@ -2324,7 +2428,7 @@ package
 					{
 						dead = true;
 						ira += 10;
-						checkRage();
+						checkRage(true);
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -2340,7 +2444,7 @@ package
 					{
 						dead = true;
 						ira += 10;
-						checkRage();
+						checkRage(true);
 					}
 					gameMatrix[3][currentPos] = 2;
 					FrogMove.play();
@@ -2368,7 +2472,7 @@ package
 										{
 											dead = true;
 											ira += 10;
-											checkRage();
+											checkRage(true);
 										}
 										else 
 										{
@@ -2379,7 +2483,7 @@ package
 									}
 									else {
 										numBombs++;
-										ira -= 1;
+										ira -= 7;
 									}
 								}
 							}
@@ -2500,6 +2604,7 @@ package
 					
 					
 					matrixText.text = test;
+					
 				}
 				
 				if (deathSecs >= 6.25)
@@ -2515,6 +2620,7 @@ package
 					copyText.visible = false;
 					secs = 4;
 					numBombs = 0;
+					initiated = true;
 				}
 			}
 		}
@@ -2731,7 +2837,7 @@ package
 			var new_y:Number = CAPA_2_LEFT_MOUSE_Y;
 			var speed_leftHand:Number = 500;
 			
-			if (!Input.isDown(Input.SPACE) && phoneTalking <= 0 && coffeEvent <= 0) {
+			if (!Input.isDown(Input.SPACE) && phoneTalking <= 0 && coffeEvent <= 0 && !punchTazaTime && !punchKeyboardTime && !punchScreenTime) {
 				if (GLOBAL_BOTON_W) {
 					new_y -= dt * speed_leftHand;
 				}
@@ -2746,31 +2852,36 @@ package
 				}
 			}
 			
-			if (new_x > capa1.x +10 && new_y < capa1.y + heightCapa1 +55) { 
-				var aux_desfase_x:int = new_x - (capa1.x +10);
-				var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
-				if (aux_desfase_x > aux_desfase_y) {
-					new_y = capa1.y + heightCapa1 +55;
+			if (!punchScreenTime) {
+				if (new_x > capa1.x +10 && new_y < capa1.y + heightCapa1 +55) { 
+					var aux_desfase_x:int = new_x - (capa1.x +10);
+					var aux_desfase_y:int = -(new_y -(capa1.y +heightCapa1));
+					if (aux_desfase_x > aux_desfase_y) {
+						new_y = capa1.y + heightCapa1 +55;
+					}
+					else {
+						new_x = capa1.x +10;
+					}
 				}
-				else {
-					new_x = capa1.x +10;
+			}
+			
+			
+			if (!punchScreenTime) {
+				if ((new_x) > GAME.true_width / 2) {
+					new_x = GAME.true_width / 2;
+				}
+				if (new_x < leftHand1.width/2 -35) {
+					new_x = leftHand1.width/2 -35;
+				}
+				if (new_y > GAME.true_height - leftHand1.height/6 -16 +55) {
+					new_y = GAME.true_height - leftHand1.height/6 -16 +55;
+				}
+				if (new_y < 55) {
+					new_y = 55;
 				}
 			}
 			
 			
-			
-			if ((new_x) > GAME.true_width / 2) {
-				new_x = GAME.true_width / 2;
-			}
-			if (new_x < leftHand1.width/2 -35) {
-				new_x = leftHand1.width/2 -35;
-			}
-			if (new_y > GAME.true_height - leftHand1.height/6 -16 +55) {
-				new_y = GAME.true_height - leftHand1.height/6 -16 +55;
-			}
-			if (new_y < 55) {
-				new_y = 55;
-			}
 			
 			
 			CAPA_2_LEFT_MOUSE_X = new_x;
@@ -2959,9 +3070,8 @@ package
 					snowManCatched = false;
 				}
 				
-				else if ( snowmanCooldown <= 0)
+				else if (snHandExplode.visible)
 					snowManCatched = false;
-					//CAMBIAR IMAGEN SNOWMAN
 				
 			}
 			else {
@@ -3062,8 +3172,6 @@ package
 					
 					if (phoneBronca > 3) {
 						
-						// ESTAS DESPEDIDO, MACHO
-						trace ("FIRED, HIJOPUTA");
 						fired = true;
 						
 					}
@@ -3105,14 +3213,16 @@ package
 			else SoundSqueak10_02.play(0, 1, new SoundTransform(0.7, 1));
 		}
 		
-		private function checkRage():void {
+		private function checkRage(canPunch:Boolean):void {
 			
 			/*
 			if (coffeAmount <= 0) {
 				punchTazaTime = 2;
 			}
 			*/
-			punchKeyboardTime = true;
+			if (canPunch && Math.random() > 0.8) {
+				punchKeyboardTime = true;
+			}
 			
 			var aux_volumen:Number = 2;
 			
@@ -3136,7 +3246,7 @@ package
 				if (Math.random() > 0) {
 					rageHard = true;
 					timeRageHard = 0.5;
-					var aux_whatever:Number = Math.random();
+					aux_whatever = Math.random();
 					if (aux_whatever > 0.66) {
 						SoundMumble1.play(0, 0, new SoundTransform(aux_volumen, 0));
 					}
@@ -3155,8 +3265,21 @@ package
 			if (mouseCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandMouse2.visible = true;
-					snowMan.visible = true;
-					rightHandSnowMan.visible = true;
+					//snowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = false;
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3165,14 +3288,28 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
 				}
 				else {
 					rightHandMouse1.visible = true;
-					snowMan.visible = true;
-					rightHandSnowMan.visible = true;
+					//snowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						rightHandSnowMan.visible = false;
+						
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3181,6 +3318,7 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
@@ -3189,7 +3327,20 @@ package
 			else if (snowManCatched) {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHandFist.visible = true;
-					rightHandSnowMan.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snHandExplode.visible = true;
+						rightHandSnowMan.visible = false;
+						
+					}
+					
+					else 
+					{
+						snHandExplode.visible = false;
+						rightHandSnowMan.visible = true;
+					}
+					
 					snHandWarning.visible = true;
 					
 					rightHand1.visible = false;
@@ -3204,8 +3355,19 @@ package
 				}
 				else {
 					rightHandAnnoyed.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					
+					if (snowmanBroken)
+					{
+						snowMan.visible = false;
+						snDeskWarning.visible = false;
+						
+					}
+					
+					else 
+					{
+						snowMan.visible = true;
+						snDeskWarning.visible = true;
+					}
 					
 					rightHand1.visible = false;
 					rightHand2.visible = false;
@@ -3213,6 +3375,7 @@ package
 					rightHandMouse2.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
@@ -3227,7 +3390,7 @@ package
 					rightHandPalm1.visible = true;
 					rightHandAnnoyed.visible = false;
 				}
-				snowMan.visible = true;
+				//snowMan.visible = true;
 				
 				rightHand1.visible = false;
 				rightHand2.visible = false;
@@ -3235,13 +3398,14 @@ package
 				rightHandMouse2.visible = false;
 				rightHandFist.visible = false;
 				rightHandSnowMan.visible = false;
+				snHandExplode.visible = false;
 				rightHandPalm2.visible = false;
 			}
 			else {
 				if (GLOBAL_MOUSE_MANTAINED) {
 					rightHand2.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					//snowMan.visible = true;
+					//snDeskWarning.visible = true;
 					
 					rightHand1.visible = false;
 					rightHandMouse1.visible = false;
@@ -3249,14 +3413,15 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
 				}
 				else {
 					rightHand1.visible = true;
-					snowMan.visible = true;
-					snDeskWarning.visible = true;
+					//snowMan.visible = true;
+					//snDeskWarning.visible = true;
 					
 					rightHand2.visible = false;
 					rightHandMouse1.visible = false;
@@ -3264,6 +3429,7 @@ package
 					rightHandAnnoyed.visible = false;
 					rightHandFist.visible = false;
 					rightHandSnowMan.visible = false;
+					snHandExplode.visible = false;
 					rightHandPalm1.visible = false;
 					rightHandPalm2.visible = false;
 					snHandWarning.visible = false;
@@ -3483,8 +3649,6 @@ package
 			ojosEnd.visible = true;
 			ojosEnd.play();
 			ojosEnd.addEventListener(Event.COMPLETE, ojosEndCompleted);
-			
-			
 		}
 		
 		private function ojosEndCompleted(event:Event):void {
@@ -3499,12 +3663,18 @@ package
 			capa1_ruido.removeFromParent();
 			capa0_ruido.removeFromParent();
 			capa2.removeChildren();
+			capa1_raja.removeFromParent();
 			
 			ch1.stop();
 			channel_phone.stop();
 			channel_office.stop();
 			channel_SCA_Main.stop();
 		}
+		
+		private function breakScreen():void {
+			capa1_raja.addChild(raja);
+		}
+		
 		
 	}
 	
