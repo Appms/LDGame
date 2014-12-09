@@ -22,7 +22,6 @@
     <SubTexture name="OFFICE_intro_05" x="1597" y="606" width="400" height="300"/>
     <SubTexture name="OFFICE_intro_06" x="1600" y="304" width="400" height="300"/>
     <SubTexture name="OFFICE_intro_07" x="1606" y="2" width="400" height="300"/>
-    <SubTexture name="OFFICE_intro_08" x="2" y="2" width="800" height="600"/>
     <SubTexture name="OFFICE_key_down" x="1532" y="140" width="42" height="34" frameX="-439" frameY="-497" frameWidth="800" frameHeight="600"/>
     <SubTexture name="OFFICE_key_left" x="1532" y="104" width="42" height="34" frameX="-397" frameY="-497" frameWidth="800" frameHeight="600"/>
     <SubTexture name="OFFICE_key_right" x="1532" y="68" width="46" height="34" frameX="-478" frameY="-497" frameWidth="800" frameHeight="600"/>
