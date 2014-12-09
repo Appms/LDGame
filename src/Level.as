@@ -222,13 +222,16 @@ package
 		
 		// PC
 		private var loadScreen:MovieClip;
+		private var visibleLoadScreen:MovieClip;
 		private var loadStaticScreen:Sprite;
 		private var wallpaper:Sprite;
 		private var txtIcon:Sprite;
 		private var txtInfo:Sprite;
+		private var theInternet:MovieClip;
 		private var txtClose:Sprite;
 		private var gameIcon:Sprite;
 		private var cursor:Sprite;
+		private var internetIcon:Sprite;
 		
 		//Sounds
 		
@@ -1271,26 +1274,36 @@ package
 			
 			
 			loadStaticScreen = new Sprite();
-			img = new Image(Assets.getTexture("LoadScreen"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_pc_loadscreen"));
 			loadStaticScreen.addChild(img);
 			capa1.addChild(loadStaticScreen);
 			loadStaticScreen.x = 0;
 			loadStaticScreen.y = 0;
-			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_i"), 1);
+			loadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_hero_idle_"), 0.8);
 			loadScreen.play();
 			loadScreen.pivotX = loadScreen.width / 2;
 			loadScreen.pivotY = loadScreen.height / 2;
 			loadScreen.x = widthCapa1 / 2;
-			loadScreen.y = heightCapa1 / 2+55;
+			loadScreen.y = heightCapa1/2
 			starling.core.Starling.juggler.add(loadScreen);
 			capa1.addChild(loadScreen);
 			loadScreen.loop = false;
-			
+			loadScreen.visible = false;
 			loadScreen.addEventListener(Event.COMPLETE, loadCompleted);
+			
+			visibleLoadScreen = new MovieClip(Assets.getAtlas().getTextures("SCA_pc_loadicon_"), 4);
+			visibleLoadScreen.play();
+			starling.core.Starling.juggler.add(visibleLoadScreen);
+			loadScreen.x = widthCapa1 / 2;
+			loadScreen.y = heightCapa1 / 2
+			capa1.addChild(visibleLoadScreen);
+			
 		}
 		
 		private function loadCompleted(event:Event):void
 		{
+			visibleLoadScreen.stop();
+			visibleLoadScreen.visible = false;
 			pcLoading = false;
 			loadStaticScreen.visible = false;
 			loadScreen.visible = false;
@@ -1313,8 +1326,8 @@ package
 			img = new Image(Assets.getAtlas().getTexture("SCA_icono_game"));
 			gameIcon.addChild(img);
 			capa1.addChild(gameIcon);
-			gameIcon.x = 25;
-			gameIcon.y = 100;
+			gameIcon.x = 45;
+			gameIcon.y = 125;
 			gameIcon.pivotX = gameIcon.width / 2;
 			gameIcon.pivotY = gameIcon.height / 2;
 			
@@ -1322,10 +1335,19 @@ package
 			img = new Image(Assets.getAtlas().getTexture("SCA_icono_readme"));
 			txtIcon.addChild(img);
 			capa1.addChild(txtIcon);
-			txtIcon.x = 25;
-			txtIcon.y = 25;
+			txtIcon.x = 45;
+			txtIcon.y = 45;
 			txtIcon.pivotX = txtIcon.width / 2;
 			txtIcon.pivotY = txtIcon.height / 2;
+			
+			internetIcon = new Sprite();
+			img = new Image(Assets.getAtlas().getTexture("SCA_icono_internet"));
+			internetIcon.addChild(img);
+			capa1.addChild(internetIcon);
+			internetIcon.x = 45;
+			internetIcon.y = 225;
+			internetIcon.pivotX = txtIcon.width / 2;
+			internetIcon.pivotY = txtIcon.height / 2;
 			
 			
 			txtInfo = new Sprite();
@@ -1333,6 +1355,14 @@ package
 			txtInfo.addChild(img);
 			capa1.addChild(txtInfo);
 			txtInfo.visible = false;
+			
+			theInternet = new MovieClip(Assets.getAtlas().getTextures("Kittens"));
+			starling.core.Starling.juggler.add(theInternet);
+			capa1.addChild(theInternet);
+			theInternet.scaleX = 2;
+			theInternet.scaleY = 2;
+			theInternet.visible = false;
+			theInternet.stop();
 			
 			txtClose = new Sprite();
 			img = new Image(Assets.getTexture("txtClose"));
@@ -1374,6 +1404,7 @@ package
 		}
 		
 		private function checkPCClick():void {
+			
 			if ( txtInfo.visible == false && Math.abs(gameIcon.x - cursor.x) < gameIcon.width/2 && Math.abs(gameIcon.y - cursor.y) < gameIcon.height/2)  {
 				shutdownPC();
 				loadGame1();
@@ -1386,6 +1417,18 @@ package
 			
 			if ( txtInfo.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
 				txtInfo.visible = false;
+				txtClose.visible = false;
+			}
+		
+			if (theInternet.visible == false && Math.abs(internetIcon.x - cursor.x) < internetIcon.width/2 && Math.abs(internetIcon.y - cursor.y) < internetIcon.height/2)  {
+				theInternet.visible = true;
+				theInternet.play();
+				txtClose.visible = true;
+			}
+			
+			if (theInternet.visible == true && Math.abs(txtClose.x+txtClose.width/2 - cursor.x) < txtClose.width/2 && Math.abs(txtClose.y+txtClose.height/2 - cursor.y) < txtClose.height/2)  {
+				theInternet.visible = false;
+				theInternet.stop();
 				txtClose.visible = false;
 			}
 		}
@@ -1461,26 +1504,26 @@ package
 			
 			
 			RB = new Sprite();
-			img = new Image(Assets.getTexture("RB"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_button_right"));
 			RB.addChild(img);
 			capa1.addChild(RB);
 			RB.x = widthCapa1 / 2 + 30;
-			RB.y = heightCapa1 / 2 + 100 ;
+			RB.y = heightCapa1 / 2 + 100+6 ;
 			RB.pivotX = RB.width / 2;
 			RB.pivotY = RB.height / 2;
-			RB.scaleX = 0.2;
-			RB.scaleY = 0.1;
+			//RB.scaleX = 0.2;
+			//RB.scaleY = 0.1;
 			
 			LB = new Sprite();
-			img = new Image(Assets.getTexture("LB"));
+			img = new Image(Assets.getAtlas().getTexture("SCA_button_left"));
 			LB.addChild(img);
 			capa1.addChild(LB);
 			LB.x = widthCapa1 / 2 - 49;
-			LB.y = heightCapa1 / 2 + 63;
+			LB.y = heightCapa1 / 2 + 63+6;
 			LB.pivotX = LB.width / 2;
 			LB.pivotY = LB.height / 2;
-			LB.scaleX = 0.15;
-			LB.scaleY = 0.08;
+			//LB.scaleX = 0.15;
+			//LB.scaleY = 0.08;
 			
 			RBdt = 0;
 			LBdt = 0;
@@ -1764,18 +1807,24 @@ package
 					if (Math.abs(RB.x - character.x) < RB.width/2 && Math.abs(RB.y - character.y -23) < RB.height/2+5)
 					{
 						buttonPushed.play();
+						/*
 						RB.removeChildren();
 						img = new Image(Assets.getTexture("RBP"));
 						RB.addChild(img)
+						*/
+						RB.visible = false;
 						RBPressed = true;
 						CAPA_1_BOTON_DER = true;
 					}
 					else if (Math.abs(LB.x - character.x) < LB.width/2 && Math.abs(LB.y - character.y -21) < LB.height/2+1)
 					{
 						buttonPushed.play();
+						/*
 						LB.removeChildren();
 						img = new Image(Assets.getTexture("LBP"));
 						LB.addChild(img);
+						*/
+						LB.visible = false;
 						LBPressed = true;
 						CAPA_1_BOTON_IZQ = true;
 					}
@@ -1806,9 +1855,13 @@ package
 					RBdt += dt;
 					if (RBdt >= 0.5) {
 						RBPressed = false;
+						/*
 						RB.removeChildren();
-						img = new Image(Assets.getTexture("RB"));
+						img = new Image(Assets.getAtlas().getTexture("SCA_button_right"))
 						RB.addChild(img);
+						*/
+						RB.visible = true;
+						 
 						RBdt = 0;
 					}
 				}
@@ -1817,9 +1870,11 @@ package
 					LBdt += dt;
 					if (LBdt >= 0.5) {
 						LBPressed = false;
+						/*
 						LB.removeChildren();
-						img = new Image(Assets.getTexture("LB"));
-						LB.addChild(img);
+						img = new Image(Assets.getAtlas().getTexture("SCA_button_right"))
+						LB.addChild(img);*/
+						LB.visible = true;
 						LBdt = 0;
 					}
 				}
