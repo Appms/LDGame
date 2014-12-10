@@ -43,8 +43,6 @@ package
 		public var channel_phone:SoundChannel = new SoundChannel();
 		public var channel_office:SoundChannel = new SoundChannel();
 		
-		public var aux_title_completed:Boolean = true;
-		
 		public var SoundMenu:Sound = new Assets.SoundMenu() as Sound;
 		public var SoundSqueak1_01:Sound = new Assets.SoundSqueak1_01() as Sound;
 		public var SoundSqueak2_01:Sound = new Assets.SoundSqueak2_01() as Sound;
@@ -220,7 +218,7 @@ package
 		private var pcLoading:Boolean;
 		
 		private var loadGame1Screen:Sprite;
-		public var loadGame1Title:MovieClip;
+		private var loadGame1Title:MovieClip;
 		private var loadGame1Timer:Number;
 		
 		
@@ -1065,7 +1063,7 @@ package
 				keyboard_left.visible = true;
 			}
 						
-			if (frogRunning) updateCapa0(e.passedTime);
+			if(frogRunning) updateCapa0(e.passedTime);
 			
 			// ****************** CAPA 2 ******************
 
@@ -1110,6 +1108,9 @@ package
 					channel_SCA_Main.stop();
 					channel_office.stop();
 					channel_phone.stop();
+					//death0.stop();
+					//death1.stop();
+					//death2.stop();
 					
 					GAME.reset();
 				}
@@ -1385,10 +1386,9 @@ package
 			
 			if (clickScreenButton)
 			{
-				if(!game1Running && !pcRunning && !pcLoading && aux_title_completed) loadPC();
+				if(!game1Running && !pcRunning && !pcLoading) loadPC();
 				else if(!pcLoading)
 				{
-					aux_title_completed = true;
 					shutdownPC();
 					shutdownGame1();
 					capa1_ruido.visible = false;
@@ -1580,8 +1580,6 @@ package
 		
 		private function loadGame1():void {
 			
-			aux_title_completed = false;
-			
 			channel_SCA_Main = SCA_Main.play(0, 999999, new SoundTransform(0.4, 0));
 			var img:Image;
 			loadGame1Screen = new Sprite();
@@ -1602,11 +1600,8 @@ package
 		}
 		
 		private function loadGame1TitleCompleted(event:Event):void {
-			if (!aux_title_completed) {
-				aux_title_completed = true;
-				capa1.removeChildren();
-				initGame1();
-			}
+			capa1.removeChildren();
+			initGame1();
 		}
 		
 		private function initGame1():void {
@@ -2580,22 +2575,34 @@ package
 				if (currentPos == 0 && selectAni &&!muertisimo)
 				{
 					death0.visible = true;
+					death0.muted = false;
 					death0.play();
 					selectAni = false;
+				}
+				else if (!death0.muted) {
+					death0.muted = true;
 				}
 				
 				if (currentPos == 1 && selectAni &&!muertisimo)
 				{
 					death1.visible = true;
+					death1.muted = false;
 					death1.play();
 					selectAni = false;
+				}
+				else if (!death1.muted) {
+					death1.muted = true;
 				}
 				
 				if (currentPos == 2 && selectAni &&!muertisimo)
 				{
 					death2.visible = true;
+					death2.muted = false;
 					death2.play();
 					selectAni = false;
+				}
+				else if (!death2.muted) {
+					death2.muted = true;
 				}
 				
 				if(deathSecs >= 3.25)
@@ -2723,7 +2730,7 @@ package
 			death0.y = heightCapa0 - death0.height-3;
 			death0.visible = false;
 			death0.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Left_Explosion_01"), null, 0.75);
-			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
+			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
 			death0.stop();
 		
 			death1 = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Ex"), 2);
@@ -2733,7 +2740,7 @@ package
 			death1.y = heightCapa0 - death1.height-3;
 			death1.visible = false;
 			death1.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Front_Explosion_01"), null, 0.75);
-			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
+			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
 			death1.stop();
 			
 			death2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Ex"), 2);
@@ -2743,7 +2750,7 @@ package
 			death2.y = heightCapa0 - death2.height-3;
 			death2.visible = false;
 			death2.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Right_Explosion_01"), null, 0.75);
-			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
+			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
 			
 			death2.stop();
 	
@@ -3710,6 +3717,9 @@ package
 			channel_SCA_Main.stop();
 			channel_office.stop();
 			channel_phone.stop();
+			//death0.stop();
+			//death1.stop();
+			//death2.stop();
 			
 			muertisimo = true;
 			//trace(muertisimo);
