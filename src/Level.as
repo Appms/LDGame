@@ -410,7 +410,7 @@ package
 			stage.addEventListener(ResizeEvent.RESIZE, this.onStageResize);
 			//ch1 = SoundMenu.play(0, 9999);
 			channel_office = SoundOffice.play(0, 999999);
-			channel_phone = SoundPhone.play(0, 9999);
+			channel_phone = SoundPhone.play(0, 999999);
 			channel_phone.soundTransform = new SoundTransform(0, -1);
 
 			var i:Image;
@@ -3207,7 +3207,7 @@ package
 				}
 				
 				if (channel_phone.soundTransform.volume == 0) {
-					channel_phone = SoundPhone.play(0, 9999);
+					channel_phone = SoundPhone.play(0, 999999);
 					channel_phone.soundTransform = new SoundTransform(0.8, -1);
 				}
 				
@@ -3715,7 +3715,7 @@ package
 			ch1.stop();
 			channel_SCA_Main.stop();
 			channel_office.stop();
-			channel_phone.stop();
+			channel_phone.soundTransform = new SoundTransform(0, -1);
 			
 			muertisimo = true;
 			//trace(muertisimo);
