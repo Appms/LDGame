@@ -2424,7 +2424,7 @@ package
 		
 				if (pressAnyButton == true)
 				{
-					FrogIntro.play();
+					//FrogIntro.play();
 					pressAnyButton = false;
 					initiated = false;
 					matrixText.visible = false;
