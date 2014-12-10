@@ -95,11 +95,15 @@ package
 		public var FrogTick:Sound = new Assets.FrogTick() as Sound;
 		public var OfficeSound:Sound = new Assets.OfficeSound() as Sound;
 		private var FrogIntro:Sound = new Assets.FrogIntro() as Sound;
+		private var FrogDeath:Sound = new Assets.FrogDeath() as Sound;
 		
 		private var gameMatrix:Array;
 		private var matrixText:TextField;
 		private var test:String;
-		private var secsPassed:Number = 0;
+		private var pressAnyButton:Boolean;
+		private var selectAni:Boolean;
+		private var frogDeathBool:Boolean;
+		private var secsPassed:Number;
 		private var currentTrack:int = 0;
 		private var currentPos:int;
 		private var genSecs:Number = 0;
@@ -2304,6 +2308,9 @@ package
 			copyText.x = 2;
 			copyText.y = 2;
 			capa0.addChild(copyText);
+			pressAnyButton = false;
+			selectAni = true;
+			frogDeathBool = false;
 			secsPassed = 0;
 			currentTrack = 0;
 			genSecs = 0;
@@ -2400,12 +2407,12 @@ package
 				if (CAPA_1_BOTON_DER)
 				{
 					CAPA_1_BOTON_DER = false;
-					secsPassed = 1;
+					pressAnyButton = true;
 				}
 				if (CAPA_1_BOTON_IZQ)
 				{
 					 CAPA_1_BOTON_IZQ = false;
-					 secsPassed = 1;
+					 pressAnyButton = true;
 				}
 				
 				matrixText.visible = false;
@@ -2415,10 +2422,10 @@ package
 				pressText.visible = true;
 				pressTextCopy.visible = true;
 		
-				if (secsPassed == 1)
+				if (pressAnyButton == true)
 				{
 					FrogIntro.play();
-					secsPassed = 0;
+					pressAnyButton = false;
 					initiated = false;
 					matrixText.visible = false;
 					intro.visible = false;
@@ -2451,6 +2458,8 @@ package
 					if (gameMatrix[3][currentPos] == 1)
 					{
 						dead = true;
+						selectAni = true;
+						frogDeathBool = true;
 						ira += 10;
 						checkRage(true);
 					}
@@ -2467,6 +2476,8 @@ package
 					if (gameMatrix[3][currentPos] == 1) 
 					{
 						dead = true;
+						selectAni = true;
+						frogDeathBool = true;
 						ira += 10;
 						checkRage(true);
 					}
@@ -2495,6 +2506,8 @@ package
 										if (gameMatrix[i + 1][j] == 2)
 										{
 											dead = true;
+											selectAni = true;
+											frogDeathBool = true;
 											ira += 10;
 											checkRage(true);
 										}
@@ -2518,7 +2531,7 @@ package
 				
 				genSecs += customDt;
 				
-				if (genSecs >= 4&& secsPassed==0)
+				if (genSecs >= 4 && secsPassed==0)
 				{
 					generateEnemy();
 					var probabilidad:Number = Math.random() * 10;
@@ -2552,8 +2565,6 @@ package
 			
 			if (dead)
 			{
-				
-				var selectAni:Boolean = true;
 				deathSecs += dt;		
 				
 				character0.visible = false;
@@ -2588,6 +2599,12 @@ package
 					death2.visible = true;
 					death2.play();
 					selectAni = false;
+				}
+				
+				if (deathSecs >= 1.25 && frogDeathBool)
+				{
+					FrogDeath.play();
+					frogDeathBool = false;
 				}
 				
 				if(deathSecs >= 3.25)
@@ -2715,9 +2732,8 @@ package
 			death0.y = heightCapa0 - death0.height-3;
 			death0.visible = false;
 			death0.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Left_Explosion_01"), null, 0.75);
-			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			death0.stop();
-		
+			
 			death1 = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Ex"), 2);
 			starling.core.Starling.juggler.add(death1);
 			capa0.addChild(death1);
@@ -2725,7 +2741,6 @@ package
 			death1.y = heightCapa0 - death1.height-3;
 			death1.visible = false;
 			death1.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Front_Explosion_01"), null, 0.75);
-			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			death1.stop();
 			
 			death2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Ex"), 2);
@@ -2735,7 +2750,7 @@ package
 			death2.y = heightCapa0 - death2.height-3;
 			death2.visible = false;
 			death2.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Right_Explosion_01"), null, 0.75);
-			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
+			//death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			
 			death2.stop();
 	
