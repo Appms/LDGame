@@ -2421,7 +2421,7 @@ package
 				
 				pressText.visible = true;
 				pressTextCopy.visible = true;
-		
+				
 				if (pressAnyButton == true)
 				{
 					//FrogIntro.play();
@@ -2565,6 +2565,15 @@ package
 			
 			if (dead)
 			{
+				if (CAPA_1_BOTON_DER)
+				{
+					CAPA_1_BOTON_DER = false;
+				}
+				if (CAPA_1_BOTON_IZQ)
+				{
+					 CAPA_1_BOTON_IZQ = false;
+				}
+				
 				deathSecs += dt;		
 				
 				character0.visible = false;
