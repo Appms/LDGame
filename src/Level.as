@@ -1075,7 +1075,8 @@ package
 				if (phoneCatched && phoneEvent < 0 && !muertisimo) {
 					phoneEvent = 30 + Math.random()*10;
 					channel_phone.soundTransform = new SoundTransform(0, -1);
-					if (phoneBronca < 3) {
+					
+					if (Math.random() > 0.5) {
 						//HABLA LA SECRETARIA
 						phoneTalking = 5;
 						SoundSecretary.play(0, 0, new SoundTransform(1.5, -1));
@@ -1085,8 +1086,8 @@ package
 						phoneTalking = 5;
 						SoundBoss.play(0, 0, new SoundTransform(1.5, -1));
 					}
-					ira += phoneBronca * 5 + phoneBronca * 2;
-					checkRage(false);
+					//ira += phoneBronca * 5 + phoneBronca * 2;
+					//checkRage(false);
 					phoneBronca = 1;
 				}
 				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0 && !muertisimo) {
@@ -1214,12 +1215,11 @@ package
 			checkRightVisibility();
 			
 			//IRA GLOBAL
-			if (!fired) {
-				ira += e.passedTime / 4 * globalTime/10;
-			}
-			else  {
-				ira += e.passedTime * 10;
-			}
+			var aux_cabreo:Number = 1;
+			if (phoneEvent < 0) { aux_cabreo = 1.25; }
+			else if (phoneTalking > 0) { aux_cabreo = 0.5; }
+			ira += (e.passedTime / 4 * globalTime/10)*aux_cabreo;
+
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
@@ -2575,22 +2575,34 @@ package
 				if (currentPos == 0 && selectAni &&!muertisimo)
 				{
 					death0.visible = true;
+					death0.muted = false;
 					death0.play();
 					selectAni = false;
+				}
+				else if (!death0.muted) {
+					death0.muted = true;
 				}
 				
 				if (currentPos == 1 && selectAni &&!muertisimo)
 				{
 					death1.visible = true;
+					death1.muted = false;
 					death1.play();
 					selectAni = false;
+				}
+				else if (!death1.muted) {
+					death1.muted = true;
 				}
 				
 				if (currentPos == 2 && selectAni &&!muertisimo)
 				{
 					death2.visible = true;
+					death2.muted = false;
 					death2.play();
 					selectAni = false;
+				}
+				else if (!death2.muted) {
+					death2.muted = true;
 				}
 				
 				if(deathSecs >= 3.25)
@@ -3191,12 +3203,13 @@ package
 				}
 				
 				
-				if (phoneEvent <= -(3 + phoneBronca*3)) {
+				if (phoneEvent <= -(10)) {
 					
 					phoneEvent = 30 + Math.random()*10;
 					channel_phone.soundTransform = new SoundTransform(0, -1);
-					phoneBronca++;
+					//phoneBronca++;
 					
+					/*
 					if (phoneBronca > 3) {
 						
 						phoneBronca = -999999;
@@ -3204,6 +3217,7 @@ package
 						fired = true;
 						
 					}
+					*/
 					
 				}
 			}
