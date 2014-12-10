@@ -38,6 +38,7 @@ package
 		private var key_enter:int = 13;
 		
 		private var gitanada:Boolean = false;
+		public var aux_title_completed:Boolean = true;
 		
 		public var ch1:SoundChannel = new SoundChannel();
 		public var channel_phone:SoundChannel = new SoundChannel();
@@ -90,7 +91,6 @@ package
 		public const LEVELS_0:int = 4;
 		public const TRACKS_0:int  = 3;
 		
-		public var FrogDead:Sound = new Assets.FrogDeath() as Sound;
 		public var FrogMove:Sound = new Assets.FrogMove() as Sound;
 		public var FrogTick:Sound = new Assets.FrogTick() as Sound;
 		public var OfficeSound:Sound = new Assets.OfficeSound() as Sound;
@@ -159,7 +159,6 @@ package
 		public var umad2:Sound = new Assets.umad2() as Sound;
 		public var umad3:Sound = new Assets.umad3() as Sound;
 		public var umad4:Sound = new Assets.umad4() as Sound;
-		public var SoundFired:Sound = new Assets.SoundFired() as Sound;
 		
 		public var SnowmanExplodes:Sound = new Assets.SnowmanExplodes() as Sound;
 		
@@ -357,7 +356,6 @@ package
 		
 		private var debug:Boolean = false;
 		private var ira:Number = 0;
-		private var fired:Boolean = false;
 		private var rageSoft:Boolean = false;
 		private var rageHard:Boolean = false;
 		private var timeRageSoft:Number = 0;
@@ -1075,7 +1073,7 @@ package
 				if (phoneCatched && phoneEvent < 0 && !muertisimo) {
 					phoneEvent = 30 + Math.random()*10;
 					channel_phone.soundTransform = new SoundTransform(0, -1);
-					if (phoneBronca < 3) {
+					if (Math.random() > 0.5) {
 						//HABLA LA SECRETARIA
 						phoneTalking = 5;
 						SoundSecretary.play(0, 0, new SoundTransform(1.5, -1));
@@ -1085,8 +1083,6 @@ package
 						phoneTalking = 5;
 						SoundBoss.play(0, 0, new SoundTransform(1.5, -1));
 					}
-					ira += phoneBronca * 5 + phoneBronca * 2;
-					checkRage(false);
 					phoneBronca = 1;
 				}
 				if (coffeCatched && coffeEvent <= 0 && coffeAmount > 0 && !muertisimo) {
@@ -1107,9 +1103,6 @@ package
 					channel_SCA_Main.stop();
 					channel_office.stop();
 					channel_phone.stop();
-					//death0.stop();
-					//death1.stop();
-					//death2.stop();
 					
 					GAME.reset();
 				}
@@ -1214,12 +1207,10 @@ package
 			checkRightVisibility();
 			
 			//IRA GLOBAL
-			if (!fired) {
-				ira += e.passedTime / 4 * globalTime/10;
-			}
-			else  {
-				ira += e.passedTime * 10;
-			}
+			var aux_cabreo:Number = 1;
+			if (phoneEvent < 0) { aux_cabreo = 1.25; }
+			else if (phoneTalking > 0) { aux_cabreo = 0.5; }
+			ira += (e.passedTime / 4 * globalTime/10)*aux_cabreo;
 				
 			//SNOWMAN COOLDOWN
 			if (snowmanCooldown > 0 && snowmanCooldown <= 100)
@@ -1386,9 +1377,10 @@ package
 			
 			if (clickScreenButton)
 			{
-				if(!game1Running && !pcRunning && !pcLoading) loadPC();
+				if(!game1Running && !pcRunning && !pcLoading && aux_title_completed) loadPC();
 				else if(!pcLoading)
 				{
+					aux_title_completed = true;
 					shutdownPC();
 					shutdownGame1();
 					capa1_ruido.visible = false;
@@ -1580,6 +1572,8 @@ package
 		
 		private function loadGame1():void {
 			
+			aux_title_completed = false;
+			
 			channel_SCA_Main = SCA_Main.play(0, 999999, new SoundTransform(0.4, 0));
 			var img:Image;
 			loadGame1Screen = new Sprite();
@@ -1600,8 +1594,11 @@ package
 		}
 		
 		private function loadGame1TitleCompleted(event:Event):void {
-			capa1.removeChildren();
-			initGame1();
+			if (!aux_title_completed) {
+				aux_title_completed = true;
+				capa1.removeChildren();
+				initGame1();
+			}
 		}
 		
 		private function initGame1():void {
@@ -2718,7 +2715,7 @@ package
 			death0.y = heightCapa0 - death0.height-3;
 			death0.visible = false;
 			death0.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Left_Explosion_01"), null, 0.75);
-			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death0.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			death0.stop();
 		
 			death1 = new MovieClip(Assets.getAtlas().getTextures("DETB_Front_Ex"), 2);
@@ -2728,7 +2725,7 @@ package
 			death1.y = heightCapa0 - death1.height-3;
 			death1.visible = false;
 			death1.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Front_Explosion_01"), null, 0.75);
-			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death1.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			death1.stop();
 			
 			death2 = new MovieClip(Assets.getAtlas().getTextures("DETB_Right_Ex"), 2);
@@ -2738,7 +2735,7 @@ package
 			death2.y = heightCapa0 - death2.height-3;
 			death2.visible = false;
 			death2.addFrameAt(0, Assets.getAtlas().getTexture("DETB_Right_Explosion_01"), null, 0.75);
-			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"),FrogDead, 0.01);
+			death2.addFrameAt(2, Assets.getAtlas().getTexture("DETB_Left_Explosion_02"), null, 0.01);
 			
 			death2.stop();
 	
@@ -3191,19 +3188,11 @@ package
 				}
 				
 				
-				if (phoneEvent <= -(3 + phoneBronca*3)) {
+				if (phoneEvent <= -10) {
 					
 					phoneEvent = 30 + Math.random()*10;
 					channel_phone.soundTransform = new SoundTransform(0, -1);
-					phoneBronca++;
-					
-					if (phoneBronca > 3) {
-						
-						phoneBronca = -999999;
-						SoundFired.play(0, 0, new SoundTransform(5, 0));
-						fired = true;
-						
-					}
+					//phoneBronca++;
 					
 				}
 			}
@@ -3703,9 +3692,6 @@ package
 			channel_SCA_Main.stop();
 			channel_office.stop();
 			channel_phone.stop();
-			//death0.stop();
-			//death1.stop();
-			//death2.stop();
 			
 			muertisimo = true;
 			//trace(muertisimo);
