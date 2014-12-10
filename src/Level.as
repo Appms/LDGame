@@ -1560,8 +1560,7 @@ package
 				theInternet.stop();
 				txtClose.visible = false;
 			}
-		}
-		
+		}	
 		
 		private function shutdownPC():void {
 			capa1.removeChildren();
@@ -2417,7 +2416,7 @@ package
 		
 				if (secsPassed == 1)
 				{
-					FrogIntro.play();
+					//FrogIntro.play();
 					secsPassed = 0;
 					initiated = false;
 					matrixText.visible = false;
