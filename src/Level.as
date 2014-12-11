@@ -616,7 +616,7 @@ package
 			capa2.addChild(areaCoffe);
 			if (debug) areaCoffe.alpha = 0.2;
 			else areaCoffe.alpha = 0;
-			areaCoffe.scaleX = 0.6;
+			areaCoffe.scaleX = 0.8;
 			areaCoffe.scaleY = 1.4;
 			areaCoffe.x = 0;
 			areaCoffe.y = 400;
@@ -2143,23 +2143,23 @@ package
 					switch (Math.round(Math.random()*3.5+0.5)) 
 					{
 						case 1:
-							umad1.play(0, 1, new SoundTransform(1, 0));
+							umad1.play(0, 1, new SoundTransform(1.5, 0));
 						break;
 						
 						case 2:
-							umad2.play(0, 1, new SoundTransform(1.5, 0));
+							umad2.play(0, 1, new SoundTransform(2, 0));
 						break;
 						
 						case 3:
-							umad3.play(0, 1, new SoundTransform(1.5, 0));
+							umad3.play(0, 1, new SoundTransform(2, 0));
 						break;
 						
 						case 4:
-							umad4.play(0, 1, new SoundTransform(2.5, 0));
+							umad4.play(0, 1, new SoundTransform(3, 0));
 						break;
 						
 						default:
-							umad3.play(0, 1, new SoundTransform(1.5, 0));
+							umad3.play(0, 1, new SoundTransform(2, 0));
 					}
 					
 					loseLife();
@@ -3206,7 +3206,7 @@ package
 					phoneCall.rotation = 0;
 				}
 				
-				if (channel_phone.soundTransform.volume == 0) {
+				if (channel_phone.soundTransform.volume == 0 && !muertisimo) {
 					channel_phone = SoundPhone.play(0, 999999);
 					channel_phone.soundTransform = new SoundTransform(0.8, -1);
 				}
@@ -3269,7 +3269,7 @@ package
 			var aux_volumen:Number = 2;
 			
 			if (ira <= 50) {
-				if (Math.random() > 0) {
+				if (Math.random() > 0.33) {
 					rageSoft = true;
 					timeRageSoft = 0.5;
 					var aux_whatever:Number = Math.random();
@@ -3285,7 +3285,7 @@ package
 				}
 			}
 			else {
-				if (Math.random() > 0) {
+				if (Math.random() > 0.33) {
 					rageHard = true;
 					timeRageHard = 0.5;
 					aux_whatever = Math.random();
@@ -3639,7 +3639,6 @@ package
 				
 				
 				leftHand2.visible = false;
-				leftShirt.visible = false;
 				leftHand1.visible = false;
 				leftHandFist.visible = false;
 				leftHandGrab.visible = false;
