@@ -2391,7 +2391,7 @@ package
 		}
 		
 		private function shutdownGame1():void {
-			//channel_SCA_Main.stop();
+			channel_SCA_Main.soundTransform = new SoundTransform(0, 0);
 			shutDownFrog();
 			capa1.removeChildren();
 			capa1_careto.removeChildren();
