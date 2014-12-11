@@ -1103,9 +1103,9 @@ package
 				gitanada = false;
 				
 				if (muertisimo) {
-					//ch1.stop();			
-					//channel_SCA_Main.stop();
-					//channel_office.stop();
+					ch1.stop();			
+					channel_SCA_Main.stop();
+					channel_office.stop();
 					channel_phone.stop();
 					
 					GAME.reset();
@@ -3711,9 +3711,9 @@ package
 			capa2.removeChildren();
 			capa1_raja.removeFromParent();
 			
-			ch1.stop();
-			channel_SCA_Main.stop();
-			channel_office.stop();
+			ch1.soundTransform = new SoundTransform(0, -1);
+			channel_SCA_Main.soundTransform = new SoundTransform(0, -1);
+			channel_office.soundTransform = new SoundTransform(0, -1);
 			channel_phone.soundTransform = new SoundTransform(0, -1);
 			
 			muertisimo = true;
