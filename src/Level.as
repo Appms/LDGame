@@ -1103,9 +1103,9 @@ package
 				gitanada = false;
 				
 				if (muertisimo) {
-					ch1.stop();			
-					channel_SCA_Main.stop();
-					channel_office.stop();
+					//ch1.stop();			
+					//channel_SCA_Main.stop();
+					//channel_office.stop();
 					channel_phone.stop();
 					
 					GAME.reset();
@@ -2391,7 +2391,7 @@ package
 		}
 		
 		private function shutdownGame1():void {
-			channel_SCA_Main.stop();
+			//channel_SCA_Main.stop();
 			shutDownFrog();
 			capa1.removeChildren();
 			capa1_careto.removeChildren();
